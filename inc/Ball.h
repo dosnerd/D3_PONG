@@ -7,7 +7,9 @@
 
 
 #include <Coordinates.h>
-class Ball {
+#include <MVC/Model.h>
+
+class Ball : public MVC::Model{
 //constructors
 public:
 								Ball();

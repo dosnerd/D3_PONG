@@ -4,13 +4,16 @@
 
 #include "MVC/View.h"
 
-MVC::View::View() { }
+MVC::View::View(Model *model, Controller *controller)
+		: model(model), controller(controller) {
+}
 
 MVC::View::~View() {
 
 }
 
 void MVC::View::update() {
+	//standard view update will refresh screen
 	display();
 }
 

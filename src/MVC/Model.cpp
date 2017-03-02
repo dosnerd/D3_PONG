@@ -8,15 +8,14 @@
 
 MVC::Model::Model() { }
 
-MVC::Model::~Model() {
-
-}
+MVC::Model::~Model() { }
 
 void MVC::Model::attach(MVC::Observer *observer) {
 	observers.push_back(observer);
 }
 
 void MVC::Model::detach(MVC::Observer *observer) {
+	//get list of all items that are equal to observer, than erase the items that exists in list
 	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
 }
 

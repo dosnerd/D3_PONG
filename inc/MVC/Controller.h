@@ -13,19 +13,23 @@ namespace MVC {
 	class View;
 
 	class Controller: public Observer {
+
 	//constructors
 	public:
-		Controller();
-		virtual ~Controller();
+						Controller(Model *model);
+		virtual         ~Controller();
 
 	//overrides
 	public:
-		void update() override;
+		void            update();
 
 	//getters
 	public:
 		virtual View    *getView();
 		virtual Model   *getModel();
+
+	public:
+		void            setView(View *view);
 
 	//member variables
 	private:

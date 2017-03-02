@@ -10,6 +10,19 @@
 #define cout std::cout
 
 class Console_ASCII {
+//emum
+public:
+	enum Colors {
+		BLACK,
+		RED,
+		GREEN,
+		YELLOW,
+		BLUE,
+		MAGENTA,
+		CYAN,
+		WHITE,
+	};
+
 //constructors
 public:
 					Console_ASCII();

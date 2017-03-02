@@ -14,7 +14,7 @@ namespace MVC {
 	class View : public Observer {
 	//constructors
 	public:
-							View();
+							View(Model *model, Controller *controller);
 		virtual             ~View();
 
 	//members functions

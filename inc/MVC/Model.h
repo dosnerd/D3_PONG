@@ -12,16 +12,16 @@ namespace MVC {
 
 	class Model {
 	public:
-		Model();
-		virtual         ~Model();
+									Model();
+		virtual                     ~Model();
 
 	public:
-		virtual void    attach(Observer *observer);
-		virtual void    detach(Observer *observer);
-		virtual void    notify();
+		virtual void                attach(Observer *observer);
+		virtual void                detach(Observer *observer);
+		virtual void                notify();
 
 	private:
-		std::vector<Observer *> observers;
+		std::vector<Observer *>     observers;
 	};
 }
 

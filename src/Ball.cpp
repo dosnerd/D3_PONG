@@ -4,6 +4,7 @@
 
 #include "Ball.h"
 
+//CONSTRUCTORS
 Ball::Ball()
 		: Ball(0, 0, 0, 1, 1, 1) {
 
@@ -22,6 +23,9 @@ Ball::Ball(int x, int y, int z, int dX, int dY, int dZ)
 Ball::~Ball() {
 
 }
+
+
+//GETTERS
 
 const Coordinates &Ball::getPosition() const {
 	return position;
@@ -43,20 +47,26 @@ const Coordinates Ball::getDeltaAsCoordinates() const {
 	return Coordinates(deltaX, deltaY, deltaZ);
 }
 
+//SETTERS
+
 void Ball::setPosition(int x, int y, int z) {
 	Ball::position.setX(x);
 	Ball::position.setY(y);
 	Ball::position.setZ(x);
+	notify();
 }
 
 void Ball::setDeltaX(int deltaX) {
 	Ball::deltaX = deltaX;
+	notify();
 }
 
 void Ball::setDeltaY(int deltaY) {
 	Ball::deltaY = deltaY;
+	notify();
 }
 
 void Ball::setDeltaZ(int deltaZ) {
 	Ball::deltaZ = deltaZ;
+	notify();
 }

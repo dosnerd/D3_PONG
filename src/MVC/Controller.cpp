@@ -4,15 +4,12 @@
 
 #include "MVC/Controller.h"
 
-MVC::Controller::Controller() { }
+MVC::Controller::Controller(Model *model)
+		: model(model) { }
 
-MVC::Controller::~Controller() {
+MVC::Controller::~Controller() { }
 
-}
-
-void MVC::Controller::update() {
-
-}
+void MVC::Controller::update() { }
 
 MVC::View *MVC::Controller::getView() {
 	return view;
@@ -20,4 +17,8 @@ MVC::View *MVC::Controller::getView() {
 
 MVC::Model *MVC::Controller::getModel() {
 	return model;
+}
+
+void MVC::Controller::setView(MVC::View *view) {
+	Controller::view = view;
 }
