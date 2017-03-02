@@ -1,3 +1,6 @@
+# project directories
+.idea/*
+
 # Compiled Object files
 *.slo
 *.lo
