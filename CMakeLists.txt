@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(${INCLUDES} inc)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp inc/Console_ASCII.h src/Console_ASCII.cpp)
 add_executable(testing ${SOURCE_FILES})
