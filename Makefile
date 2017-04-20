@@ -3,9 +3,9 @@
 SRCS = 						\
 		stm32f4xx_it.c		\
 		system_stm32f4xx.c	\
-		main.cpp 			\
-		PinTest.cpp			\
-		SpiTest.cpp
+		Vector.cpp			\
+		SPI.cpp				\
+		main.cpp
 OUT=./out/
 BIN=./bin/
 
@@ -30,6 +30,7 @@ LDFLAGS = -Os -Wl,-gc-sections --specs=nano.specs -specs=nosys.specs
 
 vpath %.c src
 vpath %.cpp src
+vpath %.h inc
 vpath %.a lib
 
 ROOT=$(shell pwd)
@@ -37,6 +38,7 @@ ROOT=$(shell pwd)
 CFLAGS += -Iinc -Ilib -Ilib/inc 
 CFLAGS += -Ilib/inc/core -Ilib/inc/peripherals 
 
+#LIST1 = $(SRCS:.h=.o)
 LIST = $(SRCS:.cpp=.o)
 OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
 OBJS_FULL = $(OBJS) lib/startup_stm32f4xx.s # add startup file to build
@@ -57,8 +59,12 @@ $(BIN)$(PROJ_NAME).elf: $(OBJS_FULL)
 	$(CXX) $(CFLAGS) $(LDFLAGS) $^ -o $@ -L$(OUT)lib -lstm32f4 -std=c++11
 	$(OBJCOPY) -O ihex $(BIN)$(PROJ_NAME).elf $(BIN)$(PROJ_NAME).hex
 	$(OBJCOPY) -O binary $(BIN)$(PROJ_NAME).elf $(BIN)$(PROJ_NAME).bin
-	
+
 $(OUT)%.o : %.cpp
+	$(CXX) $(CFLAGS) -c -o $@ $^ -std=c++11
+	@echo "Compiled "$<"!\n"
+	
+$(OUT)%.o : %.h
 	$(CXX) $(CFLAGS) -c -o $@ $^ -std=c++11
 	@echo "Compiled "$<"!\n"
 	
