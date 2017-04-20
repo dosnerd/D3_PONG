@@ -5,9 +5,9 @@
 int main(void)
 {
 	volatile int i = 1;
-//	SPI comm;
+	SPI comm;
 
 	while(i){
-//		comm.write(7);
+		comm.write(7);
 	}
 }

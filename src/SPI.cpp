@@ -6,6 +6,7 @@
  */
 
 #include <SPI.h>
+#include <Vector.h>
 #include <stm32f4xx_conf.h>
 
 SPI::SPI() {

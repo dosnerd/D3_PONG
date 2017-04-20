@@ -23,7 +23,7 @@ T &Vector<T>::operator [](uint16_t index) {
 	if (index < m_nObjects) {
 		return m_objects[index];
 	} else {
-		return nullptr;
+		return m_objects[0];
 	}
 }
 
@@ -48,7 +48,7 @@ void Vector<T>::add(T &item) {
 
 template<class T>
 void Vector<T>::remove(uint16_t index) {
-	uint16_t i, counter = 0;
+	uint16_t i;
 
 	T *old = m_objects;
 	T *update = new T[m_nObjects - 1];
@@ -60,11 +60,11 @@ void Vector<T>::remove(uint16_t index) {
 	}
 
 	//copy all except index
-	old[index] = nullptr;
-	for (i = 0; i < m_nObjects; ++i) {
-		if (old[i] != nullptr){
-			update[counter++] = old[i];
-		}
+	for (i = 0; i < index; ++i) {
+		update[i] = old[i];
+	}
+	for (i = index + 1; i < m_nObjects; ++i) {
+		update[i - 1] = old[i];
 	}
 
 	//clean up
@@ -86,3 +86,5 @@ template<class T>
 const uint16_t Vector<T>::length() const {
 	return m_nObjects;
 }
+
+template class Vector<uint16_t>;
