@@ -28,9 +28,12 @@ SRCS = misc.c stm32f4xx_dma.c stm32f4xx_rcc.c stm32f4xx_adc.c \
 LIST = $(SRCS:.c=.o)
 OBJS = $(addprefix $(OUT),$(LIST))
 
-.PHONY: $(OUT)libstm32f4.a
+.PHONY: $(OUT)libstm32f4.a 
 
-all: $(OUT)libstm32f4.a
+all: $(OUT) $(OUT)libstm32f4.a
+
+$(OUT):
+	mkdir $(OUT)
 
 $(OUT)%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $^
@@ -41,3 +44,4 @@ $(OUT)libstm32f4.a: $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(OUT)libstm32f4.a
+	rm -f -d $(OUT)

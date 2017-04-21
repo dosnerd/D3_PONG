@@ -9,6 +9,7 @@ RemoteSystemsTempFiles/*
 
 # builds
 out/*
+out_test/*
 bin/*
 
 # Compiled Object files

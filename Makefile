@@ -11,7 +11,7 @@ BIN=./bin/
 
 # all the files will be generated with this name (main.elf, main.bin, main.hex, etc)
 
-PROJ_NAME=main
+PROJ_NAME=3D_pong
 
 # that's it, no need to change anything below this line!
 
@@ -49,10 +49,16 @@ OBJS_FULL = $(OBJS) lib/startup_stm32f4xx.s # add startup file to build
 
 all: lib proj
 
-lib:
+lib: $(OUT)
 	$(MAKE) -C lib
 
-proj: 	$(BIN)$(PROJ_NAME).elf
+proj: $(BIN) $(OUT) $(BIN)$(PROJ_NAME).elf
+
+$(OUT):
+	mkdir $(OUT)
+	
+$(BIN):
+	mkdir $(BIN)
 
 $(BIN)$(PROJ_NAME).elf: $(OBJS_FULL)
 	$(CXX) $(CFLAGS) $(LDFLAGS) $^ -o $@ -L$(OUT)lib -lstm32f4 -std=c++11
@@ -75,3 +81,5 @@ clean:
 	rm -f $(BIN)$(PROJ_NAME).elf
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
+	rm -f -d $(OUT)
+	rm -f -d $(BIN)
