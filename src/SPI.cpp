@@ -15,7 +15,7 @@ SPI::SPI() {
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
-	/* Configure PD12, PD13, PD14 and PD15 in output pushpull mode */
+
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -46,27 +46,31 @@ SPI::~SPI() {
 }
 
 void SPI::write(uint16_t data){
-	uint16_t input;
 	while (!(SPI2->SR & SPI_I2S_FLAG_TXE))
 				; // wait until transmit buffer empty
 	while ( SPI2->SR & SPI_I2S_FLAG_BSY)
 		; // wait until SPI is not busy anymore
-
-	//check if receive buffer is not empty
-	if (SPI2->SR & SPI_I2S_FLAG_RXNE){
-		input = SPI2->DR;
-		m_buffer.add(input);
-	}
 
 	SPI_I2S_SendData(SPI2, data);
 }
 
 const uint16_t SPI::read() {
 	uint16_t buffer = 0;
+
+#if SPI_INTERRUPT_ENABLE
 	if (m_buffer.length() > 0){
 		buffer = m_buffer[0];
 		m_buffer.remove(0);
 	}
+#else
+	while ( SPI2->SR & SPI_I2S_FLAG_BSY)
+			;
+
+	//check if receive buffer is not empty
+	if (SPI2->SR & SPI_I2S_FLAG_RXNE){
+		buffer = SPI2->DR;
+	}
+#endif
 
 	return buffer;
 }

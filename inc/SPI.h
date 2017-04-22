@@ -10,6 +10,7 @@
 
 #include <Stream.h>
 #include <Vector.h>
+#include <config_file.h>
 
 class SPI : Stream {
 public:

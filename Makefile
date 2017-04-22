@@ -5,6 +5,7 @@ SRCS = 						\
 		system_stm32f4xx.c	\
 		Vector.cpp			\
 		SPI.cpp				\
+		UART.cpp			\
 		main.cpp
 OUT=./out/
 BIN=./bin/
