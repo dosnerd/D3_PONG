@@ -9,6 +9,7 @@
 #define TEST_INC_MEMORYLEAK_H_
 
 #include <cstdio>
+#include <mutex>
 
 class Memory_leak {
 public:
@@ -35,6 +36,8 @@ private:
 
 	std::size_t					*m_ptrSize;
 	int							m_nPtrSizes;
+
+	std::mutex					m_mtx;
 };
 
 extern void *operator new(std::size_t size);

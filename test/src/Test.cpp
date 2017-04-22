@@ -5,9 +5,14 @@
  *      Author: Acer
  */
 
-#include "inc/Test.h"
+#include <Test.h>
+#include <Memoryleak.h>
+#include <iostream>
 
-Test::Test() {
+Test::Test(std::string name)
+	: m_failed(false)
+	, m_name(name)
+{
 	// TODO Auto-generated constructor stub
 
 }
@@ -16,3 +21,24 @@ Test::~Test() {
 	// TODO Auto-generated destructor stub
 }
 
+void Test::run(){
+	try{
+		test();
+	}
+	catch (std::exception &e) {
+		std::cout << "Error has occurd" << std::endl;
+		m_failed = true;
+	}
+
+	if (m_failed){
+		std::cout << m_name << ": failed" << std::endl;
+	} else {
+		std::cout << m_name << ": succeed" << std::endl;
+	}
+}
+
+void Test::fail(std::string message){
+	m_failed = true;
+	std::cerr << "Failed: " << m_name << ": " << message << std::endl;
+	throw std::exception();
+}

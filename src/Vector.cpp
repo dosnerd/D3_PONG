@@ -68,6 +68,7 @@ void Vector<T>::remove(uint16_t index) {
 	}
 
 	//clean up
+	m_nObjects--;
 	m_objects = update;
 	delete[] old;
 }
@@ -88,3 +89,4 @@ const uint16_t Vector<T>::length() const {
 }
 
 template class Vector<uint16_t>;
+template class Vector<int>;

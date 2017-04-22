@@ -2,7 +2,9 @@
 
 SRCS = 						\
 		Vector.cpp			\
+		Vectortest.cpp		\
 		Memoryleak.cpp		\
+		Test.cpp			\
 		main_test.cpp
 
 OUT=./out_test/

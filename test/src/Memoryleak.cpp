@@ -75,6 +75,7 @@ Memory_leak &Memory_leak::operator =(const Memory_leak &item){
 void *Memory_leak::reserve(std::size_t size){
 	void *ptr = std::malloc(size);
 
+	m_mtx.lock();
 	//add pointer to array
 	m_pointers = (void**)std::realloc(m_pointers, (m_nPointers + 1) * sizeof(void *));
 	m_pointers[m_nPointers++] = ptr;
@@ -83,6 +84,7 @@ void *Memory_leak::reserve(std::size_t size){
 	m_ptrSize = (std::size_t *)std::realloc(m_ptrSize, (m_nPtrSizes + 1) * sizeof(std::size_t));
 	m_ptrSize[m_nPtrSizes++] = size;
 
+	m_mtx.unlock();
 	return ptr;
 }
 
@@ -90,6 +92,7 @@ void Memory_leak::free(void *ptr){
 	int i;
 	bool found = false;
 
+	m_mtx.lock();
 	//find ptr and move all items behind it to the front
 	m_nPointers--;
 	m_nPtrSizes--;
@@ -106,6 +109,7 @@ void Memory_leak::free(void *ptr){
 	//resize array
 	m_pointers = (void **)std::realloc(m_pointers, m_nPointers * sizeof(void *));
 	m_ptrSize = (std::size_t *)std::realloc(m_ptrSize, m_nPtrSizes * sizeof(std::size_t));
+	m_mtx.unlock();
 
 	std::free(ptr);
 }
