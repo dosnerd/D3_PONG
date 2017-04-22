@@ -7,7 +7,6 @@
 #include <UART.h>
 #include <stm32f4xx_conf.h>
 
-UART UART::sInstance;
 UART::UART() {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
@@ -86,8 +85,11 @@ const uint16_t UART::getBufferLenght() const{
 }
 
 #if UART_INTERRUPT_ENABLE
+UART UART::sInstance;
+
 void UART::interruptRead(){
 	uint16_t buffer;
+
 	//read from uart buffer
 	if (UART4->SR & USART_FLAG_RXNE){
 		buffer = USART_ReceiveData(UART4);

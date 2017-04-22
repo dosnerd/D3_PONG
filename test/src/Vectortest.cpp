@@ -8,6 +8,8 @@
 #include <Vectortest.h>
 #include <Vector.h>
 
+#include <iostream>
+
 Vector_test::Vector_test()
 	: Test("Vector test")
 {
@@ -23,7 +25,34 @@ bool Vector_test::test(){
 	get();
 	remove();
 	clear();
+	inOtherFunction();
 	return true;
+}
+
+void Vector_test::inOtherFunction(){
+	Vector<int> obj;
+	inOtherFunction_add(&obj);
+
+	if (obj.length() != 2){
+		fail("in_other_function: length");
+	}
+	if (obj[0] != 18){
+		fail("in_other_function: 18");
+	}
+	if (obj[1] != 24){
+		fail("in_other_function: 24");
+	}
+}
+
+template <class T>
+void Vector_test::inOtherFunction_add(Vector<T> *obj){
+	int a = 18;
+	int b = 85;
+	int c = 24;
+	obj->add(a);
+	obj->add(b);
+	obj->add(c);
+	obj->remove(1);
 }
 
 void Vector_test::clear(){

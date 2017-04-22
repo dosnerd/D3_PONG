@@ -10,6 +10,9 @@
 
 #include <Test.h>
 
+template <class T>
+class Vector;
+
 class Vector_test: public Test {
 public:
 							Vector_test();
@@ -23,6 +26,10 @@ private:
 	void					get();
 	void					remove();
 	void					clear();
+	void					inOtherFunction();
+
+	template <class T>
+	void					inOtherFunction_add(Vector<T> *obj);
 };
 
 #endif /* TEST_INC_VECTORTEST_H_ */

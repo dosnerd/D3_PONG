@@ -39,11 +39,11 @@ extern "C" {
 #endif
 
 #if UART_INTERRUPT_ENABLE
-void UART4_IRQHandler();
-#endif
 
+void UART4_IRQHandler();
+
+#endif /* SPI_INTERRUPT_ENABLE */
 #ifdef __cplusplus
 }
 #endif
-
 #endif /* INC_UART_H_ */

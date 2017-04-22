@@ -24,8 +24,25 @@ public:
 public:
 	virtual const uint16_t	getBufferLenght() const;
 
+#if SPI_INTERRUPT_ENABLE
+public:
+	virtual void			interruptRead();
+	static SPI				sInstance;
+#endif
+
 private:
 	Vector<uint16_t>		m_buffer;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+#if SPI_INTERRUPT_ENABLE
+
+void SPI2_IRQHandler();
+
+#endif /* SPI_INTERRUPT_ENABLE */
+#ifdef __cplusplus
+}
+#endif
 #endif /* INC_SPI_H_ */
