@@ -24,26 +24,36 @@ public:
 public:
 	virtual const uint16_t		getBufferLenght() const;
 
-public:
 #if UART_INTERRUPT_ENABLE
+public:
 	virtual void				interruptRead();
 	static UART					sInstance;
+
+private:
+	void 						UARTinterruptConfig();
 #endif
 
 private:
 	Vector<uint16_t>			m_buffer;
+
+private:
+	void 						GPIOinit();
+	void 						GPIOconfig();
+	void 						UARTinit();
 };
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #if UART_INTERRUPT_ENABLE
-
 void UART4_IRQHandler();
-
 #endif /* SPI_INTERRUPT_ENABLE */
+
 #ifdef __cplusplus
 }
 #endif
+
+
 #endif /* INC_UART_H_ */

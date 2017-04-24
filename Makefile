@@ -1,14 +1,22 @@
 # put your *.o targets here, make should handle the rest!
 
 SRCS = 						\
+		Vector.cpp			\
 		stm32f4xx_it.c		\
 		system_stm32f4xx.c	\
-		Vector.cpp			\
 		SPI.cpp				\
 		UART.cpp			\
+		LEDS.cpp			\
 		main.cpp
 OUT=./out/
 BIN=./bin/
+DEP=./out/
+
+
+#$(shell rm ./out/LEDS.o)
+$(shell mkdir -p $(OUT) >/dev/null)
+$(shell mkdir -p $(BIN) >/dev/null)
+$(shell mkdir -p $(DEP) >/dev/null)
 
 # all the files will be generated with this name (main.elf, main.bin, main.hex, etc)
 
@@ -49,17 +57,12 @@ OBJS_FULL = $(OBJS) lib/startup_stm32f4xx.s # add startup file to build
 .PHONY: lib proj
 
 all: lib proj
+	@echo finished
 
 lib: $(OUT)
 	$(MAKE) -C lib
 
-proj: $(BIN) $(OUT) $(BIN)$(PROJ_NAME).elf
-
-$(OUT):
-	mkdir $(OUT)
-	
-$(BIN):
-	mkdir $(BIN)
+proj: $(BIN)$(PROJ_NAME).elf
 
 $(BIN)$(PROJ_NAME).elf: $(OBJS_FULL)
 	$(CXX) $(CFLAGS) $(LDFLAGS) $^ -o $@ -L$(OUT)lib -lstm32f4 -std=c++11
@@ -67,11 +70,14 @@ $(BIN)$(PROJ_NAME).elf: $(OBJS_FULL)
 	$(OBJCOPY) -O binary $(BIN)$(PROJ_NAME).elf $(BIN)$(PROJ_NAME).bin
 	
 $(OUT)%.o : %.cpp
-	$(CXX) $(CFLAGS) -c -o $@ $^ -std=c++11
+	$(CXX) $(CFLAGS) -c -o $@ $< -std=c++11;
+	rm -f $(DEP)/$*.d
+	$(CXX) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d;
 	@echo "Compiled "$<"!\n"
-	
-$(OUT)%.o : %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+
+$(OUT)%.o : %.c	
+	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d;
 	@echo "Compiled "$<"!\n"
 
 rebuild: clean lib proj
@@ -82,5 +88,8 @@ clean:
 	rm -f $(BIN)$(PROJ_NAME).elf
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
-	rm -f -d $(OUT)
-	rm -f -d $(BIN)
+	rm -f -d -r $(OUT)
+	rm -f -d -r $(BIN)
+	rm -f -d -r $(DEP)
+	
+include $(wildcard $(DEP)/*.d)
