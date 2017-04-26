@@ -7,25 +7,18 @@
 
 #include <SPI.h>
 #include <Vector.h>
+#include <stm32f4xx_conf.h>
 
+SPI SPI::sInstance;
 
 SPI::SPI() {
-	GPIO_InitTypeDef GPIO_InitStructure;
-	SPI_InitTypeDef SPI_InitStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
-
-	//Configure PB13, PB14, PB15 as alternate functoin pushpull
-	GPIOinit(GPIO_InitStructure);
-
-	//Configure PB13, PB14, PB15 as SPI2
+	GPIOinit();
 	GPIOconfig();
-
-	//init SPI2
-	SPIinit(SPI_InitStructure);
+	SPIinit();
 
 #if SPI_INTERRUPT_ENABLE
 	//enable SPI2 interrupt
-	SPIinterruptConfig(NVIC_InitStructure);
+	SPIinterruptConfig();
 #endif
 
 	//enable SPI
@@ -35,7 +28,9 @@ SPI::SPI() {
 SPI::~SPI() {
 }
 
-void SPI::GPIOinit(GPIO_InitTypeDef GPIO_InitStructure) {
+void SPI::GPIOinit() {
+	GPIO_InitTypeDef GPIO_InitStructure;
+
 	//Configure PB13, PB14, PB15 as alternate functoin pushpull
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
@@ -53,7 +48,9 @@ void SPI::GPIOconfig() {
 	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_SPI2);
 }
 
-void SPI::SPIinit(SPI_InitTypeDef SPI_InitStructure) {
+void SPI::SPIinit() {
+	SPI_InitTypeDef SPI_InitStructure;
+
 	//Configure SPI2
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
@@ -102,10 +99,15 @@ const uint16_t SPI::getBufferLenght() const{
 	return m_buffer.length();
 }
 
-#if SPI_INTERRUPT_ENABLE
-SPI SPI::sInstance;
+SPI *SPI::getInstance(){
+	return &sInstance;
+}
 
-void SPI::SPIinterruptConfig(NVIC_InitTypeDef NVIC_InitStructure) {
+#if SPI_INTERRUPT_ENABLE
+
+void SPI::SPIinterruptConfig() {
+	NVIC_InitTypeDef NVIC_InitStructure;
+
 	//enable SPI2 interrupt
 	NVIC_InitStructure.NVIC_IRQChannel = SPI2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
@@ -127,7 +129,7 @@ void SPI::interruptRead(){
 void SPI2_IRQHandler(){
 	//check if buffer is not empty interrupt
 	if (SPI_GetITStatus(SPI2, SPI_IT_RXNE)){
-		SPI::sInstance.interruptRead();
+		SPI::getInstance->interruptRead();
 	}
 }
 #endif

@@ -7,9 +7,10 @@
 
 #include <LEDS.h>
 
-LEDS::LEDS(bool init) {
-	if (init)
-		GPIOinit();
+LEDS LEDS::sInstance;
+
+LEDS::LEDS() {
+	GPIOinit();
 }
 
 LEDS::~LEDS() {
@@ -18,9 +19,9 @@ LEDS::~LEDS() {
 
 void LEDS::GPIOinit() {
 	GPIO_InitTypeDef GPIO_InitStructure;
-	/* GPIOD Periph clock enable */
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+
 	/* Configure PD12, PD13, PD14 and PD15 in output pushpull mode */
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14
 			| GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
@@ -31,13 +32,17 @@ void LEDS::GPIOinit() {
 }
 
 void LEDS::turnOn(const uint8_t led){
-	if (led >= 0 && led < AMOUNTS_OF_LEDS) {
+	if (led < AMOUNTS_OF_LEDS) {
 		GPIO_SetBits(GPIOD, leds[led]);
 	}
 }
 
 void LEDS::turnOff(const uint8_t led){
-	if (led >= 0 && led < AMOUNTS_OF_LEDS) {
+	if (led < AMOUNTS_OF_LEDS) {
 		GPIO_ResetBits(GPIOD, leds[led]);
 	}
+}
+
+LEDS *LEDS::getInstance(){
+	return &sInstance;
 }

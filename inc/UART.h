@@ -14,8 +14,12 @@
 
 class UART: public Stream {
 public:
-								UART();
 	virtual 					~UART();
+
+private:
+								UART();
+								UART(UART &item);
+								UART(UART &&item);
 
 public:
 	virtual void				write(uint16_t data);
@@ -23,11 +27,11 @@ public:
 
 public:
 	virtual const uint16_t		getBufferLenght() const;
+	static UART					*getInstance();
 
 #if UART_INTERRUPT_ENABLE
 public:
 	virtual void				interruptRead();
-	static UART					sInstance;
 
 private:
 	void 						UARTinterruptConfig();
@@ -35,6 +39,7 @@ private:
 
 private:
 	Vector<uint16_t>			m_buffer;
+	static UART					sInstance;
 
 private:
 	void 						GPIOinit();

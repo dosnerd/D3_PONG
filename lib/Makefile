@@ -2,12 +2,13 @@ CC=arm-none-eabi-gcc
 AR=arm-none-eabi-ar
 
 OUT=../out/lib/
+OPT=3
 
 ###########################################
 
 vpath %.c src src/peripherals
 
-CFLAGS  = -g -O2 -Wall
+CFLAGS  = -g -O$(OPT) -Wall
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CFLAGS += -ffreestanding -nostdlib

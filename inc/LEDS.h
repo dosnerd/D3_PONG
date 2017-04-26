@@ -13,15 +13,17 @@
 
 class LEDS {
 public:
-							LEDS(bool init = false);
 	virtual 				~LEDS();
+
+private:
+							LEDS();
 
 public:
 	virtual void			turnOn(const uint8_t led);
 	virtual void			turnOff(const uint8_t led);
 
 public:
-	static LEDS				*current;
+	static LEDS				*getInstance();
 
 public:
 	enum LED {
@@ -32,7 +34,13 @@ public:
 	};
 
 private:
-	uint32_t leds[AMOUNTS_OF_LEDS] = { GPIO_Pin_12, GPIO_Pin_13, GPIO_Pin_14, GPIO_Pin_15 };
+	uint32_t 				leds[AMOUNTS_OF_LEDS] = {
+											GPIO_Pin_12,
+											GPIO_Pin_13,
+											GPIO_Pin_14,
+											GPIO_Pin_15
+							};
+	static LEDS				sInstance;
 
 	void GPIOinit();
 };

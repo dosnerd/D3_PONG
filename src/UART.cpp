@@ -8,6 +8,8 @@
 #include <LEDS.h>
 #include <stm32f4xx_conf.h>
 
+UART UART::sInstance;
+
 UART::UART() {
 	GPIOinit();
 	GPIOconfig();
@@ -58,6 +60,10 @@ void UART::UARTinit() {
 	USART_Init(UART4, &USART_InitStructure);
 }
 
+UART *UART::getInstance(){
+	return &sInstance;
+}
+
 void UART::write(uint16_t data){
 	//wait until available
 	while(!(UART4->SR & USART_FLAG_TC));
@@ -89,8 +95,6 @@ const uint16_t UART::getBufferLenght() const{
 
 #if UART_INTERRUPT_ENABLE
 
-UART UART::sInstance;
-
 void UART::UARTinterruptConfig() {
 	NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -105,7 +109,6 @@ void UART::UARTinterruptConfig() {
 
 void UART::interruptRead(){
 	uint16_t buffer;
-	LEDS leds;
 
 	//read from uart buffer
 	buffer = USART_ReceiveData(UART4);
@@ -115,7 +118,7 @@ void UART::interruptRead(){
 void UART4_IRQHandler(void) {
 	//check if buffer is not empty interrupt
 	if (USART_GetITStatus(UART4, USART_IT_RXNE)) {
-		UART::sInstance.interruptRead();
+		UART::getInstance()->interruptRead();
 	}
 }
 

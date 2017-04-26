@@ -11,12 +11,13 @@
 #include <Stream.h>
 #include <Vector.h>
 #include <config_file.h>
-#include <stm32f4xx_conf.h>
 
 class SPI : Stream {
 public:
-							SPI();
 	virtual 				~SPI();
+
+private:
+							SPI();
 
 public:
 	virtual void			write(uint16_t data);
@@ -24,23 +25,24 @@ public:
 
 public:
 	virtual const uint16_t	getBufferLenght() const;
+	static SPI				*getInstance();
+
+private:
+	static SPI				sInstance;
+	Vector<uint16_t>		m_buffer;
+
+	void 					GPIOinit();
+	void 					GPIOconfig();
+	void 					SPIinit();
 
 #if SPI_INTERRUPT_ENABLE
 public:
-	virtual void			interruptRead();
-	static SPI				sInstance;
+	virtual void 			interruptRead();
 
 private:
-	void 					SPIinterruptConfig(NVIC_InitTypeDef NVIC_InitStructure);
+	void 					SPIinterruptConfig();
 
 #endif
-
-private:
-	Vector<uint16_t>		m_buffer;
-
-	void 					GPIOinit(GPIO_InitTypeDef GPIO_InitStructure);
-	void 					GPIOconfig();
-	void 					SPIinit(SPI_InitTypeDef SPI_InitStructure);
 };
 
 #ifdef __cplusplus

@@ -1,6 +1,7 @@
 #include <SPI.h>
 #include <UART.h>
 #include <LEDS.h>
+#include <FPGA.h>
 #include <config_file.h>
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
@@ -12,34 +13,29 @@ uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint8_t i);
 int main(void)
 {
 	volatile uint8_t i = 0x55;
-	LEDS leds(true);
+	SPI	*spiInstance = SPI::getInstance();
+	UART *uartInstance = UART::getInstance();
+	LEDS *leds = LEDS::getInstance();
+	FPGA *fpga = FPGA::getInstance();
 
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
-		leds.turnOff(i);
+		leds->turnOff(i);
 	}
 
-#if SPI_INTERRUPT_ENABLE
-	SPI &spiInstance = SPI::sInstance;
-#else
-	SPI spiInstance;
-#endif
-
-#if UART_INTERRUPT_ENABLE
-	UART &uartInstance = UART::sInstance;
-#else
-	UART uartInstance;
-#endif
-
 	while(i){
-		uartInstance.write(i);
+		uartInstance->write(i);
 		delay(0x5FFFFF);
 
-		spiInstance.write(UARTCHECK(&leds, &uartInstance, i));
+		spiInstance->write(UARTCHECK(leds, uartInstance, i));
 
-		if (i & 0x4)
-			leds.turnOn(LEDS::BLUE);
-		else
-			leds.turnOff(LEDS::BLUE);
+		if (i & 0x4){
+			leds->turnOn(LEDS::BLUE);
+			fpga->turnOn();
+		}
+		else{
+			leds->turnOff(LEDS::BLUE);
+			fpga->turnOff();
+		}
 
 		i++;
 		if (i == 0){
