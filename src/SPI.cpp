@@ -30,6 +30,7 @@ SPI::~SPI() {
 
 void SPI::GPIOinit() {
 	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure2;
 
 	//Configure PB13, PB14, PB15 as alternate functoin pushpull
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
@@ -39,6 +40,17 @@ void SPI::GPIOinit() {
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+
+#if SPI_SLAVE_MODE_ENABLE
+	//Configure PB12 as output pushpull
+	GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_12;
+	GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure2.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure2.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOB, &GPIO_InitStructure2);
+#endif
 }
 
 void SPI::GPIOconfig() {
@@ -55,7 +67,7 @@ void SPI::SPIinit() {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft | SPI_NSSInternalSoft_Set;
