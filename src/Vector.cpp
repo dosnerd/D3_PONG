@@ -5,7 +5,8 @@
  *      Author: Acer
  */
 
-#include <Vector.h>
+//#include <Vector.h>
+#include <MVC/Observer.h>
 
 template<class T>
 Vector<T>::Vector() :
@@ -88,5 +89,6 @@ const uint16_t Vector<T>::length() const {
 	return m_nObjects;
 }
 
-template class Vector<uint16_t>;
-template class Vector<int>;
+//template class Vector<MVC::Observer *>;
+//template class Vector<uint16_t>;
+//template class Vector<int>;

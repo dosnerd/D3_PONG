@@ -31,11 +31,11 @@ public:
 	static Memory_leak			current;
 
 private:
-	void						**m_pointers;
 	int							m_nPointers;
-
-	std::size_t					*m_ptrSize;
 	int							m_nPtrSizes;
+
+	void						**m_pointers;
+	std::size_t					*m_ptrSize;
 
 	std::mutex					m_mtx;
 };

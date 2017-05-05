@@ -31,14 +31,24 @@ void FPGA::GPIOinit() {
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
+/**
+ * Turn on the FPGA power supply. WARNING: it take a few seconds
+ * before the FPGA is ready
+ */
 void FPGA::turnOn(){
 	GPIO_SetBits(GPIOA, GPIO_Pin_7);
 }
 
+/**
+ * Turn off the FPGA power supple.
+ */
 void FPGA::turnOff(){
 	GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 }
 
+/**
+ * Get the instance
+ */
 FPGA *FPGA::getInstance()
 {
 	return &sInstance;
