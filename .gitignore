@@ -3,6 +3,14 @@
 cmake-build-debug/*
 .metadata/*
 RemoteSystemsTempFiles/*
+.project
+.cproject
+.settings/*
+
+# builds
+out/*
+out_test/*
+bin/*
 
 # Compiled Object files
 *.slo

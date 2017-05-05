@@ -1,0 +1,71 @@
+# put your *.o targets here, make should handle the rest!
+
+SRCS = 						\
+		Vector.cpp			\
+		Vectortest.cpp		\
+		Memoryleak.cpp		\
+		Test.cpp			\
+		main_test.cpp
+
+OUT=./out_test/
+BIN=./out_test/
+
+# all the files will be generated with this name (main.elf, main.bin, main.hex, etc)
+
+PROJ_NAME=TEST_PROGRAM
+
+# that's it, no need to change anything below this line!
+
+###################################################
+
+CC=gcc
+CXX=g++ 
+
+###################################################
+
+vpath %.c src
+vpath %.cpp src
+vpath %.h inc
+
+vpath %.cpp test/src
+vpath %.h test/inc
+
+ROOT=$(shell pwd)
+
+CFLAGS = -Iinc -Itest/inc  
+
+LIST = $(SRCS:.cpp=.o)
+OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
+#OBJS_FULL = $(OBJS) lib/startup_stm32f4xx.s # add startup file to build
+
+
+###################################################
+
+.PHONY: proj
+
+all: proj
+
+proj: 	$(OUT) $(BIN)$(PROJ_NAME).exe
+
+$(OUT):
+	mkdir $(OUT)
+
+$(BIN)$(PROJ_NAME).exe: $(OBJS)
+	$(CXX) -o $(BIN)$(PROJ_NAME).exe $(OBJS)
+	
+$(OUT)%.o : %.cpp
+	$(CXX) $(CFLAGS) -c -o $@ $^ -std=c++11
+	@echo "Compiled "$<"!"
+	
+$(OUT)%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $^
+	@echo "Compiled "$<"!"
+
+rebuild: clean lib proj
+	
+clean:
+	rm -f $(OBJS)
+	$(MAKE) -C lib clean
+	rm -f $(BIN)$(PROJ_NAME).elf
+	rm -f $(BIN)$(PROJ_NAME).hex
+	rm -f $(BIN)$(PROJ_NAME).bin
