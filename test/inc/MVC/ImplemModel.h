@@ -5,8 +5,8 @@
  *      Author: Acer
  */
 
-#ifndef TEST_INC_IMPLEMMODEL_H_
-#define TEST_INC_IMPLEMMODEL_H_
+#ifndef TEST_INC_MVC_IMPLEMMODEL_H_
+#define TEST_INC_MVC_IMPLEMMODEL_H_
 
 #include <MVC/Model.h>
 
@@ -25,4 +25,4 @@ private:
 	int							m_data[__MAX_ARRAY_DATA__];
 };
 
-#endif /* TEST_INC_IMPLEMMODEL_H_ */
+#endif /* TEST_INC_MVC_IMPLEMMODEL_H_ */

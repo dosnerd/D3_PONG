@@ -18,15 +18,16 @@ public:
 
 public:
 	void						notify();
-	virtual void				process() = 0;
-	const bool					needsProcess();
+	virtual void				onNotify() = 0;
+	const bool					isNotified() const;
+	const void					resetNotifyFlag();
 
 protected:
 	const Model					*getModel() const;
 
 private:
 	Model						*m_model;
-	bool						m_update;
+	bool						m_notifyFlag;
 };
 
 } /* namespace MVC */

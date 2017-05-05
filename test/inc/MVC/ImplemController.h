@@ -5,8 +5,8 @@
  *      Author: Acer
  */
 
-#ifndef TEST_INC_IMPLEMCONTROLLER_H_
-#define TEST_INC_IMPLEMCONTROLLER_H_
+#ifndef TEST_INC_MVC_IMPLEMCONTROLLER_H_
+#define TEST_INC_MVC_IMPLEMCONTROLLER_H_
 
 #include <MVC/Controller.h>
 
@@ -18,10 +18,10 @@ public:
 
 public:
 	virtual void				setData(int data);
-	virtual void				process();
+	virtual void				onNotify();
 
 private:
 	unsigned int				m_iData;
 };
 
-#endif /* TEST_INC_IMPLEMCONTROLLER_H_ */
+#endif /* TEST_INC_MVC_IMPLEMCONTROLLER_H_ */

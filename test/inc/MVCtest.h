@@ -10,6 +10,9 @@
 
 #include <Test.h>
 #include <Vector.h>
+#include "MVC/ImplemController.h"
+#include "MVC/ImplemModel.h"
+#include "MVC/ImplemView.h"
 
 class MVCtest: public Test {
 public:
@@ -21,8 +24,18 @@ public:
 
 private:
 	void						processObservers();
+	void notifyController_changeToBig();
+	void notifyController_changeToSmall();
+	void notifyController_changeValid();
+	void observersReset();
+	void observerNotification();
+	void notifyView();
+	void allProcessed();
 
 	Vector<MVC::Observer *>		m_observers;
+	ImplemModel 				m_model;
+	ImplemView	 				m_view;
+	ImplemController 			m_controller;
 };
 
 #endif /* TEST_INC_MVCTEST_H_ */

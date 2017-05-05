@@ -1,16 +1,17 @@
 # put your *.o targets here, make should handle the rest!
 
-SRCS = 						\
-		MVC/Model.cpp		\
-		MVC/View.cpp		\
-		MVC/Controller.cpp	\
-		MVC/Observer.cpp	\
-		MVCtest.cpp			\
-		ImplemModel.cpp		\
-		ImplemController.cpp\
-		Vectortest.cpp		\
-		Memoryleak.cpp		\
-		Test.cpp			\
+SRCS = 								\
+		MVC/Model.cpp				\
+		MVC/View.cpp				\
+		MVC/Controller.cpp			\
+		MVC/Observer.cpp			\
+		MVC/MVCtest.cpp				\
+		MVC/ImplemModel.cpp			\
+		MVC/ImplemView.cpp			\
+		MVC/ImplemController.cpp	\
+		Vectortest.cpp				\
+		Memoryleak.cpp				\
+		Test.cpp					\
 		main_test.cpp
 
 OUT=./out_test/
@@ -56,6 +57,7 @@ OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
 .PHONY: proj
 
 all: proj
+	@echo finished
 
 proj: 	$(OUT) $(BIN)$(PROJ_NAME).exe
 

@@ -5,10 +5,10 @@
  *      Author: Acer
  */
 
-#include <ImplemController.h>
-#include <ImplemModel.h>
+#include "../inc/MVC/ImplemController.h"
 
 #include <iostream>
+#include "../inc/MVC/ImplemModel.h"
 
 ImplemController::ImplemController(ImplemModel *model)
 	: MVC::Controller(model)
@@ -29,7 +29,7 @@ void ImplemController::setData(int data) {
 	}
 }
 
-void ImplemController::process()
+void ImplemController::onNotify()
 {
 	unsigned int i;
 	ImplemModel *model = (ImplemModel *)getModel();

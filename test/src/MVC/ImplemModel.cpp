@@ -5,7 +5,7 @@
  *      Author: Acer
  */
 
-#include <ImplemModel.h>
+#include "../inc/MVC/ImplemModel.h"
 
 ImplemModel::ImplemModel(int data1, int data2, int data3, int data4)
 	: m_data{ data1, data2, data3, data4 }
@@ -21,7 +21,7 @@ const int ImplemModel::getData(unsigned int index) const {
 		return m_data[index];
 	}
 
-	return 0;
+	return -1;
 }
 
 void ImplemModel::setData(unsigned int index, int data){
