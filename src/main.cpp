@@ -28,14 +28,14 @@ int main(void)
 
 		delay(0x3FFFFF);
 
-#if SPI_SLAVE_MODE_ENABLE
-		GPIO_SetBits(GPIOB, GPIO_Pin_12);
-#endif
+//#if SPI_SLAVE_MODE_ENABLE
+//		GPIO_SetBits(GPIOB, GPIO_Pin_12);
+//#endif
 		delay(0x200000);
 
-#if SPI_SLAVE_MODE_ENABLE
-		GPIO_ResetBits(GPIOB, GPIO_Pin_12);
-#endif
+//#if SPI_SLAVE_MODE_ENABLE
+//		GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+//#endif
 
 		spiInstance->write(UARTCHECK(leds, uartInstance, i));
 

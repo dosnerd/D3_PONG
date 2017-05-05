@@ -21,6 +21,7 @@ private:
 public:
 	virtual void			turnOn(const uint8_t led);
 	virtual void			turnOff(const uint8_t led);
+	virtual void			infiniteBlink(const uint8_t led);
 
 public:
 	static LEDS				*getInstance();

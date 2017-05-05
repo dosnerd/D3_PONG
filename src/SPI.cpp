@@ -77,6 +77,10 @@ void SPI::SPIinit() {
 }
 
 void SPI::write(uint16_t data){
+#if SPI_SLAVE_MODE_ENABLE
+	GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+#endif
+
 	while (!(SPI2->SR & SPI_I2S_FLAG_TXE))
 				; // wait until transmit buffer empty
 	while ( SPI2->SR & SPI_I2S_FLAG_BSY)
@@ -125,7 +129,10 @@ void SPI::SPIinterruptConfig() {
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+
 	NVIC_Init(&NVIC_InitStructure);
+
+	SPI_ITConfig(SPI2, SPI_IT_RXNE, ENABLE);
 }
 
 void SPI::interruptRead(){
@@ -141,7 +148,11 @@ void SPI::interruptRead(){
 void SPI2_IRQHandler(){
 	//check if buffer is not empty interrupt
 	if (SPI_GetITStatus(SPI2, SPI_IT_RXNE)){
-		SPI::getInstance->interruptRead();
+		SPI::getInstance()->interruptRead();
+
+#if SPI_SLAVE_MODE_ENABLE
+		GPIO_SetBits(GPIOB, GPIO_Pin_12);
+#endif
 	}
 }
 #endif

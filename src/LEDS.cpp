@@ -43,6 +43,20 @@ void LEDS::turnOff(const uint8_t led){
 	}
 }
 
+void LEDS::infiniteBlink(const uint8_t led) {
+	int time;
+
+	if (led < AMOUNTS_OF_LEDS) {
+		while (true) {
+			time = 10000000;
+			while(time--) {
+				asm("nop");
+			}
+			GPIO_ToggleBits(GPIOD, leds[led]);
+		}
+	}
+}
+
 LEDS *LEDS::getInstance(){
 	return &sInstance;
 }
