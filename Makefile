@@ -92,8 +92,5 @@ clean:
 	rm -f $(BIN)$(PROJ_NAME).elf
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
-	rm -f -d -r $(OUT)
-	rm -f -d -r $(BIN)
-	rm -f -d -r $(DEP)
 	
 include $(wildcard $(DEP)/*.d)

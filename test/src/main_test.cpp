@@ -7,6 +7,8 @@
 #include <iostream>
 #include <Memoryleak.h>
 #include <Vectortest.h>
+#include <gameEngine/CoordinateTest.h>
+#include <gameEngine/GameObjectTest.h>
 #include <thread>
 
 void *operator new(std::size_t size){
@@ -24,7 +26,7 @@ int main(int argc, char **argv){
 
 	int i;
 	bool allPassed = true;
-	Test *a[] = { new Vector_test() };
+	Test *a[] = { new Vector_test(), new GameEngine::CoordinateTest(), new GameEngine::GameObjectTest() };
 	std::thread tests[sizeof(a) / sizeof(Test *)];
 
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {

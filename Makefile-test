@@ -1,10 +1,14 @@
 # put your *.o targets here, make should handle the rest!
 
-SRCS = 						\
-		Vector.cpp			\
-		Vectortest.cpp		\
-		Memoryleak.cpp		\
-		Test.cpp			\
+SRCS = 									\
+		Vector.cpp						\
+		Vectortest.cpp					\
+		Memoryleak.cpp					\
+		Test.cpp						\
+		gameEngine/Coordinate.cpp		\
+		gameEngine/CoordinateTest.cpp	\
+		gameEngine/gameObject.cpp		\
+		gameEngine/GameObjectTest.cpp	\
 		main_test.cpp
 
 OUT=./out_test/
@@ -36,7 +40,6 @@ CFLAGS = -Iinc -Itest/inc
 
 LIST = $(SRCS:.cpp=.o)
 OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
-#OBJS_FULL = $(OBJS) lib/startup_stm32f4xx.s # add startup file to build
 
 
 ###################################################

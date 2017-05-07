@@ -13,17 +13,14 @@ Test::Test(std::string name)
 	: m_failed(false)
 	, m_name(name)
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 Test::~Test() {
-	// TODO Auto-generated destructor stub
 }
 
 void Test::run(){
 	try{
-		test();
+		m_failed = !test();
 	}
 	catch (std::exception &e) {
 		std::cout << "Error has occurd" << std::endl;
