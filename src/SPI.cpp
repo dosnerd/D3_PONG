@@ -43,13 +43,14 @@ void SPI::GPIOinit() {
 
 
 #if SPI_SLAVE_MODE_ENABLE
-	//Configure PB12 as output pushpull
-	GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_12;
+	//Configure PD8 as output pushpull
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure2.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure2.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOB, &GPIO_InitStructure2);
+	GPIO_Init(GPIOD, &GPIO_InitStructure2);
 #endif
 }
 
@@ -78,7 +79,7 @@ void SPI::SPIinit() {
 
 void SPI::write(uint16_t data){
 #if SPI_SLAVE_MODE_ENABLE
-	GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+	GPIO_ResetBits(GPIOD, GPIO_Pin_8);
 #endif
 
 	while (!(SPI2->SR & SPI_I2S_FLAG_TXE))
@@ -151,7 +152,7 @@ void SPI2_IRQHandler(){
 		SPI::getInstance()->interruptRead();
 
 #if SPI_SLAVE_MODE_ENABLE
-		GPIO_SetBits(GPIOB, GPIO_Pin_12);
+		GPIO_SetBits(GPIOD, GPIO_Pin_8);
 #endif
 	}
 }
