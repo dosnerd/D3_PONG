@@ -15,30 +15,35 @@ namespace GameEngine {
 class Coordinate {
 public:
 								Coordinate();
-								Coordinate(uint8_t x, uint8_t y, uint8_t z);
+								Coordinate(int8_t x, int8_t y, int8_t z);
 	virtual						~Coordinate();
 
 public:
+	enum AXIS { NONE, X, Y, Z };
+
+public:
 	virtual Coordinate			transform(float factor, const Coordinate *delta) const;
+	virtual void				flip(Coordinate::AXIS axis);
 
 public:
 	virtual Coordinate			operator-(const Coordinate &coordinate) const;
 	virtual Coordinate			operator+(const Coordinate &coordinate) const;
 	virtual Coordinate			operator*(float number) const;
 
+public:
+	int8_t 						get(Coordinate::AXIS axis) const;
+	int8_t 						getX() const;
+	int8_t 						getY() const;
+	int8_t 						getZ() const;
 
 public:
-	uint8_t 					getX() const;
-	uint8_t 					getY() const;
-	uint8_t 					getZ() const;
-
-public:
-	void 						setX(uint8_t x);
-	void 						setY(uint8_t y);
-	void 						setZ(uint8_t z);
+	void	 					set(Coordinate::AXIS axis, int8_t value);
+	void 						setX(int8_t x);
+	void 						setY(int8_t y);
+	void 						setZ(int8_t z);
 
 private:
-	uint8_t						m_x, m_y, m_z;
+	int8_t						m_x, m_y, m_z;
 };
 
 } /* namespace GameEngine */

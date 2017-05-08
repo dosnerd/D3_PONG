@@ -12,7 +12,7 @@ namespace GameEngine {
 Coordinate::Coordinate()
 	: m_x(0), m_y(0), m_z(0) { }
 
-Coordinate::Coordinate(uint8_t x, uint8_t y, uint8_t z)
+Coordinate::Coordinate(int8_t x, int8_t y, int8_t z)
 	: m_x(x), m_y(y), m_z(z) { }
 
 Coordinate::~Coordinate() {
@@ -47,28 +47,54 @@ Coordinate Coordinate::operator *(float number) const {
 				);
 }
 
-uint8_t Coordinate::getX() const {
+int8_t Coordinate::getX() const {
 	return m_x;
 }
 
-uint8_t Coordinate::getY() const {
+int8_t Coordinate::getY() const {
 	return m_y;
 }
 
-uint8_t Coordinate::getZ() const {
+int8_t Coordinate::getZ() const {
 	return m_z;
 }
 
-void Coordinate::setX(uint8_t x) {
+void Coordinate::set(Coordinate::AXIS axis, int8_t value) {
+	switch (axis){
+	case X:
+		return setX(value);
+	case Y:
+		return setY(value);
+	default:
+		return setZ(value);
+	}
+}
+
+void Coordinate::setX(int8_t x) {
 	this->m_x = x;
 }
 
-void Coordinate::setY(uint8_t y) {
+void Coordinate::setY(int8_t y) {
 	this->m_y = y;
 }
 
-void Coordinate::setZ(uint8_t z) {
+void Coordinate::flip(Coordinate::AXIS axis) {
+	set(axis, -get(axis));
+}
+
+void Coordinate::setZ(int8_t z) {
 	this->m_z = z;
 }
 
 } /* namespace GameEngine */
+
+int8_t GameEngine::Coordinate::get(Coordinate::AXIS axis) const {
+	switch (axis){
+	case X:
+		return getX();
+	case Y:
+		return getY();
+	default:
+		return getZ();
+	}
+}

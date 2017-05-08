@@ -19,11 +19,16 @@ public:
 public:
 	virtual T				&operator[](uint16_t index);
 
+	//Manipulate
 public:
 	virtual void			add(T &item);
 	virtual void			remove(uint16_t index);
 	virtual void			clear();
 	virtual const uint16_t	length() const;
+
+	//search
+public:
+	virtual uint16_t		min(uint16_t startIndex = 0);
 
 private:
 	T						*m_objects;

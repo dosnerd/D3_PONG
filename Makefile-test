@@ -7,8 +7,12 @@ SRCS = 									\
 		Test.cpp						\
 		gameEngine/Coordinate.cpp		\
 		gameEngine/CoordinateTest.cpp	\
-		gameEngine/gameObject.cpp		\
+		gameEngine/GameObject.cpp		\
 		gameEngine/GameObjectTest.cpp	\
+		gameEngine/Ball.cpp				\
+		gameEngine/Engine.cpp			\
+		gameEngine/EngineTest.cpp		\
+		gameEngine/SideWall.cpp			\
 		main_test.cpp
 
 OUT=./out_test/

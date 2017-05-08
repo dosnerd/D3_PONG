@@ -20,12 +20,31 @@ Vector_test::~Vector_test() {
 
 }
 
+void Vector_test::MinTest() {
+	Vector<int> obj;
+	int a = 9, b = 10, c = 1, d = 9, e = 5;
+	obj.add(a);
+	obj.add(b);
+	obj.add(c);
+	obj.add(d);
+	obj.add(e);
+
+	if (obj.min() != 2)
+		fail("Min i != 2");
+	obj[2] = 10;
+
+	if (obj.min() != 4)
+			fail("Min i != 4");
+}
+
 bool Vector_test::test(){
 	add();
 	get();
 	remove();
 	clear();
 	inOtherFunction();
+
+	MinTest();
 	return true;
 }
 
