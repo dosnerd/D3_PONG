@@ -2,38 +2,67 @@
 #include <UART.h>
 #include <LEDS.h>
 #include <FPGA.h>
+
+#include <gameEngine/Engine.h>
+#include <gameEngine/SideWall.h>
+#include <gameEngine/FloorWall.h>
+
 #include <config_file.h>
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
 
 void delay(uint32_t time);
+void SPI_write(uint16_t address, uint16_t value);
 uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i);
 
+GameEngine::Engine *getEngine();
 
 int main(void)
 {
-	volatile uint8_t i = 0x55;
+	volatile int16_t i = 0x55;
 	uint8_t addres = 0x01;
-	SPI	*spiInstance = SPI::getInstance();
 	UART *uartInstance = UART::getInstance();
 	LEDS *leds = LEDS::getInstance();
 	FPGA *fpga = FPGA::getInstance();
+	GameEngine::Engine *engine = getEngine();
+	GameEngine::Ball *ball = engine->getBall();
+
+	GameEngine::GameObject* bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	GameEngine::GameObject* bat2= new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	bat1->setPosition(GameEngine::Coordinate(0, 0, 8));
+	bat2->setPosition(GameEngine::Coordinate(-100, -50, 72));
+
+	engine->addObject(bat1);
+	engine->addObject(bat2);
+
+	engine->getBall()->setPosition(GameEngine::Coordinate(-270, 0, 15));
+	engine->getBall()->setSpeed(GameEngine::Coordinate(-10, -5, 2));
 
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);
 	}
-	i = 1;
+	i = 100;
+
+
 
 	while(i){
 		uartInstance->write(i);
-
-
-		delay(0xFFFFF);
-		//delay(0x200000);
-
-		spiInstance->write((addres << (3*4)) | i);
 		UARTCHECK(leds, uartInstance, i);
 
+		engine->moveBall();
+
+		SPI_write(1, ball->getPosition().getX() + (ball->getWidth() / 2));
+		SPI_write(2, ball->getPosition().getY() + (ball->getWidth() / 2));
+		SPI_write(3, ball->getPosition().getZ());
+
+		SPI_write(4, bat1->getPosition().getX() - (bat1->getWidth() / 2));
+		SPI_write(5, bat1->getPosition().getY()- (bat1->getHeight() / 2));
+
+		SPI_write(6, bat2->getPosition().getX());
+		SPI_write(7, bat2->getPosition().getY());
+
+
+		delay(0x85FFF);
 		if (i & 0x4){
 			leds->turnOn(LEDS::BLUE);
 			fpga->turnOn();
@@ -43,9 +72,9 @@ int main(void)
 			fpga->turnOff();
 		}
 
-		i++;
-		if (i == 0){
-			i = 1;
+		i--;
+		if (i <= 8){
+			i = 100;
 			addres++;
 
 			if (addres > 0b0111){
@@ -53,6 +82,45 @@ int main(void)
 			}
 		}
 	}
+}
+
+GameEngine::Engine *getEngine(){
+	GameEngine::Engine* engine = new GameEngine::Engine();
+		GameEngine::GameObject* wallFront = new GameEngine::GameObject(GameEngine::Coordinate::Z, 640, 480);
+		GameEngine::GameObject* wallBack = new GameEngine::GameObject(GameEngine::Coordinate::Z, 640, 480);
+		GameEngine::GameObject* wallLeft = new GameEngine::SideWall(100, 480);
+		GameEngine::GameObject* wallRight = new GameEngine::SideWall(100, 480);
+		GameEngine::GameObject* wallTop = new GameEngine::FloorWall(640, 100);
+		GameEngine::GameObject* wallBottom = new GameEngine::FloorWall(640, 100);
+//		GameEngine::GameObject* bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 120, 80);
+//		GameEngine::GameObject* bat2 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 120, 80);
+
+
+		wallBack->setPosition(GameEngine::Coordinate(-320, -240, 80));
+		wallFront->setPosition(GameEngine::Coordinate(-320, -240, 0));
+		wallLeft->setPosition(GameEngine::Coordinate(-320, -240, 0));
+		wallRight->setPosition(GameEngine::Coordinate(320, -240, 0));
+		wallTop->setPosition(GameEngine::Coordinate(-320, 240, 0));
+		wallBottom->setPosition(GameEngine::Coordinate(-320, -240, 0));
+//		bat1->setPosition(GameEngine::Coordinate(200, 50, 8));
+//		bat2->setPosition(GameEngine::Coordinate(-100, -50, 72));
+
+		engine->addObject(wallFront);
+		engine->addObject(wallBack);
+		engine->addObject(wallLeft);
+		engine->addObject(wallRight);
+		engine->addObject(wallTop);
+		engine->addObject(wallBottom);
+//		engine->addObject(bat1);
+//		engine->addObject(bat2);
+
+	return engine;
+}
+
+void SPI_write(uint16_t address, uint16_t value){
+	uint16_t buff = address << 3*4;
+	buff |= value & 0xFFF;
+	SPI::getInstance()->write(buff);
 }
 
 uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i){

@@ -28,8 +28,8 @@ int main(int argc, char **argv){
 	int i;
 	bool allPassed = true;
 	Test *a[] = {
-			new GameEngine::EngineTest(),
 			new Vector_test(),
+			new GameEngine::EngineTest(),
 			new GameEngine::CoordinateTest(),
 			new GameEngine::GameObjectTest(),
 	};
@@ -37,6 +37,7 @@ int main(int argc, char **argv){
 
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {
 		tests[i] = std::thread(&Test::run, a[i]);
+//		a[i]->run();
 	}
 
 	//delete tests

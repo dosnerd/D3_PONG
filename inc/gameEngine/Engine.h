@@ -32,8 +32,8 @@ private:
 	Ball						m_ball;
 	Vector<GameObject *>		m_objectContainer;
 
-	void						getTransformFactors(Coordinate &speed, Vector<float> &transformList);
-	float						getTransformFactor(GameObject* object,
+	void						getTransformFactors(Coordinate &speed, Vector<int32_t> &transformList);
+	int32_t						getTransformFactor(GameObject* object,
 										Coordinate& ballSpeed);
 
 	void						deleteAllObjects();

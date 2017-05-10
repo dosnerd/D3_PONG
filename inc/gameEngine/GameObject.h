@@ -15,7 +15,7 @@ namespace GameEngine {
 
 class GameObject {
 public:
-								GameObject(Coordinate::AXIS compareAxis, uint8_t width, uint8_t height);
+								GameObject(Coordinate::AXIS compareAxis, int32_t width, int32_t height);
 	virtual 					~GameObject();
 
 public:
@@ -27,15 +27,15 @@ public:
 
 public:
 	const Coordinate& 			getPosition() const;
-	uint8_t 					getHeight() const;
-	uint8_t 					getWidth() const;
+	int32_t 					getHeight() const;
+	int32_t 					getWidth() const;
 
 	void 						setPosition(const Coordinate& position);
 
 private:
 	Coordinate					m_position;
 	const Coordinate::AXIS		m_compareAxis;
-	uint8_t						m_width, m_height;
+	int32_t						m_width, m_height;
 };
 
 } /* namespace GameEngine */

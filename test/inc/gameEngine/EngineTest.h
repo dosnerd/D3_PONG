@@ -9,6 +9,7 @@
 #define TEST_INC_GAMEENGINE_ENGINETEST_H_
 
 #include <Test.h>
+#include <gameEngine/Coordinate.h>
 
 namespace GameEngine {
 
@@ -24,6 +25,8 @@ public:
 private:
 	Engine						*setupBasicField();
 	void 						ZaxisOnly();
+	GameEngine::Engine			*getGameField();
+	void 						GameField(int cicles, GameEngine::Coordinate  speed);
 };
 
 } /* namespace GameEngine */

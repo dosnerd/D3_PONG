@@ -60,3 +60,7 @@ void LEDS::infiniteBlink(const uint8_t led) {
 LEDS *LEDS::getInstance(){
 	return &sInstance;
 }
+
+void blinkLight(uint8_t led) {
+	LEDS::getInstance()->infiniteBlink(led);
+}

@@ -10,7 +10,7 @@
 namespace GameEngine {
 
 Ball::Ball()
-	: GameObject(Coordinate::Z, 10, 10)
+	: GameObject(Coordinate::Z, 50, 50)
 	, m_speed(3, 3, 3)
 {
 

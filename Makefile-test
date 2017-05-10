@@ -13,6 +13,7 @@ SRCS = 									\
 		gameEngine/Engine.cpp			\
 		gameEngine/EngineTest.cpp		\
 		gameEngine/SideWall.cpp			\
+		gameEngine/FloorWall.cpp		\
 		main_test.cpp
 
 OUT=./out_test/

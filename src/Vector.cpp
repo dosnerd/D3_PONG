@@ -108,7 +108,7 @@ uint16_t Vector<T>::min(uint16_t startIndex) {
 	return -1;
 }
 
+template class Vector<int32_t>;
 template class Vector<uint16_t>;
-template class Vector<int>;
-template class Vector<float>;
+//template class Vector<int>;
 template class Vector<GameEngine::GameObject *>;

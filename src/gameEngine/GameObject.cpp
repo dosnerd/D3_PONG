@@ -10,7 +10,7 @@
 
 namespace GameEngine {
 
-GameObject::GameObject(Coordinate::AXIS compareAxis, uint8_t width, uint8_t height)
+GameObject::GameObject(Coordinate::AXIS compareAxis, int32_t width, int32_t height)
 	: m_position()
 	, m_compareAxis(compareAxis)
 	, m_width(width), m_height(height)
@@ -49,11 +49,11 @@ void GameEngine::GameObject::setPosition(const Coordinate& position) {
 	m_position = position;
 }
 
-uint8_t GameEngine::GameObject::getHeight() const {
+int32_t GameEngine::GameObject::getHeight() const {
 	return m_height;
 }
 
-uint8_t GameEngine::GameObject::getWidth() const {
+int32_t GameEngine::GameObject::getWidth() const {
 	return m_width;
 }
 

@@ -14,7 +14,7 @@ namespace GameEngine {
 
 class SideWall: public GameObject {
 public:
-								SideWall(uint8_t width, uint8_t height);
+								SideWall(int32_t width, int32_t height);
 	virtual 					~SideWall();
 
 public:
