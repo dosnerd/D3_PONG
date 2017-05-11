@@ -129,7 +129,7 @@ void EngineTest::GameField(int cicles, GameEngine::Coordinate speed) {
 }
 
 bool EngineTest::test() {
-	int i, j, k, m;
+	int i, j, k;
 //	ZaxisOnly();
 
 	GameField(1000, Coordinate(0, -3, 6));

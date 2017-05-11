@@ -35,4 +35,11 @@ private:
 	uint8_t					m_nObjects;
 };
 
+/* Need to add implementation of function so it can
+ * compile all function: Vector<char>, Vector<int>, etc.
+ * Other option should be forcing the compiler to
+ * use specific implementation (manual).
+ */
+#include <../src/Vector.cpp>
+
 #endif /* INC_VECTOR_H_ */
