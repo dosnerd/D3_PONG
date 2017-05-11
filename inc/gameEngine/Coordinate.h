@@ -46,6 +46,8 @@ public:
 
 private:
 	int32_t						m_x, m_y, m_z;
+
+	int32_t 					roundNumber(int32_t number) const;
 };
 
 } /* namespace GameEngine */

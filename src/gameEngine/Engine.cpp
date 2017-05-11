@@ -4,11 +4,13 @@
  *  Created on: 7 mei 2017
  *      Author: Acer
  */
-
+#define PRINT_DEBUG 0
 #include <gameEngine/Engine.h>
 #include <stdlib.h>
 
-//#include <iostream>
+#if PRINT_DEBUG
+#include <iostream>
+#endif
 
 #define NO_TRANSFORM 2*FIXED_POINT_MULTILIER
 
@@ -22,6 +24,28 @@ Engine::~Engine() {
 	deleteAllObjects();
 }
 
+
+Coordinate Engine::getReativeBall(GameObject* nearestObject,
+		Coordinate ballPos) {
+	if (nearestObject->getCompareAxis() == Coordinate::X)
+		ballPos = Coordinate(
+				m_ball.getPosition().getX() + m_ball.getWidth(),
+				m_ball.getPosition().getY(),
+				m_ball.getPosition().getZ());
+	else if (nearestObject->getCompareAxis() == Coordinate::Y)
+		ballPos = Coordinate(
+				m_ball.getPosition().getX(),
+				m_ball.getPosition().getY() + m_ball.getHeight(),
+				m_ball.getPosition().getZ());
+	else
+		ballPos = Coordinate(
+				m_ball.getPosition().getX(),
+				m_ball.getPosition().getY(),
+				m_ball.getPosition().getZ());
+
+	return ballPos;
+}
+
 void Engine::moveBall() {
 	Coordinate intersection, intersection2, ballPos, ballSpeed = m_ball.getSpeed();
 	Vector<int32_t> transformList;
@@ -32,7 +56,9 @@ void Engine::moveBall() {
 
 	while(true){
 		i = transformList.min();
-//		std::cout << "(" << (int)i << ", "  << (int)transformList[i] << ")";
+#if PRINT_DEBUG
+		std::cout << "(" << (int)i << ", "  << (int)transformList[i] << ")";
+#endif
 
 		if (i == -1 || i == (int16_t)transformList.length() || transformList[i] == NO_TRANSFORM){
 			m_ball.setPosition(m_ball.getPosition() + ballSpeed);
@@ -41,24 +67,7 @@ void Engine::moveBall() {
 					return;
 		} else {
 			nearestObject = m_objectContainer[i];
-			if (nearestObject->getCompareAxis() == Coordinate::X)
-				ballPos = Coordinate(
-						m_ball.getPosition().getX() + m_ball.getWidth(),
-						m_ball.getPosition().getY(),
-						m_ball.getPosition().getZ()
-						);
-			else if (nearestObject->getCompareAxis() == Coordinate::Y)
-				ballPos = Coordinate(
-						m_ball.getPosition().getX(),
-						m_ball.getPosition().getY() + m_ball.getHeight(),
-						m_ball.getPosition().getZ()
-						);
-			else
-				ballPos = Coordinate(
-						m_ball.getPosition().getX(),
-						m_ball.getPosition().getY(),
-						m_ball.getPosition().getZ()
-						);
+			ballPos = getReativeBall(nearestObject, ballPos);
 
 			intersection =
 					(m_ball.getPosition() * FIXED_POINT_MULTILIER +
@@ -68,61 +77,68 @@ void Engine::moveBall() {
 					ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
 
 
-//			std::cout << std::endl << "[";
-////
-////
-//////			Coordinate temp = ballSpeed * transformList[i];
-//			Coordinate temp = intersection;
-//////			Coordinate temp = m_ball.getPosition();
-////
-//			std::cout << (int)temp.getX() << ":";
-//			std::cout << (int)temp.getY() << ":";
-//			std::cout << (int)temp.getZ();
+#if PRINT_DEBUG
+			std::cout << std::endl << "[";
 //
-//			std::cout << ",";
 //
-//			temp = intersection2;
+//			Coordinate temp = ballSpeed * transformList[i];
+			Coordinate temp = intersection;
+////			Coordinate temp = m_ball.getPosition();
 //
-//			std::cout << (int)temp.getX() << ":";
-//			std::cout << (int)temp.getY() << ":";
-//			std::cout << (int)temp.getZ();
+			std::cout << (int)temp.getX() << ":";
+			std::cout << (int)temp.getY() << ":";
+			std::cout << (int)temp.getZ();
+
+			std::cout << ", ";
+
+//			temp = (m_ball.getPosition() * FIXED_POINT_MULTILIER +
+//					ballSpeed * transformList[i]);// / FIXED_POINT_MULTILIER;
+//			temp = ballSpeed * transformList[i];
+			temp = intersection2;
+
+			std::cout << (int)temp.getX() << ":";
+			std::cout << (int)temp.getY() << ":";
+			std::cout << (int)temp.getZ();
+
+			std::cout << ", ";
+
+////			temp = m_ball.getPosition() * FIXED_POINT_MULTILIER;
+			temp = nearestObject->getPosition();
 //
-//			std::cout << ",";
-//
-//////			temp = m_ball.getPosition() * FIXED_POINT_MULTILIER;
-//			temp = nearestObject->getPosition();
-////
-//			std::cout << (int)temp.getX() << ":";
-//			std::cout << (int)temp.getY() << ":";
-//			std::cout << (int)temp.getZ();
-//
-//			std::cout << "]" << std::endl;
+			std::cout << (int)temp.getX() << ":";
+			std::cout << (int)temp.getY() << ":";
+			std::cout << (int)temp.getZ();
+
+			std::cout << "]" << std::endl;
+#endif
 
 			if (nearestObject->isCollided(&m_ball, intersection)){
 //				std::cout << "Kabom" << std::endl;
-				m_ball.setPosition(intersection);
-				ballSpeed = (ballSpeed * FIXED_POINT_MULTILIER - ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
 
 				ballSpeed.flip(nearestObject->getCompareAxis());
 				m_ball.getSpeed().flip(nearestObject->getCompareAxis());
 
-				if (transformList[transformList.min(i+1)] == transformList[i]){
+				if (existsSaveTransform(i, &transformList, &ballSpeed)){
 					transformList[i] = NO_TRANSFORM;
+//					std::cout << "another";
 				} else {
+					m_ball.setPosition(intersection);
+					ballSpeed = (ballSpeed * FIXED_POINT_MULTILIER - ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
 					getTransformFactors(ballSpeed, transformList);
 				}
 			}
 			else if (nearestObject->isCollided(&m_ball, intersection2)){
 //				std::cout << "Poef" << std::endl;
-				m_ball.setPosition(intersection);
-				ballSpeed = (ballSpeed * FIXED_POINT_MULTILIER - ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
 
 				ballSpeed.flip(nearestObject->getCompareAxis());
 				m_ball.getSpeed().flip(nearestObject->getCompareAxis());
 
-				if (transformList[transformList.min(i+1)] == transformList[i]){
+				if (existsSaveTransform(i, &transformList, &ballSpeed)){
 					transformList[i] = NO_TRANSFORM;
+//					std::cout << "another";
 				} else {
+					m_ball.setPosition(intersection);
+					ballSpeed = (ballSpeed * FIXED_POINT_MULTILIER - ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
 					getTransformFactors(ballSpeed, transformList);
 				}
 			}
@@ -133,6 +149,70 @@ void Engine::moveBall() {
 		}
 	}
 //	std::cout << "  END  ";
+}
+
+bool Engine::existsSaveTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed) {
+	int i;
+	Coordinate intersection, intersection2, temp, temp2, ballPos;
+	Coordinate::AXIS orientation = m_objectContainer[selected]->getCompareAxis();
+
+	ballPos = getReativeBall(m_objectContainer[selected], ballPos);
+	intersection =
+			(m_ball.getPosition() * FIXED_POINT_MULTILIER +
+			(*ballSpeed) * (*transformList)[selected]) / FIXED_POINT_MULTILIER;
+	intersection2 =
+			(ballPos * FIXED_POINT_MULTILIER +
+			(*ballSpeed) * (*transformList)[selected]) / FIXED_POINT_MULTILIER;
+
+	for (i = 0; i < m_objectContainer.length(); ++i) {
+		if (i != selected){
+			ballPos = getReativeBall(m_objectContainer[i], ballPos);
+			orientation = m_objectContainer[i]->getCompareAxis();
+			temp =
+					(m_ball.getPosition() * FIXED_POINT_MULTILIER +
+					(*ballSpeed) * (*transformList)[i]) / FIXED_POINT_MULTILIER;
+			temp2 =
+					(ballPos * FIXED_POINT_MULTILIER +
+					(*ballSpeed) * (*transformList)[i]) / FIXED_POINT_MULTILIER;
+
+#if PRINT_DEBUG
+			std::cout << std::endl << "Check " << i << "=> ";
+			std::cout << intersection.getX() << ":";
+			std::cout << intersection.getY() << ":";
+			std::cout << intersection.getZ() << ", ";
+			std::cout << temp.getX() << ":";
+			std::cout << temp.getY() << ":";
+			std::cout << temp.getZ() << "(";
+			std::cout << intersection.get(orientation) << "=" << temp.get(orientation) << ")  __  ";
+
+			std::cout << intersection2.getX() << ":";
+			std::cout << intersection2.getY() << ":";
+			std::cout << intersection2.getZ() << ", ";
+			std::cout << temp2.getX() << ":";
+			std::cout << temp2.getY() << ":";
+			std::cout << temp2.getZ() << "(";
+			std::cout << intersection2.get(orientation) << "=" << temp2.get(orientation) << ")" << std::endl;
+#endif
+
+			if (temp.get(orientation) == intersection.get(orientation)){
+//				if (transformList->min(selected+1) != selected && (*transformList)[transformList->min(selected+1)] == (*transformList)[selected]){
+//
+//				} else {
+//					getchar();
+//				}
+				return true;
+			}
+			if (temp2.get(orientation) == intersection2.get(orientation)){
+//				if (transformList->min(selected+1) != selected && (*transformList)[transformList->min(selected+1)] == (*transformList)[selected]){
+//
+//				} else {
+//				getchar();
+//				}
+				return true;
+			}
+		}
+	}
+	return transformList->min(selected+1) != selected && (*transformList)[transformList->min(selected+1)] == (*transformList)[selected];
 }
 
 int32_t Engine::getTransformFactor(GameObject* object,

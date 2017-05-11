@@ -37,6 +37,8 @@ private:
 										Coordinate& ballSpeed);
 
 	void						deleteAllObjects();
+	bool						existsSaveTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed);
+	Coordinate 					getReativeBall(GameObject* nearestObject, Coordinate ballPos);
 };
 
 } /* namespace GameEngine */

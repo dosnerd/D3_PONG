@@ -49,10 +49,17 @@ Coordinate Coordinate::operator *(int32_t number) const {
 
 Coordinate Coordinate::operator /(int32_t number) const {
 	return Coordinate(
-					m_x / number,
-					m_y / number,
-					m_z / number
+					roundNumber(m_x / (number / 10)) / 10,
+					roundNumber(m_y / (number / 10)) / 10,
+					roundNumber(m_z / (number / 10)) / 10
 				);
+}
+
+int32_t Coordinate::roundNumber(int32_t number) const{
+	if (number > 0)
+		return ((number + 5) / 10) * 10;
+	else
+		return ((number - 5) / 10) * 10;
 }
 
 int32_t Coordinate::getX() const {

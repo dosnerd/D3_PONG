@@ -29,14 +29,14 @@ int main(void)
 
 	GameEngine::GameObject* bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
 	GameEngine::GameObject* bat2= new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
-	bat1->setPosition(GameEngine::Coordinate(0, 0, 8));
-	bat2->setPosition(GameEngine::Coordinate(-100, -50, 72));
+	bat1->setPosition(GameEngine::Coordinate(-120, -90, 8));
+	bat2->setPosition(GameEngine::Coordinate(-120, -90, 72));
 
 	engine->addObject(bat1);
 	engine->addObject(bat2);
 
-	engine->getBall()->setPosition(GameEngine::Coordinate(-270, 0, 15));
-	engine->getBall()->setSpeed(GameEngine::Coordinate(-10, -5, 2));
+	engine->getBall()->setPosition(GameEngine::Coordinate(-30, -30, 9));
+	engine->getBall()->setSpeed(GameEngine::Coordinate(7, -3, 	1));
 
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);
@@ -51,15 +51,16 @@ int main(void)
 
 		engine->moveBall();
 
-		SPI_write(1, ball->getPosition().getX() + (ball->getWidth() / 2));
-		SPI_write(2, ball->getPosition().getY() + (ball->getWidth() / 2));
-		SPI_write(3, ball->getPosition().getZ());
+		SPI_write(0x1, -ball->getPosition().getX() - (ball->getWidth() / 2));
+		SPI_write(0x2, -ball->getPosition().getY() - (ball->getWidth() / 2));
+		SPI_write(0x3, -ball->getPosition().getZ());
 
-		SPI_write(4, bat1->getPosition().getX() - (bat1->getWidth() / 2));
-		SPI_write(5, bat1->getPosition().getY()- (bat1->getHeight() / 2));
+		SPI_write(0x4, -bat1->getPosition().getX() - (bat1->getWidth() / 2));
+		SPI_write(0x5, -bat1->getPosition().getY() - (bat1->getHeight() / 2));
 
-		SPI_write(6, bat2->getPosition().getX());
-		SPI_write(7, bat2->getPosition().getY());
+		SPI_write(0x6, -bat2->getPosition().getX() - (bat2->getWidth() / 2));
+		SPI_write(0x7, -bat2->getPosition().getY() - (bat2->getHeight() / 2));
+		SPI_write(0xF, 0);
 
 
 		delay(0x85FFF);
