@@ -38,7 +38,11 @@ private:
 
 	void						deleteAllObjects();
 	bool						existsSaveTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed);
-	Coordinate 					getReativeBall(GameObject* nearestObject, Coordinate ballPos);
+	Coordinate 					getRelativeBall(GameObject* nearestObject, Coordinate ballPos);
+	Coordinate calcBounce(int16_t i, Coordinate& ballSpeed,
+			Vector<int32_t>& transformList);
+	GameEngine::Coordinate calcIntersection(const Coordinate& ballPos,
+			Coordinate& ballSpeed, int32_t& transform);
 };
 
 } /* namespace GameEngine */

@@ -10,6 +10,7 @@
 #include <gameEngine/SideWall.h>
 #include <gameEngine/FloorWall.h>
 
+#include <thread>
 #include <iostream>
 
 namespace GameEngine {
@@ -102,13 +103,13 @@ void EngineTest::GameField(int cicles, GameEngine::Coordinate speed) {
 
 	for (i = 0; i < cicles; ++i) {
 		engine->moveBall();
-		std::cout << engine->getBall()->getPosition().getX() << ",";
-		std::cout << engine->getBall()->getPosition().getY() << ",";
-		std::cout << engine->getBall()->getPosition().getZ() << " ";
-
-		std::cout << engine->getBall()->getSpeed().getX() << ",";
-		std::cout << engine->getBall()->getSpeed().getY() << ",";
-		std::cout << engine->getBall()->getSpeed().getZ() << std::endl;
+//		std::cout << engine->getBall()->getPosition().getX() << ",";
+//		std::cout << engine->getBall()->getPosition().getY() << ",";
+//		std::cout << engine->getBall()->getPosition().getZ() << " ";
+//
+//		std::cout << engine->getBall()->getSpeed().getX() << ",";
+//		std::cout << engine->getBall()->getSpeed().getY() << ",";
+//		std::cout << engine->getBall()->getSpeed().getZ() << std::endl;
 
 		if (abs(engine->getBall()->getPosition().getX()) > 320){
 			delete engine;
@@ -136,16 +137,10 @@ bool EngineTest::test() {
 	for (i = 0; i < 10; ++i) {
 		for (j = 0; j < 10; ++j) {
 			for (k = 1; k < 7; ++k) {
-//				for (m = 100; m < 1000; m+=100) {
-					std::cout << "RUN " << m << " ((-)" << i << ", (-)" << j << ", " << k << ")" << std::endl;
-					GameField(1000, Coordinate(i, j, k));
-					std::cout << "--" << std::endl;
-					GameField(1000, Coordinate(-i, j, k));
-					std::cout << "--" << std::endl;
-					GameField(1000, Coordinate(i, -j, k));
-					std::cout << "--" << std::endl;
-					GameField(1000, Coordinate(-i, -j, k));
-//				}
+				GameField(1000, Coordinate(i, j, k));
+				GameField(1000, Coordinate(-i, j, k));
+				GameField(1000, Coordinate(i, -j, k));
+				GameField(1000, Coordinate(-i, -j, k));
 			}
 		}
 	}

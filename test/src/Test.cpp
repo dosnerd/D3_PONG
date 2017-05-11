@@ -42,7 +42,11 @@ void Test::run(){
 	}
 
 	dElapsed = (ftEnd.dwLowDateTime - ftStart.dwLowDateTime) / 10000.0;
-	std::cout << dElapsed << " ms)" << std::endl;
+	if (dElapsed < 1500){
+		std::cout << dElapsed << " ms)" << std::endl;
+	} else {
+		std::cout << dElapsed/1000 << " s)" << std::endl;
+	}
 }
 
 void Test::fail(std::string message){

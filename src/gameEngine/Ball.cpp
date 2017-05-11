@@ -20,7 +20,6 @@ Ball::~Ball() {
 }
 
 const bool Ball::isCollided(GameObject* with, Coordinate at) {
-	//TODO: create specialized collide detect
 	return GameObject::isCollided(with, at);
 }
 

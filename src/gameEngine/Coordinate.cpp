@@ -19,10 +19,6 @@ Coordinate::~Coordinate() {
 
 }
 
-//Coordinate Coordinate::transform(float factor, const Coordinate *delta) const {
-//	return (*delta * factor) + *this;
-//}
-
 Coordinate Coordinate::operator -(const Coordinate& coordinate) const {
 	return Coordinate(
 					m_x - coordinate.m_x,
