@@ -9,7 +9,6 @@
 #define TEST_INC_TEST_H_
 
 #include <string>
-//#include <mutex>
 
 class Test {
 public:
@@ -23,9 +22,19 @@ public:
 protected:
 	virtual void			fail(std::string message);
 
+	template <class T>
+	void					failIfDifferent(T value, T expected, std::string message);
+	template <class T>
+	void					failIfEqual(T value, T expected, std::string message);
+
 private:
 	bool 					m_failed;
 	std::string				m_name;
 };
+
+/*
+ * Must include for implementations with templates.
+ */
+#include "../src/Test.hpp"
 
 #endif /* TEST_INC_TEST_H_ */

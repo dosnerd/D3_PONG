@@ -13,12 +13,9 @@ Test::Test(std::string name)
 	: m_failed(false)
 	, m_name(name)
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 Test::~Test() {
-	// TODO Auto-generated destructor stub
 }
 
 void Test::run(){

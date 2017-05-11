@@ -1,13 +1,16 @@
 # put your *.o targets here, make should handle the rest!
 
 SRCS = 						\
-		Vector.cpp			\
 		stm32f4xx_it.c		\
 		system_stm32f4xx.c	\
 		SPI.cpp				\
 		UART.cpp			\
 		LEDS.cpp			\
 		FPGA.cpp			\
+		MVC/Model.cpp		\
+		MVC/View.cpp		\
+		MVC/Controller.cpp	\
+		MVC/Observer.cpp	\
 		main.cpp
 OUT=./out/
 BIN=./bin/
@@ -18,6 +21,7 @@ OPT=2
 
 #$(shell rm ./out/LEDS.o)
 $(shell mkdir -p $(OUT) >/dev/null)
+$(shell mkdir -p $(OUT)/MVC >/dev/null)
 $(shell mkdir -p $(BIN) >/dev/null)
 $(shell mkdir -p $(DEP) >/dev/null)
 
@@ -76,7 +80,7 @@ $(BIN)$(PROJ_NAME).elf: $(OBJS_FULL)
 $(OUT)%.o : %.cpp
 	$(CXX) $(CFLAGS) -c -o $@ $< -std=c++11;
 	rm -f $(DEP)/$*.d
-	$(CXX) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d;
+	$(CXX) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d -std=c++11;
 	@echo "Compiled "$<"!\n"
 
 $(OUT)%.o : %.c	

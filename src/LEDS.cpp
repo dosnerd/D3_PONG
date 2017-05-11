@@ -31,12 +31,22 @@ void LEDS::GPIOinit() {
 	GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 
+/**
+ * Turn on a specific LED. The given parameter is
+ * the index of the led saved in a led array. For
+ * the correct color, please use the LED enum.
+ */
 void LEDS::turnOn(const uint8_t led){
 	if (led < AMOUNTS_OF_LEDS) {
 		GPIO_SetBits(GPIOD, leds[led]);
 	}
 }
 
+/**
+ * Turn off a specific LED. The given parameter is
+ * the index of the led saved in a led array. For
+ * the correct color, please use the LED enum.
+ */
 void LEDS::turnOff(const uint8_t led){
 	if (led < AMOUNTS_OF_LEDS) {
 		GPIO_ResetBits(GPIOD, leds[led]);
@@ -57,6 +67,9 @@ void LEDS::infiniteBlink(const uint8_t led) {
 	}
 }
 
+/**
+ * Get the instance
+ */
 LEDS *LEDS::getInstance(){
 	return &sInstance;
 }

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <Memoryleak.h>
 #include <Vectortest.h>
+#include <MVCtest.h>
 #include <thread>
 
 void *operator new(std::size_t size){
@@ -19,12 +20,11 @@ void operator delete(void *ptr) noexcept
 }
 
 Memory_leak Memory_leak::current;
-int main(int argc, char **argv){
+int main(){
 	std::cout << "Start test..." << std::endl;
 
-	int i;
-	bool allPassed = true;
-	Test *a[] = { new Vector_test() };
+	unsigned int i;
+	Test *a[] = { new Vector_test(), new MVCtest() };
 	std::thread tests[sizeof(a) / sizeof(Test *)];
 
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {
