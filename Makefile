@@ -1,22 +1,23 @@
 # put your *.o targets here, make should handle the rest!
 
-SRCS = 									\
-		stm32f4xx_it.c					\
-		system_stm32f4xx.c				\
-		SPI.cpp							\
-		UART.cpp						\
-		LEDS.cpp						\
-		FPGA.cpp						\
-		gameEngine/Coordinate.cpp		\
-		gameEngine/GameObject.cpp		\
-		gameEngine/Ball.cpp				\
-		gameEngine/Engine.cpp			\
-		gameEngine/SideWall.cpp			\
-		gameEngine/FloorWall.cpp		\
-		MVC/Model.cpp					\
-		MVC/View.cpp					\
-		MVC/Controller.cpp				\
-		MVC/Observer.cpp				\
+SRCS = 										\
+		stm32f4xx_it.c						\
+		system_stm32f4xx.c					\
+		SPI.cpp								\
+		UART.cpp							\
+		LEDS.cpp							\
+		FPGA.cpp							\
+		gameEngine/Coordinate.cpp			\
+		gameEngine/GameObject.cpp			\
+		gameEngine/Ball.cpp					\
+		gameEngine/Engine.cpp				\
+		gameEngine/SideWall.cpp				\
+		gameEngine/FloorWall.cpp			\
+		GameControllers/GameController.cpp	\
+		MVC/Model.cpp						\
+		MVC/View.cpp						\
+		MVC/Controller.cpp					\
+		MVC/Observer.cpp					\
 		main.cpp
 OUT=./out/
 BIN=./bin/

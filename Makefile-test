@@ -1,25 +1,26 @@
 # put your *.o targets here, make should handle the rest!
-SRCS = 									\
-		Vectortest.cpp					\
-		Memoryleak.cpp					\
-		Test.cpp						\
-		gameEngine/Coordinate.cpp		\
-		gameEngine/CoordinateTest.cpp	\
-		gameEngine/GameObject.cpp		\
-		gameEngine/GameObjectTest.cpp	\
-		gameEngine/Ball.cpp				\
-		gameEngine/Engine.cpp			\
-		gameEngine/EngineTest.cpp		\
-		gameEngine/SideWall.cpp			\
-		gameEngine/FloorWall.cpp		\
-		MVC/Model.cpp					\
-		MVC/View.cpp					\
-		MVC/Controller.cpp				\
-		MVC/Observer.cpp				\
-		MVC/MVCtest.cpp					\
-		MVC/ImplemModel.cpp				\
-		MVC/ImplemView.cpp				\
-		MVC/ImplemController.cpp		\
+SRCS = 										\
+		Vectortest.cpp						\
+		Memoryleak.cpp						\
+		Test.cpp							\
+		gameEngine/Coordinate.cpp			\
+		gameEngine/CoordinateTest.cpp		\
+		gameEngine/GameObject.cpp			\
+		gameEngine/GameObjectTest.cpp		\
+		gameEngine/Ball.cpp					\
+		gameEngine/Engine.cpp				\
+		gameEngine/EngineTest.cpp			\
+		gameEngine/SideWall.cpp				\
+		gameEngine/FloorWall.cpp			\
+		GameControllers/GameController.cpp	\
+		MVC/Model.cpp						\
+		MVC/View.cpp						\
+		MVC/Controller.cpp					\
+		MVC/Observer.cpp					\
+		MVC/MVCtest.cpp						\
+		MVC/ImplemModel.cpp					\
+		MVC/ImplemView.cpp					\
+		MVC/ImplemController.cpp			\
 		main_test.cpp
 
 OUT=./out_test/

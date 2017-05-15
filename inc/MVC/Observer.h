@@ -8,6 +8,8 @@
 #ifndef INC_MVC_OBSERVER_H_
 #define INC_MVC_OBSERVER_H_
 
+#include <Vector.h>
+
 namespace MVC {
 
 class Model;
@@ -17,6 +19,8 @@ public:
 	virtual 					~Observer();
 
 public:
+	static void					handleNotifications();
+
 	void						notify();
 	virtual void				onNotify() = 0;
 	const bool					isNotified() const;
@@ -26,6 +30,7 @@ protected:
 	const Model					*getModel() const;
 
 private:
+	static Vector<Observer *>	sObserverContainer;
 	Model						*m_model;
 	bool						m_notifyFlag;
 };
