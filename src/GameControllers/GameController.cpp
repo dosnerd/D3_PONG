@@ -41,8 +41,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	GameEngine::GameObject* wallRight = new GameEngine::SideWall(100, 480);
 	GameEngine::GameObject* wallTop = new GameEngine::FloorWall(640, 100);
 	GameEngine::GameObject* wallBottom = new GameEngine::FloorWall(640, 100);
-	GameEngine::GameObject* bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
-	GameEngine::GameObject* bat2= new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	m_bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	m_bat2= new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
 
 	wallBack->setPosition(GameEngine::Coordinate(-320, -240, 80));
 	wallFront->setPosition(GameEngine::Coordinate(-320, -240, 0));
@@ -50,8 +50,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	wallRight->setPosition(GameEngine::Coordinate(320, -240, 0));
 	wallTop->setPosition(GameEngine::Coordinate(-320, 240, 0));
 	wallBottom->setPosition(GameEngine::Coordinate(-320, -240, 0));
-	bat1->setPosition(GameEngine::Coordinate(-120, -90, 8));
-	bat2->setPosition(GameEngine::Coordinate(-120, -90, 72));
+	m_bat1->setPosition(GameEngine::Coordinate(-120, -90, 8));
+	m_bat2->setPosition(GameEngine::Coordinate(-120, -90, 72));
 
 	engine->addObject(wallFront);
 	engine->addObject(wallBack);
@@ -59,18 +59,21 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	engine->addObject(wallRight);
 	engine->addObject(wallTop);
 	engine->addObject(wallBottom);
-	engine->addObject(bat1);
-	engine->addObject(bat2);
+	engine->addObject(m_bat1);
+	engine->addObject(m_bat2);
 
 	if (m_fpga != nullptr){
 		m_fpga->setBall(engine->getBall());
-		m_fpga->setBat(1, bat1);
-		m_fpga->setBat(2, bat2);
+		m_fpga->setBat(1, m_bat1);
+		m_fpga->setBat(2, m_bat2);
 		m_fpga->setOption(FPGA_OPTION_NONE);
 	}
 }
 
 void GameController::winMatch() {
+	uint32_t clock = 0xFFFFFF; //TODO: write good timer
+	while(clock--)
+		asm("nop");
 }
 
 void GameController::finishedGame() {
@@ -88,6 +91,17 @@ void GameControllers::GameController::onNotify() {
 
 void GameController::bind(FPGA* fpga) {
 	m_fpga = fpga;
+}
+
+GameEngine::GameObject* GameController::getBat(uint8_t player) {
+	switch(player){
+	case 1:
+		return m_bat1;
+
+	case 2:
+	default:
+		return m_bat2;
+	}
 }
 
 const FPGA* GameController::getFpga() const {

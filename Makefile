@@ -14,6 +14,8 @@ SRCS = 										\
 		gameEngine/SideWall.cpp				\
 		gameEngine/FloorWall.cpp			\
 		GameControllers/GameController.cpp	\
+		GameControllers/Tennis.cpp			\
+		GameControllers/Demo.cpp			\
 		MVC/Model.cpp						\
 		MVC/View.cpp						\
 		MVC/Controller.cpp					\

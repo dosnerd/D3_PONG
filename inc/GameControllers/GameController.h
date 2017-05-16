@@ -16,34 +16,41 @@ class FPGA;
 namespace GameEngine {
 class Ball;
 class Engine;
+class GameObject;
 }
 
 namespace GameControllers {
 
 class GameController : public MVC::Controller {
 public:
-								GameController(GameEngine::Ball *ball);
-	virtual 					~GameController();
+									GameController(GameEngine::Ball *ball);
+	virtual 						~GameController();
 
 public:
-	virtual void				play();
-	virtual void				pause();
-	virtual void				bind(FPGA *fpga);
-	virtual void				setupField(GameEngine::Engine *engine);
-	virtual void				onNotify();
+	virtual void					play();
+	virtual void					pause();
+	virtual void					bind(FPGA *fpga);
+	virtual void					setupField(GameEngine::Engine *engine);
+	virtual void					onNotify();
 
 protected:
-	virtual void				winMatch();
-	virtual void				finishedGame();
-	const FPGA					*getFpga() const;
+	virtual void					winMatch();
+	virtual void					finishedGame();
+	const FPGA						*getFpga() const;
 
 
 protected:
-	virtual GameEngine::Ball	*getBall();
+	virtual GameEngine::Ball		*getBall();
+
+protected:
+	virtual GameEngine::GameObject	*getBat(uint8_t player);
 
 private:
-	FPGA 						*m_fpga;
-	GameEngine::Coordinate		m_saveCoordinate;
+	GameEngine::GameObject			*m_bat1, *m_bat2;
+
+private:
+	FPGA 							*m_fpga;
+	GameEngine::Coordinate			m_saveCoordinate;
 };
 
 } /* namespace GameControllers */

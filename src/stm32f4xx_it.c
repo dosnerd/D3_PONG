@@ -77,6 +77,7 @@ void MemManage_Handler(void)
   /* Go to infinite loop when Memory Manage exception occurs */
   while (1)
   {
+	  blinkLight(2);
   }
 }
 
@@ -90,6 +91,7 @@ void BusFault_Handler(void)
   /* Go to infinite loop when Bus Fault exception occurs */
   while (1)
   {
+	  blinkLight(2);
   }
 }
 
@@ -103,6 +105,7 @@ void UsageFault_Handler(void)
   /* Go to infinite loop when Usage Fault exception occurs */
   while (1)
   {
+	  blinkLight(2);
   }
 }
 

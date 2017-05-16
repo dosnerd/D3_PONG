@@ -34,16 +34,16 @@ int main(){
 			new GameEngine::CoordinateTest(),
 			new GameEngine::GameObjectTest(),
 	};
-	std::thread tests[sizeof(a) / sizeof(Test *)];
+//	std::thread tests[sizeof(a) / sizeof(Test *)];
 
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {
-		tests[i] = std::thread(&Test::run, a[i]);
-//		a[i]->run();
+//		tests[i] = std::thread(&Test::run, a[i]);
+		a[i]->run();
 	}
 
 	//delete tests
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {
-		tests[i].join();
+//		tests[i].join();
 		delete a[i];
 	}
 

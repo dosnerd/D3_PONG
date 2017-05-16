@@ -2,7 +2,8 @@
 #include <FPGA.h>
 
 #include <gameEngine/Engine.h>
-#include <GameControllers/GameController.h>
+#include <GameControllers/Tennis.h>
+#include <GameControllers/Demo.h>
 
 
 #include <config_file.h>
@@ -17,13 +18,13 @@ int main(void)
 	LEDS *leds = LEDS::getInstance();
 	FPGA *fpga = FPGA::getInstance();
 	GameEngine::Engine *engine = new GameEngine::Engine();
-	GameControllers::GameController controller(engine->getBall());
+	GameControllers::Demo controller(engine->getBall());
 
 	controller.bind(fpga);
 	controller.setupField(engine);
 
 	engine->getBall()->setPosition(GameEngine::Coordinate(-30, -30, 9));
-	engine->getBall()->setSpeed(GameEngine::Coordinate(7, -3, 	1));
+	engine->getBall()->setSpeed(GameEngine::Coordinate(5, -3, 	1));
 
 	fpga->turnOn();
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
@@ -32,10 +33,10 @@ int main(void)
 	i = 100;
 
 
-
 	while(i){
 		engine->moveBall();
 		MVC::Observer::handleNotifications();
+		fpga->update(FPGA_UPDATE_ALL);
 
 		delay(0x85FFF);
 		if (i & 0x4){

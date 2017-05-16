@@ -31,7 +31,7 @@ FPGA::~FPGA() {
 void FPGA::update(uint8_t items) {
 	GameEngine::Coordinate ballCoordinates = m_objects[BALL]->getPosition();
 	GameEngine::Coordinate batP1Coordinates = m_objects[BAT_P1]->getPosition();
-	GameEngine::Coordinate batP2Coordinates = m_objects[BAT_P1]->getPosition();
+	GameEngine::Coordinate batP2Coordinates = m_objects[BAT_P2]->getPosition();
 
 	if (items & FPGA_UPDATE_BALL){
 		setRegister(FPGA_REGISTER_X_BALL, -ballCoordinates.getX() - (m_objects[BALL]->getWidth() / 2));
@@ -47,6 +47,10 @@ void FPGA::update(uint8_t items) {
 	if (items & FPGA_UPDATE_P2){
 		setRegister(FPGA_REGISTER_X_BAT_P2, -batP2Coordinates.getX() - (m_objects[BAT_P2]->getWidth() / 2));
 		setRegister(FPGA_REGISTER_Y_BAT_P2, -batP2Coordinates.getY() - (m_objects[BAT_P2]->getHeight() / 2));
+	}
+
+	if (items & FPGA_UPDATE_OPTIONS){
+		setRegister(FPGA_REGISTER_STATE, m_options);
 	}
 }
 
