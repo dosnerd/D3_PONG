@@ -23,6 +23,9 @@ public:
 
 public:
 	virtual void				onNotify();
+
+private:
+	uint8_t						m_counter, m_limit;
 };
 
 } /* namespace GameControllers */

@@ -84,7 +84,17 @@ GameEngine::Ball* GameController::getBall() {
 }
 
 void GameControllers::GameController::onNotify() {
+	GameEngine::Coordinate *speed;
+	const GameEngine::Coordinate *ballCoordinate = &getBall()->getPosition();
+
 	resetNotifyFlag();
+	if (ballCoordinate->getZ() > 72 || ballCoordinate->getZ() < 8){
+		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX(), ballCoordinate->getY(), 40));
+		speed = &getBall()->getSpeed();
+		speed->flip(GameEngine::Coordinate::Z);
+
+		winMatch();
+	}
 
 	m_fpga->update(FPGA_UPDATE_BALL);
 }
