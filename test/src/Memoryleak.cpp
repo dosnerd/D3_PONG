@@ -75,6 +75,8 @@ Memory_leak &Memory_leak::operator =(const Memory_leak &item){
 void *Memory_leak::reserve(std::size_t size){
 	void *ptr = std::malloc(size);
 
+	//getchar();
+
 	m_mtx.lock();
 	//add pointer to array
 	m_pointers = (void**)std::realloc(m_pointers, (m_nPointers + 1) * sizeof(void *));
@@ -124,14 +126,14 @@ bool Memory_leak::check() {
 	int i;
 
 	if (m_nPointers > 0) {
-		std::cout << "Leak found!" << std::endl;
+		std::cout << "Follow memory adresses are reserved: " << std::endl;
 		for (i = 0; i < m_nPointers; ++i) {
 			std::cout << m_pointers[i] << ": " << m_ptrSize[i] << "byte(s)"
 					<< std::endl;
 		}
 		return true;
 	} else {
-		std::cout << "No leaks found\n";
+		std::cout << "No memory reserved" << std::endl;
 		return false;
 	}
 }

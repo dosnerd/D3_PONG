@@ -78,7 +78,7 @@ void Vector<T>::clear(){
 
 	//clear list
 	m_nObjects = 0;
-	m_objects = new T[0];
+	m_objects = nullptr;
 	delete[] old;
 }
 

@@ -92,17 +92,18 @@ void GameControllers::GameController::onNotify() {
 
 	resetNotifyFlag();
 	if (ballCoordinate->getZ() > 72 || ballCoordinate->getZ() < 8){
+		winMatch((ballCoordinate->getZ() > 72) + 1);
+
 		//TODO: Randomize speed? + position
 		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX(), ballCoordinate->getY(), 40));
 		if (getBall()->getSpeed().getZ() > 0)
 			getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
 		else
 			getBall()->setSpeed(GameEngine::Coordinate(5, -3, -1));
-
-		winMatch((ballCoordinate->getZ() > 72) + 1);
 	}
 
-	m_fpga->update(FPGA_UPDATE_BALL);
+	if (m_fpga != nullptr)
+		m_fpga->update(FPGA_UPDATE_BALL);
 }
 
 void GameController::bind(FPGA* fpga) {

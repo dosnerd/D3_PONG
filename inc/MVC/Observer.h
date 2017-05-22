@@ -20,6 +20,11 @@ public:
 
 public:
 	static void					handleNotifications();
+	static void					setObserverContainer(Vector<Observer*>*& observerContainer);
+	static void 				checkContainerExists();
+	static void					emptyContainer();
+
+public:
 
 	void						notify();
 	virtual void				onNotify() = 0;
@@ -30,9 +35,10 @@ protected:
 	const Model					*getModel() const;
 
 private:
-	static Vector<Observer *>	sObserverContainer;
+	static Vector<Observer *>	*sObserverContainer;
 	Model						*m_model;
 	bool						m_notifyFlag;
+
 };
 
 } /* namespace MVC */

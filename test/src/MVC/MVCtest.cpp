@@ -49,7 +49,7 @@ void MVCtest::observersReset() {
 	int i;
 
 	m_model.setData(0, m_model.getData(0));
-	processObservers();
+	processObservers(false);
 
 	for (i = 0; i < m_observers.length(); ++i) {
 		failIfDifferent(m_observers[i]->isNotified(), false,
@@ -71,10 +71,10 @@ void MVCtest::notifyView() {
 void MVCtest::allProcessed() {
 	m_model.setData(2, 20);
 	processObservers();
-	failIfDifferent(m_view.getValidData(2), 10, "Not all observer processed");
+	failIfDifferent(m_view.getValidData(2), 10, "Not all observer processed 20");
 	m_model.setData(2, -20);
 	processObservers();
-	failIfDifferent(m_view.getValidData(2), 0, "Not all observer processed");
+	failIfDifferent(m_view.getValidData(2), 0, "Not all observer processed -20");
 }
 
 bool MVCtest::test() {
@@ -83,24 +83,21 @@ bool MVCtest::test() {
 	notifyController_changeToBig();
 	notifyController_changeToSmall();
 	notifyController_changeValid();
-	
+
 	notifyView();
 	allProcessed();
 	return true;
 }
 
-void MVCtest::processObservers(){
+void MVCtest::processObservers(bool rerunOnNotify){
 	int i;
-	for (i = 0; i < m_observers.length(); ++i) {
-		if (m_observers[i]->isNotified()){
-			/*
-			 * first reset, than notify, because onNotify can let
-			 * notify itself again for changes made in its own
-			 * model
-			 */
-			m_observers[i]->resetNotifyFlag();
-			m_observers[i]->onNotify();
-			i = 0;
+
+	if (rerunOnNotify)
+		MVC::Observer::handleNotifications();
+	else
+		for (i = 0; i < m_observers.length(); ++i) {
+			if (m_observers[i]->isNotified()){
+				m_observers[i]->onNotify();
+			}
 		}
-	}
 }

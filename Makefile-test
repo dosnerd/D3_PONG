@@ -3,6 +3,7 @@ SRCS = 										\
 		Vectortest.cpp						\
 		Memoryleak.cpp						\
 		Test.cpp							\
+		ConsoleASCIIcode.cpp				\
 		gameEngine/Coordinate.cpp			\
 		gameEngine/CoordinateTest.cpp		\
 		gameEngine/GameObject.cpp			\
@@ -13,6 +14,9 @@ SRCS = 										\
 		gameEngine/SideWall.cpp				\
 		gameEngine/FloorWall.cpp			\
 		GameControllers/GameController.cpp	\
+		GameControllers/Demo.cpp			\
+		GameControllers/DemoImpl.cpp		\
+		GameControllers/DemoTest.cpp		\
 		MVC/Model.cpp						\
 		MVC/View.cpp						\
 		MVC/Controller.cpp					\
@@ -21,6 +25,7 @@ SRCS = 										\
 		MVC/ImplemModel.cpp					\
 		MVC/ImplemView.cpp					\
 		MVC/ImplemController.cpp			\
+		TestFailsException.cpp				\
 		main_test.cpp
 
 OUT=./out_test/

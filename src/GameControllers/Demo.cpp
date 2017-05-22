@@ -90,7 +90,7 @@ void Demo::moveBat() {
 
 void Demo::updateLimits() {
 	GameEngine::Coordinate ballSpeed = ballSpeed = getBall()->getSpeed();
-	const GameEngine::Coordinate* ballPosition = getBall()->getPosition();
+	const GameEngine::Coordinate* ballPosition = &getBall()->getPosition();
 
 	if (ballPosition->getZ() == 71 || ballPosition->getZ() == 9) {
 		if (m_counter++ & 0x4) {

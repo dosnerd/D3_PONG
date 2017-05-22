@@ -6,8 +6,6 @@
  */
 
 #include "../inc/MVC/ImplemController.h"
-
-#include <iostream>
 #include "../inc/MVC/ImplemModel.h"
 
 ImplemController::ImplemController(ImplemModel *model)
@@ -34,6 +32,7 @@ void ImplemController::onNotify()
 	unsigned int i;
 	ImplemModel *model = (ImplemModel *)getModel();
 
+	resetNotifyFlag();
 	for (i = 0; i < __MAX_ARRAY_DATA__; ++i) {
 		if (model->getData(i) > 10){
 			model->setData(i, 10);

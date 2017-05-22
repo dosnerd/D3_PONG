@@ -9,6 +9,8 @@
 #define TEST_INC_TEST_H_
 
 #include <string>
+#include <mutex>
+#include <iostream>
 
 class Test {
 public:
@@ -20,6 +22,8 @@ public:
 	virtual bool			test() = 0;
 
 protected:
+	template <class T>
+	void					log(T message);
 	virtual void			fail(std::string message);
 
 	template <class T>
@@ -27,9 +31,13 @@ protected:
 	template <class T>
 	void					failIfEqual(T value, T expected, std::string message);
 
+	void					printResults();
+	void					appendToResultMessage(std::string message);
+
 private:
+	static std::mutex		sLogMutex;
 	bool 					m_failed;
-	std::string				m_name;
+	std::string				m_name, m_resultMessage;
 };
 
 /*
