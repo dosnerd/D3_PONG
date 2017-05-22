@@ -34,7 +34,7 @@ public:
 	virtual void					onNotify();
 
 protected:
-	virtual void					winMatch();
+	virtual void					winMatch(uint8_t player);
 	virtual void					finishedGame();
 	const FPGA						*getFpga() const;
 
@@ -46,10 +46,8 @@ protected:
 	virtual GameEngine::GameObject	*getBat(uint8_t player);
 
 private:
-	GameEngine::GameObject			*m_bat1, *m_bat2;
-
-private:
 	FPGA 							*m_fpga;
+	GameEngine::GameObject			*m_bat1, *m_bat2;
 	GameEngine::Coordinate			m_saveCoordinate;
 };
 

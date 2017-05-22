@@ -18,14 +18,20 @@ namespace GameControllers {
 
 class Demo: public GameController {
 public:
-								Demo(GameEngine::Ball *ball);
-	virtual 					~Demo();
+									Demo(GameEngine::Ball *ball);
+	virtual 						~Demo();
 
 public:
-	virtual void				onNotify();
+	virtual void					onNotify();
 
 private:
-	uint8_t						m_counter, m_limit;
+	uint8_t							m_counter;
+
+	void							moveBat();
+	void 							updateLimits();
+	const GameEngine::Coordinate	*getBallPosition(const GameEngine::Coordinate& ballSpeed, uint8_t player);
+	GameEngine::Coordinate 			calcBatNewPosition(const GameEngine::Coordinate* batPosition, const GameEngine::Coordinate& batSpeed);
+	GameEngine::Coordinate 			calcBatSpeed(uint8_t player, const GameEngine::Coordinate* batPosition);
 };
 
 } /* namespace GameControllers */
