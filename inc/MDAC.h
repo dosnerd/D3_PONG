@@ -14,12 +14,19 @@
 
 class MDAC  {
 public:
-	void 					DACinit();
+
 	virtual 				~MDAC();
+	void 					setData(uint16_t data);
+	uint16_t 				getChannel1Data(void);
+	static MDAC*			getInstance();
 
 private:
 							MDAC();
 	static MDAC				sInstance;
+	void					GPIOinit();
+	void 					DACinit();
+
+	// void GPIOinit();
 
 };
 

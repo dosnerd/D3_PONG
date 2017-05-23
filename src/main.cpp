@@ -2,6 +2,7 @@
 #include <UART.h>
 #include <LEDS.h>
 #include <FPGA.h>
+#include <MDAC.h>
 #include <config_file.h>
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
@@ -9,53 +10,68 @@
 void delay(uint32_t time);
 uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i);
 
+int main(void) {
+	volatile uint16_t i = 0x55;
+	volatile uint16_t j = 0x55;
 
-int main(void)
-{
-	volatile uint8_t i = 0x55;
-	uint8_t addres = 0x01;
-	SPI	*spiInstance = SPI::getInstance();
-	UART *uartInstance = UART::getInstance();
-	LEDS *leds = LEDS::getInstance();
-	FPGA *fpga = FPGA::getInstance();
+//	uint8_t addres = 0x01;
+//	SPI	*spiInstance = SPI::getInstance();
+//	UART *uartInstance = UART::getInstance();
+//	LEDS *leds = LEDS::getInstance();
+//	FPGA *fpga = FPGA::getInstance();
+	MDAC *dac = MDAC::getInstance();
 
-	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
-		leds->turnOff(i);
-	}
-	i = 1;
+//	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
+//		leds->turnOff(i);
+//	}
+//	i = 1;
 
-	while(i){
-		uartInstance->write(i);
+	while (i) {
 
+		for (j = 0xD; j < 0x30; ++j) {
 
-		delay(0xFFFFF);
-		//delay(0x200000);
+			// dac->setData(i);
 
-		spiInstance->write((addres << (3*4)) | i);
-		UARTCHECK(leds, uartInstance, i);
+			for (i = 0; i < 0xFFFF; ++i) {
+				dac->setData(i);
 
-		if (i & 0x4){
-			leds->turnOn(LEDS::BLUE);
-			fpga->turnOn();
-		}
-		else{
-			leds->turnOff(LEDS::BLUE);
-			fpga->turnOff();
-		}
-
-		i++;
-		if (i == 0){
-			i = 1;
-			addres++;
-
-			if (addres > 0b0111){
-				addres = 1;
+				delay(j);
 			}
+
+
 		}
+
+//		uartInstance->write(i);
+//
+//
+//		delay(0xFFFFF);
+//		//delay(0x200000);
+//
+//		spiInstance->write((addres << (3*4)) | i);
+//		UARTCHECK(leds, uartInstance, i);
+//
+//		if (i & 0x4){
+//			leds->turnOn(LEDS::BLUE);
+//			fpga->turnOn();
+//		}
+//		else{
+//			leds->turnOff(LEDS::BLUE);
+//			fpga->turnOff();
+//		}
+//
+//		i++;
+//		if (i == 0){
+//			i = 1;
+//			addres++;
+//
+//			if (addres > 0b0111){
+//				addres = 1;
+//			}
+//		}
 	}
 }
 
-uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i){
+uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i) {
 	uint16_t buffer = 0;
 
 	while (uartInstance->getBufferLenght()) {
@@ -72,9 +88,9 @@ uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i){
 	return buffer;
 }
 
-void delay(uint32_t time){
+void delay(uint32_t time) {
 	//block for time
-	while(time--) {
+	while (time--) {
 		asm volatile ("nop");
 	}
 }

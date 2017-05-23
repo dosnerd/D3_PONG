@@ -11,6 +11,10 @@
 
 SPI SPI::sInstance;
 
+
+
+
+
 SPI::SPI() {
 	GPIOinit();
 	GPIOconfig();
