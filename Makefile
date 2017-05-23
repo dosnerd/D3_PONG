@@ -5,6 +5,7 @@ SRCS = 						\
 		system_stm32f4xx.c	\
 		SPI.cpp				\
 		UART.cpp			\
+		DAC.cpp				\
 		LEDS.cpp			\
 		FPGA.cpp			\
 		MVC/Model.cpp		\
