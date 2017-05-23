@@ -25,14 +25,12 @@ int main(void)
 	i = 1;
 
 	while(i){
-		uartInstance->write(i);
-
 
 		delay(0xFFFFF);
 		//delay(0x200000);
 
 		spiInstance->write((addres << (3*4)) | i);
-		UARTCHECK(leds, uartInstance, i);
+		uartInstance->write(UARTCHECK(leds, uartInstance, 0x55));
 
 		if (i & 0x4){
 			leds->turnOn(LEDS::BLUE);

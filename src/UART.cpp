@@ -50,7 +50,7 @@ void UART::UARTinit() {
 
 	//Configure UART4
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
-	USART_InitStructure.USART_BaudRate = 273.5;
+	USART_InitStructure.USART_BaudRate = 1578.5000; //1562.5000;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No;
