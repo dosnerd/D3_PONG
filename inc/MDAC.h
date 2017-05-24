@@ -24,7 +24,7 @@ private:
 							MDAC();
 	static MDAC				sInstance;
 	void					GPIOinit();
-	void 					DACinit();
+	void 					DACinit(uint32_t channel);
 
 	// void GPIOinit();
 
