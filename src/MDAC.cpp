@@ -75,6 +75,7 @@ void MDAC::DACinit(uint32_t channel) {
 /**
   * @brief  Set data to be transmitted. No interrupt needed
   * 		Automatically transmits data when set.
+  * @param  data: The data to be transmitted to output buffer.
   * @retval None
   */
 void MDAC::setData(uint16_t data) {
