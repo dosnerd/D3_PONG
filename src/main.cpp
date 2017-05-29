@@ -15,7 +15,7 @@ int main(void)
 	volatile uint8_t i = 0x55;
 	uint8_t addres = 0x01;
 	SPI	*spiInstance = SPI::getInstance();
-	UART *uartInstance = UART::getInstance();
+	UART *uartInstance = UART::getInstance(4);
 	LEDS *leds = LEDS::getInstance();
 	FPGA *fpga = FPGA::getInstance();
 
