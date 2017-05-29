@@ -23,9 +23,6 @@ int main(void)
 	controller.bind(fpga);
 	controller.setupField(engine);
 
-	engine->getBall()->setPosition(GameEngine::Coordinate(-30, -30, 9));
-	engine->getBall()->setSpeed(GameEngine::Coordinate(5, -3, 	1));
-
 	fpga->turnOn();
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);

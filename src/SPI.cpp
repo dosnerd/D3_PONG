@@ -147,7 +147,11 @@ void SPI::interruptRead(){
 	//check if receive buffer is not empty
 	if (SPI2->SR & SPI_I2S_FLAG_RXNE){
 		buffer = SPI2->DR;
+#if SPI_READ_MODE_ENABLE
 		m_buffer.add(buffer);
+#else
+		(void)buffer;
+#endif
 	}
 }
 

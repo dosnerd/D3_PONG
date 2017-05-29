@@ -21,7 +21,7 @@ public:
 	virtual bool				test();
 
 private:
-	void dummyTest(uint32_t ticks);
+	void 						statisticsTest(uint32_t ticks);
 };
 
 } /* namespace GameControllers */

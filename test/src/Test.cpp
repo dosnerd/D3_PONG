@@ -37,6 +37,7 @@ void Test::run(){
 		::GetSystemTimeAsFileTime(&ftEnd);
 	}
 	catch (TestFailsException &e){
+		::GetSystemTimeAsFileTime(&ftEnd);
 		appendToResultMessage("Failure message: ");
 		appendToResultMessage(e.getMessage());
 	}
@@ -61,9 +62,9 @@ void Test::run(){
 
 	dElapsed = (ftEnd.dwLowDateTime - ftStart.dwLowDateTime) / 10000.0;
 	if (dElapsed < 1500){
-		logMsg += std::to_string(dElapsed) + " ms)\n";
+		logMsg += std::to_string(dElapsed) + " ms)\n\n";
 	} else {
-		logMsg += std::to_string(dElapsed/1000) + " s)\n";
+		logMsg += std::to_string(dElapsed/1000) + " s)\n\n";
 	}
 
 	m_resultMessage = logMsg + m_resultMessage;
@@ -87,4 +88,8 @@ void Test::printResults() {
 
 void Test::appendToResultMessage(std::string message) {
 	m_resultMessage += message;
+}
+
+const std::string& Test::getName() const {
+	return m_name;
 }

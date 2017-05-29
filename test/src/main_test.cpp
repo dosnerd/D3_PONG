@@ -44,14 +44,15 @@ int main(int argc, char *argv[]){
 	Test *a[] = {
 			new Vector_test(),
 			new MVCtest(),
-			new GameControllers::DemoTest(),
-			new GameEngine::EngineTest(),
 			new GameEngine::CoordinateTest(),
 			new GameEngine::GameObjectTest(),
+//			new GameEngine::EngineTest(),
+			new GameControllers::DemoTest(),
 	};
 	std::thread tests[sizeof(a) / sizeof(Test *)];
 
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {
+		std::cout << "Running: " << a[i]->getName() << "..." << std::endl;
 		if (threads)
 			tests[i] = std::thread(&Test::run, a[i]);
 		else

@@ -96,7 +96,7 @@ void GameControllers::GameController::onNotify() {
 
 		//TODO: Randomize speed? + position
 		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX(), ballCoordinate->getY(), 40));
-		if (getBall()->getSpeed().getZ() > 0)
+		if (getBall()->getSpeed().getZ() < 0)
 			getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
 		else
 			getBall()->setSpeed(GameEngine::Coordinate(5, -3, -1));

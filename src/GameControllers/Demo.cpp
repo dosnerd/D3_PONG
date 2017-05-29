@@ -63,7 +63,7 @@ GameEngine::Coordinate Demo::calcBatSpeed(uint8_t player, const GameEngine::Coor
 		ballSpeed = getBall()->getSpeed();
 
 	const GameEngine::Coordinate* ballPosition = getBallPosition(ballSpeed, player);
-	uint8_t batLimit = MAX_BAT_SPEED - ballSpeed.getZ() * 2;
+	uint8_t batLimit = MAX_BAT_SPEED - ballSpeed.getZ();
 
 	batSpeed = (*batPosition) - (*ballPosition);
 	if (abs(batSpeed.getX()) > batLimit) {
@@ -93,7 +93,7 @@ void Demo::updateLimits() {
 	const GameEngine::Coordinate* ballPosition = &getBall()->getPosition();
 
 	if (ballPosition->getZ() == 71 || ballPosition->getZ() == 9) {
-		if (m_counter++ & 0x4) {
+		if (m_counter++ == 7) {
 			m_counter = 0;
 			if (ballSpeed.getZ() < 0) {
 				getBall()->setSpeed(GameEngine::Coordinate(

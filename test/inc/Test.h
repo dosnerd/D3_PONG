@@ -21,6 +21,10 @@ public:
 	virtual void			run();
 	virtual bool			test() = 0;
 
+public:
+ 	const std::string& 		getName() const;
+
+
 protected:
 	template <class T>
 	void					log(T message);
