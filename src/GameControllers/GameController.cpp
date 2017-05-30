@@ -18,8 +18,7 @@ namespace GameControllers {
 GameController::GameController(GameEngine::Ball *ball)
 	: MVC::Controller(ball)
 	, m_fpga(nullptr)
-	, m_bat1(nullptr)
-	, m_bat2(nullptr)
+	, m_bats{nullptr, nullptr, nullptr, nullptr}
 {
 }
 
@@ -43,8 +42,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	GameEngine::GameObject* wallRight = new GameEngine::SideWall(100, 480);
 	GameEngine::GameObject* wallTop = new GameEngine::FloorWall(640, 100);
 	GameEngine::GameObject* wallBottom = new GameEngine::FloorWall(640, 100);
-	m_bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
-	m_bat2= new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	m_bats[GAMECONTROLLER_BAT1_PLAYER1] = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	m_bats[GAMECONTROLLER_BAT1_PLAYER2] = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
 
 	wallBack->setPosition(GameEngine::Coordinate(-320, -240, 80));
 	wallFront->setPosition(GameEngine::Coordinate(-320, -240, 0));
@@ -52,8 +51,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	wallRight->setPosition(GameEngine::Coordinate(320, -240, 0));
 	wallTop->setPosition(GameEngine::Coordinate(-320, 240, 0));
 	wallBottom->setPosition(GameEngine::Coordinate(-320, -240, 0));
-	m_bat1->setPosition(GameEngine::Coordinate(-120, -90, 8));
-	m_bat2->setPosition(GameEngine::Coordinate(-120, -90, 72));
+	m_bats[GAMECONTROLLER_BAT1_PLAYER1]->setPosition(GameEngine::Coordinate(-120, -90, 8));
+	m_bats[GAMECONTROLLER_BAT1_PLAYER2]->setPosition(GameEngine::Coordinate(-120, -90, 72));
 
 	engine->addObject(wallFront);
 	engine->addObject(wallBack);
@@ -61,13 +60,13 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	engine->addObject(wallRight);
 	engine->addObject(wallTop);
 	engine->addObject(wallBottom);
-	engine->addObject(m_bat1);
-	engine->addObject(m_bat2);
+	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
+	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER2]);
 
 	if (m_fpga != nullptr){
 		m_fpga->setBall(engine->getBall());
-		m_fpga->setBat(1, m_bat1);
-		m_fpga->setBat(2, m_bat2);
+		m_fpga->setBat(1, m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
+		m_fpga->setBat(2, m_bats[GAMECONTROLLER_BAT1_PLAYER2]);
 		m_fpga->setOption(FPGA_OPTION_NONE);
 	}
 }
@@ -97,9 +96,9 @@ void GameControllers::GameController::onNotify() {
 		//TODO: Randomize speed? + position
 		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX(), ballCoordinate->getY(), 40));
 		if (getBall()->getSpeed().getZ() < 0)
-			getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
-		else
 			getBall()->setSpeed(GameEngine::Coordinate(5, -3, -1));
+		else
+			getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
 	}
 
 	if (m_fpga != nullptr)
@@ -110,15 +109,8 @@ void GameController::bind(FPGA* fpga) {
 	m_fpga = fpga;
 }
 
-GameEngine::GameObject* GameController::getBat(uint8_t player) {
-	switch(player){
-	case 1:
-		return m_bat1;
-
-	case 2:
-	default:
-		return m_bat2;
-	}
+GameEngine::GameObject** GameController::getBats() {
+	return m_bats;
 }
 
 const FPGA* GameController::getFpga() const {

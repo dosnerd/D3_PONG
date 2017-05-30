@@ -20,6 +20,9 @@ SRCS = 										\
 		MVC/View.cpp						\
 		MVC/Controller.cpp					\
 		MVC/Observer.cpp					\
+		Menu/TextManager.cpp				\
+		Menu/MenuController.cpp				\
+		Menu/MainMenu.cpp					\
 		main.cpp
 OUT=./out/
 BIN=./bin/

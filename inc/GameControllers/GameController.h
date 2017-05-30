@@ -11,6 +11,11 @@
 #include <MVC/Controller.h>
 #include <gameEngine/Coordinate.h>
 
+#define GAMECONTROLLER_BAT1_PLAYER1		1
+#define GAMECONTROLLER_BAT1_PLAYER2		2
+#define GAMECONTROLLER_BAT2_PLAYER1		3
+#define GAMECONTROLLER_BAT2_PLAYER2		4
+
 class FPGA;
 
 namespace GameEngine {
@@ -43,11 +48,11 @@ protected:
 	virtual GameEngine::Ball		*getBall();
 
 protected:
-	virtual GameEngine::GameObject	*getBat(uint8_t player);
+	virtual GameEngine::GameObject	**getBats();
 
 private:
 	FPGA 							*m_fpga;
-	GameEngine::GameObject			*m_bat1, *m_bat2;
+	GameEngine::GameObject			*m_bats[4];
 	GameEngine::Coordinate			m_saveCoordinate;
 };
 
