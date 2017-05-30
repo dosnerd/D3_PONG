@@ -58,9 +58,12 @@ public:
 	virtual void				setBat(uint8_t player, GameEngine::GameObject *bat);
 	virtual void				setOption(uint16_t options);
 	virtual void				setRegister(uint8_t reg, uint16_t value);
+	
+	
 
 public:
 	static FPGA					*getInstance();
+	uint16_t 					getOptions() const;
 
 private:
 	static FPGA					sInstance;

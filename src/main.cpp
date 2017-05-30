@@ -22,6 +22,7 @@ int main(void)
 	Menu::TextManager::print("Loading...");
 
 	volatile int16_t i = 0x55;
+	bool firstTime = true;
 	Menu::MainMenu mainMenu;
 	LEDS *leds = LEDS::getInstance();
 	FPGA *fpga = FPGA::getInstance();
@@ -37,16 +38,29 @@ int main(void)
 	}
 	i = 1;
 
-	Menu::MenuController::getInstance()->show(&mainMenu);
+	Menu::TextManager::setColumn(0);
+	Menu::TextManager::setLine(0);
+	Menu::TextManager::print("Loading...");
+
+	fpga->setOption(FPGA_OPTION_NONE);
+	fpga->setRegister(FPGA_REGISTER_STATE, 0x0);
+
+	//wait until fpga has started up...
+	delay(0xFFFFF);
 
 	while(i){
 		engine->moveBall();
 		MVC::Observer::handleNotifications();
 		fpga->update(FPGA_UPDATE_ALL);
 
-		Menu::TextManager::setColumn(0);
-		Menu::TextManager::setLine(0);
-		Menu::TextManager::printLine("Playing   ");
+		if (firstTime){
+			Menu::MenuController::getInstance()->show(&mainMenu);
+
+			Menu::TextManager::setColumn(0);
+			Menu::TextManager::setLine(0);
+			Menu::TextManager::printLine("Playing   ");
+			firstTime = false;
+		}
 
 		delay(0x85FFF);
 		if (i & 0x4){

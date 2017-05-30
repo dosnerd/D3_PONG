@@ -54,6 +54,10 @@ void FPGA::update(uint8_t items) {
 	}
 }
 
+uint16_t FPGA::getOptions() const {
+	return m_options;
+}
+
 void FPGA::GPIOinit() {
 	GPIO_InitTypeDef GPIO_InitStructure;
 

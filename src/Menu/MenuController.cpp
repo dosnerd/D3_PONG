@@ -7,6 +7,7 @@
 
 #include <Menu/MenuController.h>
 #include <Menu/TextManager.h>
+#include <FPGA.h>
 
 namespace Menu {
 
@@ -21,12 +22,15 @@ MenuController::~MenuController() {
 
 void MenuController::show(Menu* menu) {
 	m_menu = menu;
+	TextManager::clearAll();
+	FPGA::getInstance()->setOption(FPGA::getInstance()->getOptions() | FPGA_OPTION_MENU);
 	printStandard();
 	print();
 }
 
 void MenuController::hide() {
 	m_menu = nullptr;
+	FPGA::getInstance()->setOption(FPGA::getInstance()->getOptions() & ~FPGA_OPTION_MENU);
 	TextManager::clearAll();
 	printStandard();
 }
@@ -43,7 +47,7 @@ MenuController* MenuController::getInstance() {
 
 void MenuController::printStandard() {
 	TextManager::setColumn(63);
-	TextManager::printLine("Version: 0.5.31");
+	TextManager::printLine("Version: 0.5.33");
 	TextManager::setLine(29);
 	TextManager::print("Made by Verney, Rick, Pip, Tom, Jenny & David at Avans Hogeschool at Den Bosch");
 	TextManager::setLine(1);
