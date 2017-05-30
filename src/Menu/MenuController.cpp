@@ -47,7 +47,7 @@ MenuController* MenuController::getInstance() {
 
 void MenuController::printStandard() {
 	TextManager::setColumn(63);
-	TextManager::printLine("Version: 0.5.33");
+	TextManager::printLine("Version: 0.5.34");
 	TextManager::setLine(29);
 	TextManager::print("Made by Verney, Rick, Pip, Tom, Jenny & David at Avans Hogeschool at Den Bosch");
 	TextManager::setLine(1);
