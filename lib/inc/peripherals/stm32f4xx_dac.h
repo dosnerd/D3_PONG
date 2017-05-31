@@ -1,6 +1,5 @@
 /**
   ******************************************************************************
-  * @file    stm32f4xx_dac.h
   * @author  MCD Application Team
   * @version V1.0.0
   * @date    30-September-2011

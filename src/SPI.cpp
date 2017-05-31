@@ -11,6 +11,10 @@
 
 SPI SPI::sInstance;
 
+
+
+
+
 SPI::SPI() {
 	GPIOinit();
 	GPIOconfig();
@@ -32,7 +36,7 @@ void SPI::GPIOinit() {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitTypeDef GPIO_InitStructure2;
 
-	//Configure PB13, PB14, PB15 as alternate functoin pushpull
+	//Configure PB13, PB14, PB15 as alternate function push-pull
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -43,7 +47,7 @@ void SPI::GPIOinit() {
 
 
 #if SPI_SLAVE_MODE_ENABLE
-	//Configure PD8 as output pushpull
+	//Configure PD8 as output push-pull
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_OUT;

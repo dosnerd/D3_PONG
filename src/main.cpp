@@ -2,79 +2,77 @@
 #include <UART.h>
 #include <LEDS.h>
 #include <FPGA.h>
+#include <MDAC.h>
 #include <config_file.h>
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
+#include <Math.h>
 
 void delay(uint32_t time);
-uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i);
+
+#define PI 				3.141592
+
+int main(void) {
+	MDAC *dac = MDAC::getInstance();
 
 
-int main(void)
-{
-	volatile uint8_t i = 0x55;
-	uint8_t addres = 0x01;
-	SPI	*spiInstance = SPI::getInstance();
-	UART *uartInstance = UART::getInstance();
-	LEDS *leds = LEDS::getInstance();
-	FPGA *fpga = FPGA::getInstance();
+	double y[3] = { 0, 0, 0 };
+	//
+	double point;
+	double frequency = 1.0;
+	double samplingFrequency = 4096.0;
 
-	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
-		leds->turnOff(i);
-	}
-	i = 1;
+	y[1] = sin( -1 * 2 * PI * frequency / samplingFrequency );
+	y[2] = sin( -2 * 2 * PI * frequency / samplingFrequency );
+	point = 2 * cos( 2 * PI * frequency / samplingFrequency );
 
-	while(i){
-		uartInstance->write(i);
+	do {
+
+		y[0] = point * y[1] - y[2];
+		y[2] = y[1];
+		y[1] = y[0];
+
+		dac->setData(2048*(y[0]) + 2048);
+
+	} while (true);
 
 
-		delay(0xFFFFF);
-		//delay(0x200000);
 
-		spiInstance->write((addres << (3*4)) | i);
-		UARTCHECK(leds, uartInstance, i);
 
-		if (i & 0x4){
-			leds->turnOn(LEDS::BLUE);
-			fpga->turnOn();
-		}
-		else{
-			leds->turnOff(LEDS::BLUE);
-			fpga->turnOff();
-		}
 
-		i++;
-		if (i == 0){
-			i = 1;
-			addres++;
 
-			if (addres > 0b0111){
-				addres = 1;
-			}
-		}
-	}
+
+
+
+	// LEDS *led = LEDS::getInstance();
+
+	// uint16_t volatile i;
+	// double i;
+	//uint16_t volatile j;
+	// float sampleRate = 8000.0;
+
+	// float m_amplitude = 0.5, m_frequency = 500, m_phase = 0.0, m_time = 0.0, m_deltaTime = 1 / sampleRate;
+	// (uint16_t) 2048*sin(i*2*PI*0.001)
+	// double amplitude = (0xFFF + 1) / 2;
+
+	// double sineWave = (sin(1 * (2*PI/800)) + 1) * amplitude;
+
+
+	// while (1) {
+
+		// for (i = 0 ; i < 4096; i++) {
+			// dac->setData(i);
+		// }
+		// for (i = 4096 ; i > 0; i--) {
+			// dac->setData(sineWave);
+		// }
+	// }
 }
 
-uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i){
-	uint16_t buffer = 0;
-
-	while (uartInstance->getBufferLenght()) {
-		buffer = uartInstance->read();
-		if (buffer == i) {
-			leds->turnOn(LEDS::GREEN);
-			leds->turnOff(LEDS::RED);
-		} else {
-			leds->turnOn(LEDS::RED);
-			leds->turnOff(LEDS::GREEN);
-		}
-	}
-
-	return buffer;
-}
-
-void delay(uint32_t time){
+void delay(uint32_t time) {
 	//block for time
-	while(time--) {
+	while (time--) {
 		asm volatile ("nop");
 	}
 }
+
