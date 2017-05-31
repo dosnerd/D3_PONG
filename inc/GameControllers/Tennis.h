@@ -14,7 +14,7 @@ namespace GameControllers {
 
 class Tennis: public GameController {
 public:
-								Tennis(GameEngine::Ball *ball);
+								Tennis(GameEngine::Ball *ball, PlayerController *player1, PlayerController *player2);
 	virtual 					~Tennis();
 
 public:

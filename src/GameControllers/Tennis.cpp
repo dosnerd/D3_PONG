@@ -11,8 +11,8 @@
 
 namespace GameControllers {
 
-Tennis::Tennis(GameEngine::Ball *ball)
-	: GameController(ball)
+Tennis::Tennis(GameEngine::Ball *ball, PlayerController *player1, PlayerController *player2)
+	: GameController(ball, player1, player2)
 {
 }
 

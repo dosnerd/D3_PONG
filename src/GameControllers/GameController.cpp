@@ -10,15 +10,18 @@
 #include <gameEngine/SideWall.h>
 #include <gameEngine/FloorWall.h>
 #include <gameEngine/Engine.h>
+#include <GameControllers/PlayerController.h>
 
 #include <FPGA.h>
 
 namespace GameControllers {
 
-GameController::GameController(GameEngine::Ball *ball)
+GameController::GameController(GameEngine::Ball *ball, PlayerController *player1, PlayerController *player2)
 	: MVC::Controller(ball)
 	, m_fpga(nullptr)
 	, m_bats{nullptr, nullptr, nullptr, nullptr}
+	, m_player1(player1)
+	, m_player2(player2)
 {
 }
 
@@ -63,6 +66,11 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
 	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER2]);
 
+	getBall()->setPosition(GameEngine::Coordinate(0, 0, 40));
+
+	m_player1->setScore(5);
+	m_player2->setScore(5);
+
 	if (m_fpga != nullptr){
 		m_fpga->setBall(engine->getBall());
 		m_fpga->setBat(1, m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
@@ -73,13 +81,31 @@ void GameController::setupField(GameEngine::Engine* engine) {
 
 void GameController::winMatch(uint8_t player) {
 	uint32_t clock = 0xFFFFFF; //TODO: write good timer
-	(void)player;
+	if (player == 2){
+		m_player1->setScore(m_player1->getScore() - 1);
+		if (m_player1->getScore() == 0){
+			finishedGame();
+		}
+	}
+	else{
+		m_player2->setScore(m_player2->getScore() - 1);
+		if (m_player2->getScore() == 0){
+			finishedGame();
+		}
+	}
+
+	if (m_fpga != nullptr){
+		m_fpga->printScore(m_player1, 1);
+		m_fpga->printScore(m_player2, 2);
+	}
 
 	while(clock--)
 		asm("nop");
 }
 
 void GameController::finishedGame() {
+	m_player1->setScore(5);
+	m_player2->setScore(5);
 }
 
 GameEngine::Ball* GameController::getBall() {

@@ -14,8 +14,8 @@
 
 namespace GameControllers {
 
-Demo::Demo(GameEngine::Ball *ball)
-	: GameController(ball)
+Demo::Demo(GameEngine::Ball *ball, PlayerController *player1, PlayerController *player2)
+	: GameController(ball, player1, player2)
 	, m_counter(0)
 {
 }

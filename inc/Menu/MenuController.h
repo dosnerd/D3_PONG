@@ -21,6 +21,7 @@ public:
 	void						show(Menu *menu);
 	void						hide();
 	void						print();
+	bool						isShowing();
 	
 	static MenuController		*getInstance();
 

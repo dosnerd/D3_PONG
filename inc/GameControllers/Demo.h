@@ -18,7 +18,7 @@ namespace GameControllers {
 
 class Demo: public GameController {
 public:
-									Demo(GameEngine::Ball *ball);
+									Demo(GameEngine::Ball *ball, PlayerController *player1, PlayerController *player2);
 	virtual 						~Demo();
 
 public:

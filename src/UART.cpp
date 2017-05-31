@@ -113,6 +113,7 @@ void UART::interruptRead(){
 	//read from uart buffer
 	buffer = USART_ReceiveData(UART4);
 	m_buffer.add(buffer);
+	notifyObservers();
 }
 
 void UART4_IRQHandler(void) {

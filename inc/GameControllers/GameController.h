@@ -26,9 +26,10 @@ class GameObject;
 
 namespace GameControllers {
 
+class PlayerController;
 class GameController : public MVC::Controller {
 public:
-									GameController(GameEngine::Ball *ball);
+									GameController(GameEngine::Ball *ball, PlayerController *player1, PlayerController *player2);
 	virtual 						~GameController();
 
 public:
@@ -46,14 +47,13 @@ protected:
 
 protected:
 	virtual GameEngine::Ball		*getBall();
-
-protected:
 	virtual GameEngine::GameObject	**getBats();
 
 private:
 	FPGA 							*m_fpga;
 	GameEngine::GameObject			*m_bats[4];
 	GameEngine::Coordinate			m_saveCoordinate;
+	PlayerController 				*m_player1, *m_player2;
 };
 
 } /* namespace GameControllers */

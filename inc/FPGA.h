@@ -26,6 +26,9 @@
 #define FPGA_REGISTER_Y_BAT_P2		0x7
 #define FPGA_REGISTER_TEXT_ADDRESS	0x8
 #define FPGA_REGISTER_TEXT_VALUE	0x9
+#define FPGA_REGISTER_TEXT_COLOR	0xA
+#define FPGA_REGISTER_COLOR_PLAYER1	0xD
+#define FPGA_REGISTER_COLOR_PLAYER2	0xE
 #define FPGA_REGISTER_STATE			0xF
 
 #define FPGA_UPDATE_BALL			0x1
@@ -38,6 +41,9 @@
 
 namespace GameEngine {
 	class GameObject;
+}
+namespace GameControllers {
+	class PlayerController;
 }
 
 class Stream;
@@ -58,6 +64,7 @@ public:
 	virtual void				setBat(uint8_t player, GameEngine::GameObject *bat);
 	virtual void				setOption(uint16_t options);
 	virtual void				setRegister(uint8_t reg, uint16_t value);
+	virtual void				printScore(GameControllers::PlayerController *player, uint8_t playerNumber, bool inNumbers = false);
 	
 	
 

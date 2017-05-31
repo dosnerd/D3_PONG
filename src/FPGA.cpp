@@ -9,8 +9,14 @@
 #include <stm32f4xx_conf.h>
 #include <Stream.h>
 #include <SPI.h>
+
 #include <gameEngine/GameObject.h>
 #include <gameEngine/Coordinate.h>
+
+#include <Menu/TextManager.h>
+#include <Menu/MenuController.h>
+
+#include <GameControllers/PlayerController.h>
 
 #define ADDRESS_PLACE 	3*4
 #define BALL			0
@@ -113,4 +119,35 @@ void FPGA::setRegister(uint8_t reg, uint16_t value) {
 	value |= reg << ADDRESS_PLACE;
 
 	m_stream->write(value);
+}
+
+void FPGA::printScore(GameControllers::PlayerController* player, uint8_t playerNumber, bool inNumbers) {
+	uint16_t i;
+	if (Menu::MenuController::getInstance()->isShowing()){
+		return;
+	}
+
+	Menu::TextManager::setColor(0x0F0);
+	Menu::TextManager::setLine(1);
+	if (playerNumber == 1)
+		Menu::TextManager::setColumn(1);
+	else
+		Menu::TextManager::setColumn(69);
+
+	Menu::TextManager::print("Player :");
+	Menu::TextManager::printLine(Menu::TextManager::to_string(playerNumber));
+
+	if (playerNumber == 1)
+		Menu::TextManager::setColumn(1);
+	else
+		Menu::TextManager::setColumn(69);
+
+	if (inNumbers)
+		Menu::TextManager::print(Menu::TextManager::to_string(player->getScore()));
+	else {
+		for (i = 0; i < player->getScore(); ++i) {
+			Menu::TextManager::print(std::string({(char)0x03}));
+		}
+		Menu::TextManager::print(" ");
+	}
 }

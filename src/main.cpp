@@ -1,9 +1,11 @@
 #include <LEDS.h>
 #include <FPGA.h>
+#include <UART.h>
 
 #include <gameEngine/Engine.h>
 #include <GameControllers/Tennis.h>
 #include <GameControllers/Demo.h>
+#include <GameControllers/PlayerController.h>
 
 #include <Menu/TextManager.h>
 #include <Menu/MenuController.h>
@@ -18,16 +20,15 @@ void delay(uint32_t time);
 
 int main(void)
 {
-	Menu::TextManager::clearAll();
-	Menu::TextManager::print("Loading...");
-
 	volatile int16_t i = 0x55;
-	bool firstTime = true;
 	Menu::MainMenu mainMenu;
 	LEDS *leds = LEDS::getInstance();
 	FPGA *fpga = FPGA::getInstance();
+	GameControllers::PlayerController player1(UART::getInstance());
+	GameControllers::PlayerController player2(UART::getInstance());
+
 	GameEngine::Engine *engine = new GameEngine::Engine();
-	GameControllers::Demo controller(engine->getBall());
+	GameControllers::Demo controller(engine->getBall(), &player1, &player2);
 
 	controller.bind(fpga);
 	controller.setupField(engine);
@@ -38,29 +39,23 @@ int main(void)
 	}
 	i = 1;
 
-	Menu::TextManager::setColumn(0);
-	Menu::TextManager::setLine(0);
-	Menu::TextManager::print("Loading...");
+	//wait until fpga has started up...
+	delay(0xFFFFF);
 
 	fpga->setOption(FPGA_OPTION_NONE);
 	fpga->setRegister(FPGA_REGISTER_STATE, 0x0);
 
-	//wait until fpga has started up...
-	delay(0xFFFFF);
+	Menu::TextManager::clearAll();
+	Menu::MenuController::getInstance()->show(&mainMenu);
+
+	Menu::TextManager::setColor(0xFFF);
+	Menu::TextManager::setColumn(0);
+	Menu::TextManager::setLine(0);
 
 	while(i){
 		engine->moveBall();
 		MVC::Observer::handleNotifications();
 		fpga->update(FPGA_UPDATE_ALL);
-
-		if (firstTime){
-			Menu::MenuController::getInstance()->show(&mainMenu);
-
-			Menu::TextManager::setColumn(0);
-			Menu::TextManager::setLine(0);
-			Menu::TextManager::printLine("Playing   ");
-			firstTime = false;
-		}
 
 		delay(0x85FFF);
 		if (i & 0x4){

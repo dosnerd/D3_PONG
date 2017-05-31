@@ -16,6 +16,7 @@ SRCS = 										\
 		GameControllers/GameController.cpp	\
 		GameControllers/Tennis.cpp			\
 		GameControllers/Demo.cpp			\
+		GameControllers/PlayerController.cpp\
 		MVC/Model.cpp						\
 		MVC/View.cpp						\
 		MVC/Controller.cpp					\

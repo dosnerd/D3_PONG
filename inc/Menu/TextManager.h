@@ -23,11 +23,15 @@ public:
 	static void					printLine(std::string text);
 	static void					clearAll();
 	static void					clearLine();
+
+	static void					setColor(uint16_t color);
 	static void					setLine(uint8_t line);
 	static void					setColumn(uint8_t column);
 
+
 private:
 	static uint8_t				m_row, m_column;
+	static uint16_t				m_color;
 };
 
 } /* namespace Menu */
