@@ -82,6 +82,10 @@ void MDAC::setData(uint16_t data) {
 	DAC_SetChannel1Data(DAC_Align_12b_R, data);
 }
 
+void MDAC::setFrequency(uint16_t frequency) {
+
+}
+
 uint16_t getChannel1Data(void) {
 	return DAC_GetDataOutputValue(DAC_Channel_1);
 }
