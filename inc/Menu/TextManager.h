@@ -18,7 +18,7 @@ private:
 	virtual 					~TextManager();
 
 public:
-	static std::string 			to_string(uint16_t number);
+	static std::string 			to_string(int16_t number, bool hex = false);
 	static void					print(std::string text);
 	static void					printLine(std::string text);
 	static void					clearAll();

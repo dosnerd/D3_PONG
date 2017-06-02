@@ -8,6 +8,8 @@
 #include <LEDS.h>
 #include <stm32f4xx_conf.h>
 
+#include <Menu/TextManager.h>
+
 UART UART::sInstance;
 
 UART::UART() {
@@ -31,7 +33,7 @@ void UART::GPIOinit() {
 
 	//Configure PA0, PA1 as alternate function pushpull mode
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
@@ -41,7 +43,6 @@ void UART::GPIOinit() {
 
 void UART::GPIOconfig() {
 	//Configure PA0, PA1 as UART4
-	GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_UART4);
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_UART4);
 }
 
@@ -50,11 +51,11 @@ void UART::UARTinit() {
 
 	//Configure UART4
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
-	USART_InitStructure.USART_BaudRate = 273.5;
+	USART_InitStructure.USART_BaudRate = 1578.5000;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No;
-	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx;
 	USART_InitStructure.USART_HardwareFlowControl =
 			USART_HardwareFlowControl_None;
 	USART_Init(UART4, &USART_InitStructure);
@@ -66,8 +67,9 @@ UART *UART::getInstance(){
 
 void UART::write(uint16_t data){
 	//wait until available
-	while(!(UART4->SR & USART_FLAG_TC));
-	USART_SendData(UART4, data);
+	(void)data;
+	//while(!(UART4->SR & USART_FLAG_TC));
+//	USART_SendData(UART4, data);
 }
 
 const uint16_t UART::read(){
@@ -110,9 +112,12 @@ void UART::UARTinterruptConfig() {
 void UART::interruptRead(){
 	uint16_t buffer;
 
-	//read from uart buffer
-	buffer = USART_ReceiveData(UART4);
-	m_buffer.add(buffer);
+	if (m_buffer.length() < UART_BUFFER_LENGTH){
+		//read from uart buffer
+		buffer = USART_ReceiveData(UART4);
+
+		m_buffer.add(buffer);
+	}
 	notifyObservers();
 }
 

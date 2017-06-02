@@ -25,17 +25,19 @@ public:
 
 public:
 	uint16_t 					getScore() const;
+	uint16_t					getColor() const;
+	GameEngine::Coordinate		getPosition() const;
 	void 						setScore(uint16_t score);
-
+	void						setColor(uint16_t color);
 
 private:
-	uint16_t					m_score;
-	uint16_t 					m_cmd;
+	uint16_t					m_score, m_color;
+	int8_t						m_cmd;
 	Stream 						*m_stream;
 	GameEngine::Coordinate		m_position;
 
 	void 						runCommand();
-	void getPosition();
+	void 						readPosition();
 };
 
 } /* namespace GameControllers */

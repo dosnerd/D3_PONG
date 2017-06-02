@@ -3,6 +3,7 @@
 SRCS = 										\
 		stm32f4xx_it.c						\
 		system_stm32f4xx.c					\
+		Buttons.cpp							\
 		SPI.cpp								\
 		UART.cpp							\
 		LEDS.cpp							\
@@ -22,8 +23,13 @@ SRCS = 										\
 		MVC/Controller.cpp					\
 		MVC/Observer.cpp					\
 		Menu/TextManager.cpp				\
-		Menu/MenuController.cpp				\
-		Menu/MainMenu.cpp					\
+		Menu/MenuBox.cpp					\
+		Menu/MenuItem.cpp					\
+		Menu/MenuViewer.cpp					\
+		Menu/MenuItems/StartDemo.cpp		\
+		Menu/MenuItems/StartTennis.cpp		\
+		Menu/MenuItems/PlayerColorSelect.cpp\
+		Game.cpp							\
 		main.cpp
 OUT=./out/
 BIN=./bin/

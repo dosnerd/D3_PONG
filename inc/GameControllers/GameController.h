@@ -48,8 +48,10 @@ protected:
 protected:
 	virtual GameEngine::Ball		*getBall();
 	virtual GameEngine::GameObject	**getBats();
+	virtual PlayerController		*getPlayer(uint8_t player);
 
 private:
+	bool							m_paused;
 	FPGA 							*m_fpga;
 	GameEngine::GameObject			*m_bats[4];
 	GameEngine::Coordinate			m_saveCoordinate;

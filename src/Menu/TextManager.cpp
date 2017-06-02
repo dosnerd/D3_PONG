@@ -73,13 +73,24 @@ void TextManager::setColumn(uint8_t column) {
 	m_column = column;
 }
 
-std::string TextManager::to_string(uint16_t number) {
+std::string TextManager::to_string(int16_t number, bool hex) {
 	std::string buffer;
+	bool negative = number < 0;
 	uint8_t firstNumber;
+
+	if (number < 0)
+		number *= -1;
+
 	do {
-		firstNumber = number % 10;
-		number -= firstNumber;
-		number /= 10;
+		if (hex){
+			firstNumber = number % 16;
+			number -= firstNumber;
+			number /= 16;
+		} else {
+			firstNumber = number % 10;
+			number -= firstNumber;
+			number /= 10;
+		}
 		switch(firstNumber){
 		case 1:
 			buffer = "1" + buffer;
@@ -108,12 +119,33 @@ std::string TextManager::to_string(uint16_t number) {
 		case 9:
 			buffer = "9" + buffer;
 			break;
+		case 0xA:
+			buffer = "A" + buffer;
+			break;
+		case 0xB:
+			buffer = "B" + buffer;
+			break;
+		case 0xC:
+			buffer = "C" + buffer;
+			break;
+		case 0xD:
+			buffer = "D" + buffer;
+			break;
+		case 0xE:
+			buffer = "E" + buffer;
+			break;
+		case 0xF:
+			buffer = "F" + buffer;
+			break;
 		case 0:
 		default:
 			buffer = "0" + buffer;
 			break;
 		}
 	} while (number > 0);
+
+	if (negative)
+		buffer = "-" + buffer;
 	return buffer;
 }
 

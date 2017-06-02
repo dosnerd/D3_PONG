@@ -14,7 +14,7 @@
 #include <gameEngine/Coordinate.h>
 
 #include <Menu/TextManager.h>
-#include <Menu/MenuController.h>
+#include <Menu/MenuBox.h>
 
 #include <GameControllers/PlayerController.h>
 
@@ -48,6 +48,7 @@ void FPGA::update(uint8_t items) {
 	if (items & FPGA_UPDATE_P1){
 		setRegister(FPGA_REGISTER_X_BAT_P1, -batP1Coordinates.getX() - (m_objects[BAT_P1]->getWidth() / 2));
 		setRegister(FPGA_REGISTER_Y_BAT_P1, -batP1Coordinates.getY() - (m_objects[BAT_P1]->getHeight() / 2));
+
 	}
 
 	if (items & FPGA_UPDATE_P2){
@@ -123,11 +124,11 @@ void FPGA::setRegister(uint8_t reg, uint16_t value) {
 
 void FPGA::printScore(GameControllers::PlayerController* player, uint8_t playerNumber, bool inNumbers) {
 	uint16_t i;
-	if (Menu::MenuController::getInstance()->isShowing()){
+	if (Menu::MenuBox::getInstance()->isShowing()){
 		return;
 	}
 
-	Menu::TextManager::setColor(0x0F0);
+	Menu::TextManager::setColor(player->getColor());
 	Menu::TextManager::setLine(1);
 	if (playerNumber == 1)
 		Menu::TextManager::setColumn(1);

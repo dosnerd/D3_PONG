@@ -1,63 +1,41 @@
 #include <LEDS.h>
 #include <FPGA.h>
+#include <Game.h>
+#include <Buttons.h>
+
 #include <UART.h>
 
-#include <gameEngine/Engine.h>
-#include <GameControllers/Tennis.h>
-#include <GameControllers/Demo.h>
-#include <GameControllers/PlayerController.h>
-
+#include <Menu/MenuBox.h>
 #include <Menu/TextManager.h>
-#include <Menu/MenuController.h>
-#include <Menu/MainMenu.h>
 
 #include <config_file.h>
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
 #include <string>
 
-void delay(uint32_t time);
-
 int main(void)
 {
 	volatile int16_t i = 0x55;
-	Menu::MainMenu mainMenu;
+	bool pressed = false;
 	LEDS *leds = LEDS::getInstance();
-	FPGA *fpga = FPGA::getInstance();
-	GameControllers::PlayerController player1(UART::getInstance());
-	GameControllers::PlayerController player2(UART::getInstance());
+	Game *game = Game::getInstance();
+	Menu::MenuItem *main = Menu::MenuBox::getInstance()->getCurrentMenu();
 
-	GameEngine::Engine *engine = new GameEngine::Engine();
-	GameControllers::Demo controller(engine->getBall(), &player1, &player2);
-
-	controller.bind(fpga);
-	controller.setupField(engine);
-
-	fpga->turnOn();
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);
 	}
 	i = 1;
 
-	//wait until fpga has started up...
-	delay(0xFFFFF);
-
-	fpga->setOption(FPGA_OPTION_NONE);
-	fpga->setRegister(FPGA_REGISTER_STATE, 0x0);
+	FPGA::getInstance()->setOption(FPGA_OPTION_NONE);
+	FPGA::getInstance()->setRegister(FPGA_REGISTER_STATE, 0x0);
 
 	Menu::TextManager::clearAll();
-	Menu::MenuController::getInstance()->show(&mainMenu);
-
-	Menu::TextManager::setColor(0xFFF);
-	Menu::TextManager::setColumn(0);
-	Menu::TextManager::setLine(0);
 
 	while(i){
-		engine->moveBall();
-		MVC::Observer::handleNotifications();
-		fpga->update(FPGA_UPDATE_ALL);
+		game->tick();
+//		game->wait(0xFF);
+		game->wait(0x85FFF);
 
-		delay(0x85FFF);
 		if (i & 0x4){
 			leds->turnOn(LEDS::BLUE);
 		}
@@ -66,17 +44,25 @@ int main(void)
 		}
 
 		i++;
-		if (i >= 150){
+		if (i & 0b1){
+			if (Buttons::getInstace()->getButton()){
+				if (!pressed){
+					leds->turnOn(LEDS::GREEN);
+					if (Menu::MenuBox::getInstance()->isShowing())
+						Menu::MenuBox::getInstance()->select();
+					else
+						Menu::MenuBox::getInstance()->show(main);
+					pressed = true;
+				}
+			} else {
+				pressed = false;
+				leds->turnOff(LEDS::GREEN);
+			}
+		}
+		if (i == 30){
 			i = 1;
-			mainMenu.down();
-			Menu::MenuController::getInstance()->print();
+			Menu::MenuBox::getInstance()->down();
 		}
 	}
 }
 
-void delay(uint32_t time){
-	//block for time
-	while(time--) {
-		asm volatile ("nop");
-	}
-}

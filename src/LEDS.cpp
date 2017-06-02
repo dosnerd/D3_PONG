@@ -53,12 +53,12 @@ void LEDS::turnOff(const uint8_t led){
 	}
 }
 
-void LEDS::infiniteBlink(const uint8_t led) {
-	int time;
+void LEDS::infiniteBlink(const uint8_t led, uint32_t speed) {
+	uint32_t time;
 
 	if (led < AMOUNTS_OF_LEDS) {
 		while (true) {
-			time = 10000000;
+			time = speed;
 			while(time--) {
 				asm("nop");
 			}
@@ -74,6 +74,6 @@ LEDS *LEDS::getInstance(){
 	return &sInstance;
 }
 
-void blinkLight(uint8_t led) {
-	LEDS::getInstance()->infiniteBlink(led);
+void blinkLight(uint8_t led, uint32_t speed) {
+	LEDS::getInstance()->infiniteBlink(led, speed);
 }
