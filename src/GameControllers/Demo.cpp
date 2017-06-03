@@ -10,8 +10,7 @@
 #include <gameEngine/GameObject.h>
 #include <stdlib.h>
 #include <FPGA.h>
-
-#define MAX_BAT_SPEED 12
+#include <config_file.h>
 
 namespace GameControllers {
 

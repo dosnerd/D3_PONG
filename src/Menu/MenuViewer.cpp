@@ -13,19 +13,27 @@
 #include <FPGA.h>
 #include <Game.h>
 
-#define MENU_CENTER		39
-#define MENU_WIDTH		16
-#define BORDER_LEFT		MENU_CENTER - MENU_WIDTH / 2
-#define BORDER_RIGHT	MENU_CENTER + MENU_WIDTH / 2
-#define MENU_TOP		3
-#define TITLE_COLOR		0xF00
-#define SELECTED_COLOR	0x7F7
-#define ITEM_COLOR		0x0F0
+#define MENU_CENTER				39
+#define MENU_WIDTH				16
+#define BORDER_LEFT				MENU_CENTER - MENU_WIDTH / 2
+#define BORDER_RIGHT			MENU_CENTER + MENU_WIDTH / 2
+#define MENU_TOP				3
+#define TITLE_COLOR				0xF22
+#define SELECTED_COLOR			0xFA0
+#define ITEM_COLOR				0x0F0
+#define FOOTER_AND_HEADER_COLOR 0xFFF
+#define SHIFT_RED				0
+#define SHIFT_GREEN				4
+#define SHIFT_BLUE				8
+#define ANIMATION_DELAY			2
 
 namespace Menu {
 
 MenuViewer::MenuViewer(MenuBox *menu)
 	: MVC::View(menu)
+	, m_lastSelected(1)
+	, m_animationDelay(0)
+	, m_animationColor(ITEM_COLOR)
 {
 }
 
@@ -75,7 +83,7 @@ void MenuViewer::drawMenu(MenuBox* menu) {
 		TextManager::setLine(5 + i);
 		if (i < parent->amountOfChilds()){
 			if (i == menu->getSelected()){
-				TextManager::setColor(SELECTED_COLOR);
+				TextManager::setColor(m_animationColor);
 
 				drawChild((*parent)[i], true);
 
@@ -93,15 +101,52 @@ void MenuViewer::drawMenu(MenuBox* menu) {
 void MenuViewer::drawFooter() {
 	TextManager::setLine(29);
 	TextManager::setColumn(0);
-	TextManager::setColor(0xFFF);
 	TextManager::print(" Made by Verney,Rick,Pip,Tom,Jenny & David (Avans Hogeschool, s'Hertogenbosch)");
 }
 
 void MenuViewer::drawTop() {
 	TextManager::setLine(0);
+	TextManager::setColumn(0);
+	TextManager::print(" Please, take a controller and play!");
 	TextManager::setColumn(63);
-	TextManager::setColor(0xFFF);
 	TextManager::print(PROGRAM_VERSION);
+}
+
+void MenuViewer::animateColor(uint8_t shifter) {
+
+	int8_t
+		difference 	= ((int8_t)SELECTED_COLOR >> shifter) - ((int8_t)m_animationColor >> shifter),
+		color		= m_animationColor >> shifter;
+	int16_t filter = 0x0F << shifter;
+	if (difference < 0) {
+		color += 1;
+	} else if (difference > 0) {
+		color -= 1;
+	}
+
+	m_animationColor = (m_animationColor & ~filter) | (color << shifter);
+}
+
+void MenuViewer::animate() {
+	MenuBox *menu = (MenuBox *)getModel();
+
+	if (!menu->isShowing() || m_animationDelay--)
+		return;
+	m_animationDelay = ANIMATION_DELAY;
+
+	if (m_lastSelected != menu->getSelected()) {
+		m_lastSelected = menu->getSelected();
+		m_animationColor = ITEM_COLOR;
+	} else {
+		animateColor(SHIFT_RED);
+		animateColor(SHIFT_GREEN);
+		animateColor(SHIFT_BLUE);
+	}
+
+	TextManager::setColor(m_animationColor);
+	TextManager::setLine(5 + menu->getSelected());
+	drawChild((*menu->getCurrentMenu())[menu->getSelected()], true);
+	TextManager::setColor(ITEM_COLOR);
 }
 
 void MenuViewer::onNotify() {
@@ -110,11 +155,15 @@ void MenuViewer::onNotify() {
 	MenuBox *menu = (MenuBox *)getModel();
 	resetNotifyFlag();
 
+	animate();
+
 	if (menu->isShowing()){
 		if ((fpgaOptions & FPGA_OPTION_MENU) != FPGA_OPTION_MENU){
 			fpgaOptions |= FPGA_OPTION_MENU;
 			fpga->setOption(fpgaOptions);
 			TextManager::clearAll();
+
+			TextManager::setColor(FOOTER_AND_HEADER_COLOR);
 			drawTop();
 			drawFooter();
 		}

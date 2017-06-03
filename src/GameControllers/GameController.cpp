@@ -123,8 +123,10 @@ GameEngine::Ball* GameController::getBall() {
 
 void GameControllers::GameController::onNotify() {
 	const GameEngine::Coordinate *ballCoordinate = &getBall()->getPosition();
-
 	resetNotifyFlag();
+	if (m_fpga != nullptr)
+		m_fpga->update(FPGA_UPDATE_BALL);
+
 	if (ballCoordinate->getZ() > 72 || ballCoordinate->getZ() < 8){
 		winMatch((ballCoordinate->getZ() > 72) + 1);
 
@@ -136,8 +138,6 @@ void GameControllers::GameController::onNotify() {
 			getBall()->setSpeed(GameEngine::Coordinate(-5, 3, -1));
 	}
 
-	if (m_fpga != nullptr)
-		m_fpga->update(FPGA_UPDATE_BALL);
 }
 
 void GameController::bind(FPGA* fpga) {

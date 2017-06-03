@@ -71,14 +71,14 @@ void Engine::calcEffect(const Coordinate& intersection,
 	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_LEFT) == GAMEOBJECT_BOUNCE_EFFECT_LEFT) {
 		newValue = m_ball.getSpeed().getX() - EFFECT_BOUNCING_FACTOR;
 
-		if (abs(newValue) < MAX_SPEED){
+		if (abs(newValue) < MAX_SPEED_BALL_X_Y){
 			m_ball.getSpeed().setX(newValue);
 		}
 	}
 	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_RIGHT) == GAMEOBJECT_BOUNCE_EFFECT_RIGHT) {
 		newValue = m_ball.getSpeed().getX() + EFFECT_BOUNCING_FACTOR;
 
-		if (abs(newValue) < MAX_SPEED){
+		if (abs(newValue) < MAX_SPEED_BALL_X_Y){
 			m_ball.getSpeed().setX(newValue);
 		}
 	}
@@ -86,14 +86,14 @@ void Engine::calcEffect(const Coordinate& intersection,
 	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_TOP) == GAMEOBJECT_BOUNCE_EFFECT_TOP) {
 		newValue = m_ball.getSpeed().getY() - EFFECT_BOUNCING_FACTOR;
 
-		if (abs(newValue) < MAX_SPEED){
+		if (abs(newValue) < MAX_SPEED_BALL_X_Y){
 			m_ball.getSpeed().setY(newValue);
 		}
 	}
 	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_BOTTOM) == GAMEOBJECT_BOUNCE_EFFECT_BOTTOM) {
 		newValue = m_ball.getSpeed().getY() + EFFECT_BOUNCING_FACTOR;
 
-		if (abs(newValue) < MAX_SPEED){
+		if (abs(newValue) < MAX_SPEED_BALL_X_Y){
 			m_ball.getSpeed().setY(newValue);
 		}
 	}

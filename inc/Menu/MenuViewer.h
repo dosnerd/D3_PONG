@@ -21,12 +21,17 @@ public:
 
 public:
 	virtual void				onNotify();
+	void 						animate();
 
 private:
+	uint8_t						m_lastSelected, m_animationDelay;
+	uint16_t					m_animationColor;
+
 	void 						drawMenu(MenuBox* menu);
 	void 						drawChild(const MenuItem* child, bool selected);
 	void 						drawFooter();
 	void 						drawTop();
+	void						animateColor(uint8_t shifter);
 };
 
 } /* namespace Menu */

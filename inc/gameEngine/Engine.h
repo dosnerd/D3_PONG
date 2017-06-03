@@ -41,7 +41,7 @@ private:
 	Coordinate 					getRelativeBall(GameObject* nearestObject, Coordinate ballPos);
 	Coordinate 					calcBounce(int16_t i, Coordinate& ballSpeed, Vector<int32_t>& transformList);
 	GameEngine::Coordinate 		calcIntersection(const Coordinate& ballPos, Coordinate& ballSpeed, int32_t& transform);
-	void calcEffect(const Coordinate& intersection, GameObject* nearestObject);
+	void 						calcEffect(const Coordinate& intersection, GameObject* nearestObject);
 };
 
 } /* namespace GameEngine */

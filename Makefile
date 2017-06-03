@@ -33,6 +33,7 @@ SRCS = 										\
 		Menu/MenuItems/PlayerColorSelect.cpp\
 		Menu/MenuItems/OpenMainMenu.cpp		\
 		Menu/MenuItems/ResumeGame.cpp		\
+		Menu/MenuItems/SetInfrared.cpp		\
 		Game.cpp							\
 		main.cpp
 OUT=./out/

@@ -25,10 +25,13 @@ public:
 	virtual void				addChild(MenuItem *child);
 	virtual const bool			hasChilds() const;
 	virtual const uint8_t		amountOfChilds() const;
-	virtual const std::string	&getTitle() const;
 
 public:
+	virtual const std::string	&getTitle() const;
 	virtual MenuItem			*getParent();
+
+protected:
+	virtual void				setTitle(std::string title);
 
 private:
 	std::string					m_title;

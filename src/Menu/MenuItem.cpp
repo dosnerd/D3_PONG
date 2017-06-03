@@ -49,4 +49,8 @@ MenuItem* Menu::MenuItem::getParent() {
 	return m_pParent;
 }
 
+void Menu::MenuItem::setTitle(std::string title) {
+	m_title = title;
+}
+
 } /* namespace Menu */

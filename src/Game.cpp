@@ -23,6 +23,7 @@
 #include <Menu/MenuItems/PlayerColorSelect.h>
 #include <Menu/MenuItems/OpenMainMenu.h>
 #include <Menu/MenuItems/ResumeGame.h>
+#include <Menu/MenuItems/SetInfrared.h>
 
 Game Game::sInstance;
 Game::Game()
@@ -97,6 +98,7 @@ void Game::pause() {
 void Game::resume() {
 	Menu::MenuBox::getInstance()->hide();
 	m_currentController->play();
+	FPGA::getInstance()->update(FPGA_UPDATE_ALL);
 }
 
 void Game::addSettings(Menu::MenuItem* menu) {
@@ -122,8 +124,8 @@ void Game::addSettings(Menu::MenuItem* menu) {
 
 	settings->addChild(colorPlayer1);
 	settings->addChild(colorPlayer2);
+	settings->addChild(new Menu::MenuItems::SetInfrared(settings));
 	settings->addChild(new Menu::MenuItem("Cancel", settings));
-
 
 	menu->addChild(settings);
 }
@@ -156,6 +158,7 @@ void Game::createMenu() {
 void Game::tick() {
 	m_engine->moveBall();
 	MVC::Observer::handleNotifications();
+	m_MenuViewer.animate();//for animations
 }
 
 void Game::wait(uint32_t time) {
