@@ -9,6 +9,9 @@
 #include <gameEngine/Coordinate.h>
 #include <gameEngine/Ball.h>
 #include <GameControllers/PlayerController.h>
+#include <FPGA.h>
+
+#include <Menu/TextManager.h>
 
 namespace GameControllers {
 
@@ -23,11 +26,30 @@ Tennis::~Tennis() {
 
 void Tennis::onNotify() {
 	GameController::onNotify();
-	GameEngine::GameObject *bat = getBats()[GAMECONTROLLER_BAT1_PLAYER1];
-	GameEngine::Coordinate positionPlayer1 = getPlayer(1)->getPosition();
-	positionPlayer1.setX(positionPlayer1.getX() - bat->getWidth() / 2);
-	positionPlayer1.setY(positionPlayer1.getY() - bat->getHeight() / 2);
-	bat->setPosition(positionPlayer1);
+	uint8_t player;
+	GameEngine::GameObject *bat;// = getBats()[GAMECONTROLLER_BAT1_PLAYER1];
+	GameEngine::Coordinate positionPlayer;//1 = getPlayer(1)->getPosition();
+
+	for (player = 1; player < 3; ++player) {
+		bat = getBats()[player];
+		positionPlayer = getPlayer(player)->getPosition();
+
+		positionPlayer.setX(positionPlayer.getX() - bat->getWidth() / 2);
+		positionPlayer.setY(positionPlayer.getY() - bat->getHeight() / 2);
+
+		bat->setPosition(positionPlayer);
+		Menu::TextManager::setLine(0);
+		Menu::TextManager::setColumn(0);
+		Menu::TextManager::print("(" +
+				Menu::TextManager::to_string(bat->getPosition().getX()) + ", " +
+				Menu::TextManager::to_string(bat->getPosition().getY()) + ")"
+		);
+	}
+
+	if (getFpga() != nullptr){
+		getFpga()->update(FPGA_UPDATE_P1);
+		getFpga()->update(FPGA_UPDATE_P2);
+	}
 }
 
 } /* namespace GameControllers */

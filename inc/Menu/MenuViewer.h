@@ -25,8 +25,8 @@ public:
 private:
 	void 						drawMenu(MenuBox* menu);
 	void 						drawChild(const MenuItem* child, bool selected);
-	void drawFooter();
-	void drawTop();
+	void 						drawFooter();
+	void 						drawTop();
 };
 
 } /* namespace Menu */

@@ -45,4 +45,8 @@ const std::string& MenuItem::getTitle() const {
 	return m_title;
 }
 
+MenuItem* Menu::MenuItem::getParent() {
+	return m_pParent;
+}
+
 } /* namespace Menu */

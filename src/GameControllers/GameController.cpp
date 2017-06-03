@@ -83,12 +83,14 @@ void GameController::setupField(GameEngine::Engine* engine) {
 		m_fpga->setBat(1, m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
 		m_fpga->setBat(2, m_bats[GAMECONTROLLER_BAT1_PLAYER2]);
 		m_fpga->setOption(FPGA_OPTION_NONE | (m_fpga->getOptions() & FPGA_OPTION_MENU));
+		m_fpga->update(FPGA_UPDATE_ALL);
 	}
 }
 
 void GameController::winMatch(uint8_t player) {
 	uint32_t clock = 0xFFFFFF; //TODO: write good timer
-	if (player == 2){
+//	uint32_t clock = 0;
+	if (player == 1){
 		m_player1->setScore(m_player1->getScore() - 1);
 		if (m_player1->getScore() == 0){
 			finishedGame();
@@ -127,11 +129,11 @@ void GameControllers::GameController::onNotify() {
 		winMatch((ballCoordinate->getZ() > 72) + 1);
 
 		//TODO: Randomize speed? + position
-		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX(), ballCoordinate->getY(), 40));
+		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX() % 100, ballCoordinate->getY() % 100, 40));
 		if (getBall()->getSpeed().getZ() < 0)
-			getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
+			getBall()->setSpeed(GameEngine::Coordinate(-5, 3, 1));
 		else
-			getBall()->setSpeed(GameEngine::Coordinate(5, -3, -1));
+			getBall()->setSpeed(GameEngine::Coordinate(-5, 3, -1));
 	}
 
 	if (m_fpga != nullptr)
@@ -140,13 +142,17 @@ void GameControllers::GameController::onNotify() {
 
 void GameController::bind(FPGA* fpga) {
 	m_fpga = fpga;
+	if (m_fpga != nullptr){
+		getFpga()->update(FPGA_UPDATE_P1);
+		getFpga()->update(FPGA_UPDATE_P2);
+	}
 }
 
 GameEngine::GameObject** GameController::getBats() {
 	return m_bats;
 }
 
-const FPGA* GameController::getFpga() const {
+FPGA* GameController::getFpga() {
 	return m_fpga;
 }
 

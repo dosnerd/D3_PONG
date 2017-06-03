@@ -27,6 +27,9 @@ public:
 	virtual const uint8_t		amountOfChilds() const;
 	virtual const std::string	&getTitle() const;
 
+public:
+	virtual MenuItem			*getParent();
+
 private:
 	std::string					m_title;
 	Vector<MenuItem *>			m_childs;

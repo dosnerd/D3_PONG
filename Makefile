@@ -29,6 +29,8 @@ SRCS = 										\
 		Menu/MenuItems/StartDemo.cpp		\
 		Menu/MenuItems/StartTennis.cpp		\
 		Menu/MenuItems/PlayerColorSelect.cpp\
+		Menu/MenuItems/OpenMainMenu.cpp		\
+		Menu/MenuItems/ResumeGame.cpp		\
 		Game.cpp							\
 		main.cpp
 OUT=./out/
@@ -116,4 +118,4 @@ clean:
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
 	
-include $(wildcard $(DEP)/*.d)
+include $(wildcard $(DEP)*/*.d)

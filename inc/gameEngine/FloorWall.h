@@ -19,6 +19,7 @@ public:
 
 public:
 	virtual const bool			isCollided(const GameObject* with, const Coordinate &at) const;
+	virtual const uint8_t		getEffectSides(const GameObject* with, const Coordinate &at) const;
 };
 
 } /* namespace GameEngine */

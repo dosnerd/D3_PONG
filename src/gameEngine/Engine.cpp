@@ -7,6 +7,7 @@
 #define PRINT_DEBUG 0
 #include <gameEngine/Engine.h>
 #include <stdlib.h>
+#include <config_file.h>
 
 #if PRINT_DEBUG
 #include <iostream>
@@ -28,6 +29,9 @@ void Engine::moveBall() {
 	Coordinate ballSpeed = m_ball.getSpeed();
 	Vector<int32_t> transformList;
 	int16_t i;
+
+	if (ballSpeed.getZ() == 0)
+		return;
 
 	getTransformFactors(ballSpeed, transformList);
 
@@ -59,6 +63,42 @@ Ball *Engine::getBall() {
 	return &m_ball;
 }
 
+void Engine::calcEffect(const Coordinate& intersection,
+		GameObject* nearestObject) {
+	uint8_t effect = nearestObject->getEffectSides(&m_ball, intersection);
+	uint32_t newValue;
+
+	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_LEFT) == GAMEOBJECT_BOUNCE_EFFECT_LEFT) {
+		newValue = m_ball.getSpeed().getX() - EFFECT_BOUNCING_FACTOR;
+
+		if (abs(newValue) < MAX_SPEED){
+			m_ball.getSpeed().setX(newValue);
+		}
+	}
+	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_RIGHT) == GAMEOBJECT_BOUNCE_EFFECT_RIGHT) {
+		newValue = m_ball.getSpeed().getX() + EFFECT_BOUNCING_FACTOR;
+
+		if (abs(newValue) < MAX_SPEED){
+			m_ball.getSpeed().setX(newValue);
+		}
+	}
+
+	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_TOP) == GAMEOBJECT_BOUNCE_EFFECT_TOP) {
+		newValue = m_ball.getSpeed().getY() - EFFECT_BOUNCING_FACTOR;
+
+		if (abs(newValue) < MAX_SPEED){
+			m_ball.getSpeed().setY(newValue);
+		}
+	}
+	if ((effect & GAMEOBJECT_BOUNCE_EFFECT_BOTTOM) == GAMEOBJECT_BOUNCE_EFFECT_BOTTOM) {
+		newValue = m_ball.getSpeed().getY() + EFFECT_BOUNCING_FACTOR;
+
+		if (abs(newValue) < MAX_SPEED){
+			m_ball.getSpeed().setY(newValue);
+		}
+	}
+}
+
 Coordinate Engine::calcBounce(int16_t i, Coordinate& ballSpeed, Vector<int32_t>& transformList) {
 	Coordinate intersection, intersection2, ballPos;
 	GameObject* nearestObject = m_objectContainer[i];
@@ -72,21 +112,28 @@ Coordinate Engine::calcBounce(int16_t i, Coordinate& ballSpeed, Vector<int32_t>&
 	if (nearestObject->isCollided(&m_ball, intersection)) {
 		ballSpeed.flip(nearestObject->getCompareAxis());
 		m_ball.getSpeed().flip(nearestObject->getCompareAxis());
+
 		if (existsSaveTransform(i, &transformList, &ballSpeed)) {
 			transformList[i] = NO_TRANSFORM;
+			calcEffect(intersection, nearestObject);
 		} else {
 			m_ball.setPosition(intersection);
 			ballSpeed = (ballSpeed * FIXED_POINT_MULTILIER - ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
+
+			calcEffect(intersection, nearestObject);
 			getTransformFactors(ballSpeed, transformList);
 		}
 	} else if (nearestObject->isCollided(&m_ball, intersection2)) {
 		ballSpeed.flip(nearestObject->getCompareAxis());
 		m_ball.getSpeed().flip(nearestObject->getCompareAxis());
+
 		if (existsSaveTransform(i, &transformList, &ballSpeed)) {
 			transformList[i] = NO_TRANSFORM;
+			calcEffect(intersection2, nearestObject);
 		} else {
 			m_ball.setPosition(intersection);
 			ballSpeed = (ballSpeed * FIXED_POINT_MULTILIER - ballSpeed * transformList[i]) / FIXED_POINT_MULTILIER;
+			calcEffect(intersection2, nearestObject);
 			getTransformFactors(ballSpeed, transformList);
 		}
 	} else {

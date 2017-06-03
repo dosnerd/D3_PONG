@@ -44,10 +44,10 @@ int main(int argc, char *argv[]){
 	Test *a[] = {
 			new Vector_test(),
 			new MVCtest(),
-			new GameEngine::CoordinateTest(),
-			new GameEngine::GameObjectTest(),
-//			new GameEngine::EngineTest(),
-			new GameControllers::DemoTest(),
+//			new GameEngine::CoordinateTest(),
+//			new GameEngine::GameObjectTest(),
+			new GameEngine::EngineTest(),
+//			new GameControllers::DemoTest(),
 	};
 	std::thread tests[sizeof(a) / sizeof(Test *)];
 

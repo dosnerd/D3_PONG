@@ -5,7 +5,7 @@
  *      Author: Acer
  */
 
-#include "D:/School/3d_pong/program/3D_PONG/test/inc/TestFailsException.h"
+#include <TestFailsException.h>
 
 TestFailsException::TestFailsException(std::string message)
 	: m_message(message)

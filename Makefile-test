@@ -13,10 +13,6 @@ SRCS = 										\
 		gameEngine/EngineTest.cpp			\
 		gameEngine/SideWall.cpp				\
 		gameEngine/FloorWall.cpp			\
-		GameControllers/GameController.cpp	\
-		GameControllers/Demo.cpp			\
-		GameControllers/DemoImpl.cpp		\
-		GameControllers/DemoTest.cpp		\
 		MVC/Model.cpp						\
 		MVC/View.cpp						\
 		MVC/Controller.cpp					\
@@ -27,6 +23,12 @@ SRCS = 										\
 		MVC/ImplemController.cpp			\
 		TestFailsException.cpp				\
 		main_test.cpp
+
+
+#		GameControllers/GameController.cpp	\
+#		GameControllers/Demo.cpp			\
+#		GameControllers/DemoImpl.cpp		\
+#		GameControllers/DemoTest.cpp		\
 
 OUT=./out_test/
 BIN=./out_test/

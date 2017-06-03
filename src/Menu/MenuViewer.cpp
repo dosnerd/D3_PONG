@@ -4,8 +4,8 @@
  *  Created on: 31 mei 2017
  *      Author: Acer
  */
-#include <config_file.h>
 #include <Menu/MenuViewer.h>
+#include <config_file.h>
 #include <Menu/MenuBox.h>
 #include <Menu/MenuItem.h>
 #include <Menu/TextManager.h>
@@ -35,11 +35,11 @@ MenuViewer::~MenuViewer() {
 
 void MenuViewer::drawChild(const MenuItem* child, bool selected) {
 	uint8_t  amountSpace = MENU_WIDTH/2 - child->getTitle().length() / 2;
-	TextManager::setColumn(BORDER_LEFT);
+	TextManager::setColumn(BORDER_LEFT - 1);
 	if (selected) {
-		TextManager::print(">");
+		TextManager::print(" >");
 	} else {
-		TextManager::print(" ");
+		TextManager::print("  ");
 	}
 
 	TextManager::print(std::string(amountSpace, ' '));
@@ -48,9 +48,9 @@ void MenuViewer::drawChild(const MenuItem* child, bool selected) {
 	TextManager::print(std::string(amountSpace, ' '));
 
 	if (selected) {
-		TextManager::print("<");
+		TextManager::print("< ");
 	} else {
-		TextManager::print(" ");
+		TextManager::print("  ");
 	}
 }
 
@@ -71,16 +71,21 @@ void MenuViewer::drawMenu(MenuBox* menu) {
 	TextManager::print(std::string(amountSpace, ' '));
 
 	TextManager::setColor(ITEM_COLOR);
-	for (i = 0; i < parent->amountOfChilds(); ++i) {
+	for (i = 0; i < 10; ++i) {
 		TextManager::setLine(5 + i);
-		if (i == menu->getSelected()){
-			TextManager::setColor(SELECTED_COLOR);
+		if (i < parent->amountOfChilds()){
+			if (i == menu->getSelected()){
+				TextManager::setColor(SELECTED_COLOR);
 
-			drawChild((*parent)[i], true);
+				drawChild((*parent)[i], true);
 
-			TextManager::setColor(ITEM_COLOR);
+				TextManager::setColor(ITEM_COLOR);
+			} else {
+				drawChild((*parent)[i], false);
+			}
 		} else {
-			drawChild((*parent)[i], false);
+			TextManager::setColumn(BORDER_LEFT - 1);
+			TextManager::print(std::string(MENU_WIDTH * 2 + 1, ' '));
 		}
 	}
 }

@@ -31,4 +31,10 @@ const bool FloorWall::isCollided(const GameObject* with, const Coordinate &at) c
 	return false;
 }
 
+const uint8_t GameEngine::FloorWall::getEffectSides(const GameObject* with, const Coordinate& at) const {
+	(void)with;
+	(void)at;
+	return 0;
+}
+
 } /* namespace GameEngine */

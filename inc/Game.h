@@ -29,6 +29,10 @@ public:
 	void								wait(uint32_t time);
 	void								setGameController(GameControllers::GameController *controller);
 	void								setEngine(GameEngine::Engine *engine);
+	void								openMainMenu();
+
+	void								pause();
+	void								resume();
 
 public:
 	static Game							*getInstance();
@@ -43,12 +47,15 @@ private:
 	GameControllers::PlayerController 	m_player1, m_player2;
 	GameControllers::GameController		*m_currentController;
 
-	Menu::MenuItem						m_mainMenu;
+	Menu::MenuItem						m_mainMenu, m_pauseMenu;
 	Menu::MenuViewer					m_MenuViewer;
 
 
 private:
 	void 								createMenu();
+	void 								createMainMenu();
+	void 								CreatePauseMenu();
+	void 								addSettings(Menu::MenuItem* menu);
 };
 
 #endif /* INC_GAME_H_ */

@@ -9,6 +9,7 @@
 #include <gameEngine/Ball.h>
 #include <gameEngine/GameObject.h>
 #include <stdlib.h>
+#include <FPGA.h>
 
 #define MAX_BAT_SPEED 12
 
@@ -86,9 +87,11 @@ void Demo::moveBat() {
 	GameEngine::Coordinate batSpeed = calcBatSpeed(player, batPosition);
 	GameEngine::Coordinate batNewPosition = calcBatNewPosition(batPosition, batSpeed);
 	getBats()[player]->setPosition(batNewPosition);
+	getFpga()->update(FPGA_UPDATE_P1);
 
 	if (getBats()[player + 2] != nullptr){
 		getBats()[player + 2]->setPosition(batNewPosition);
+		getFpga()->update(FPGA_UPDATE_P2);
 	}
 }
 

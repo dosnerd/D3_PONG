@@ -98,6 +98,7 @@ GameEngine::Engine* EngineTest::getGameField() {
 void EngineTest::GameField(int cicles, GameEngine::Coordinate speed) {
 	int i;
 	GameEngine::Engine* engine = getGameField();
+	const GameEngine::Coordinate *erroPos;
 	engine->getBall()->setPosition(GameEngine::Coordinate(-270, 0, 15));
 	engine->getBall()->setSpeed(speed);
 
@@ -112,6 +113,21 @@ void EngineTest::GameField(int cicles, GameEngine::Coordinate speed) {
 //		std::cout << engine->getBall()->getSpeed().getZ() << std::endl;
 
 		if (abs(engine->getBall()->getPosition().getX()) > 320){
+			erroPos = &engine->getBall()->getPosition();
+			appendToResultMessage("Cicle: " + std::to_string(i) + "\n");
+			appendToResultMessage(
+					"ball speed: " +
+					std::to_string(engine->getBall()->getSpeed().getX()) + ", " +
+					std::to_string(engine->getBall()->getSpeed().getY()) + ", " +
+					std::to_string(engine->getBall()->getSpeed().getZ()) + ") \n"
+			);
+			appendToResultMessage(
+					"(" +
+					std::to_string(erroPos->getX()) + ", " +
+					std::to_string(erroPos->getY()) + ", " +
+					std::to_string(erroPos->getZ()) + ") \n"
+			);
+
 			delete engine;
 			fail("Out of field X");
 		}

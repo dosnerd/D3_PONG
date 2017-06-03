@@ -19,7 +19,6 @@ int main(void)
 	bool pressed = false;
 	LEDS *leds = LEDS::getInstance();
 	Game *game = Game::getInstance();
-	Menu::MenuItem *main = Menu::MenuBox::getInstance()->getCurrentMenu();
 
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);
@@ -31,9 +30,11 @@ int main(void)
 
 	Menu::TextManager::clearAll();
 
+	game->openMainMenu();
+
 	while(i){
 		game->tick();
-//		game->wait(0xFF);
+//		game->wait(0xFFFF);
 		game->wait(0x85FFF);
 
 		if (i & 0x4){
@@ -42,6 +43,7 @@ int main(void)
 		else{
 			leds->turnOff(LEDS::BLUE);
 		}
+		LEDS::getInstance()->turnOff(LEDS::GREEN);
 
 		i++;
 		if (i & 0b1){
@@ -51,7 +53,7 @@ int main(void)
 					if (Menu::MenuBox::getInstance()->isShowing())
 						Menu::MenuBox::getInstance()->select();
 					else
-						Menu::MenuBox::getInstance()->show(main);
+						game->pause();
 					pressed = true;
 				}
 			} else {

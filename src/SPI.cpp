@@ -43,16 +43,16 @@ void SPI::GPIOinit() {
 
 
 #if SPI_SLAVE_MODE_ENABLE
-	//Configure PD8 as output pushpull
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
-	GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_8;
+	//Configure PD12 as output pushpull
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	GPIO_InitStructure2.GPIO_Pin = GPIO_Pin_12;
 	GPIO_InitStructure2.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure2.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure2.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOD, &GPIO_InitStructure2);
+	GPIO_Init(GPIOB, &GPIO_InitStructure2);
 
-	GPIO_SetBits(GPIOD, GPIO_Pin_8);
+	GPIO_SetBits(GPIOB, GPIO_Pin_12);
 #endif
 }
 
@@ -86,10 +86,10 @@ void SPI::write(uint16_t data){
 		; // wait until SPI is not busy
 
 #if SPI_SLAVE_MODE_ENABLE
-	while (!GPIO_ReadOutputDataBit(GPIOD, GPIO_Pin_8))
+	while (!GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_12))
 		;
 
-	GPIO_ResetBits(GPIOD, GPIO_Pin_8);
+	GPIO_ResetBits(GPIOB, GPIO_Pin_12);
 #endif
 
 	SPI_I2S_SendData(SPI2, data);
@@ -161,7 +161,7 @@ void SPI2_IRQHandler(){
 		SPI::getInstance()->interruptRead();
 
 #if SPI_SLAVE_MODE_ENABLE
-		GPIO_SetBits(GPIOD, GPIO_Pin_8);
+		GPIO_SetBits(GPIOB, GPIO_Pin_12);
 #endif
 	}
 }

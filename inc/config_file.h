@@ -1,7 +1,11 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-#define PROGRAM_VERSION	"Version 0.5.84"
+#define PROGRAM_VERSION	"Version 0.5.103"
+
+#define SPACE_BOUNCING_EFFECT	10
+#define EFFECT_BOUNCING_FACTOR	7
+#define MAX_SPEED				100
 
 #define UART_INTERRUPT_ENABLE 	1
 #define UART_WRITE_MODE_ENABLE 	1

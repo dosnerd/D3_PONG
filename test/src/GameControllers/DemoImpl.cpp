@@ -7,11 +7,12 @@
 
 #include <GameControllers/DemoImpl.h>
 #include <iostream>
+#include <Game.h>
 
 namespace GameControllers {
 
 DemoImpl::DemoImpl(GameEngine::Ball *ball)
-	: Demo(ball)
+	: Demo(ball, Game::getInstance()->getPlayer(1), Game::getInstance()->getPlayer(2))
 {
 
 }

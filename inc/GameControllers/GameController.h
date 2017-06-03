@@ -42,7 +42,7 @@ public:
 protected:
 	virtual void					winMatch(uint8_t player);
 	virtual void					finishedGame();
-	const FPGA						*getFpga() const;
+	FPGA							*getFpga();
 
 
 protected:

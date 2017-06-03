@@ -113,6 +113,7 @@ void FPGA::setBat(uint8_t player, GameEngine::GameObject* bat) {
 
 void FPGA::setOption(uint16_t options) {
 	m_options = options;
+	update(FPGA_UPDATE_OPTIONS);
 }
 
 void FPGA::setRegister(uint8_t reg, uint16_t value) {
@@ -144,7 +145,7 @@ void FPGA::printScore(GameControllers::PlayerController* player, uint8_t playerN
 		Menu::TextManager::setColumn(69);
 
 	if (inNumbers)
-		Menu::TextManager::print(Menu::TextManager::to_string(player->getScore()));
+		Menu::TextManager::print(Menu::TextManager::to_string(player->getScore()) + "       ");
 	else {
 		for (i = 0; i < player->getScore(); ++i) {
 			Menu::TextManager::print(std::string({(char)0x03}));

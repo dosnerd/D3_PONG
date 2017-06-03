@@ -11,6 +11,11 @@
 #include <stdint.h>
 #include <GameEngine/Coordinate.h>
 
+#define GAMEOBJECT_BOUNCE_EFFECT_LEFT	0x1
+#define GAMEOBJECT_BOUNCE_EFFECT_RIGHT	0x2
+#define GAMEOBJECT_BOUNCE_EFFECT_TOP	0x4
+#define GAMEOBJECT_BOUNCE_EFFECT_BOTTOM	0x8
+
 namespace GameEngine {
 
 class GameObject {
@@ -21,6 +26,7 @@ public:
 public:
 	virtual const bool			isCollided(const GameObject* with, const Coordinate &at) const;
 	virtual Coordinate			distanceTo(const GameObject *object) const;
+	virtual const uint8_t		getEffectSides(const GameObject* with, const Coordinate &at) const;
 
 public:
 	const Coordinate::AXIS 		getCompareAxis() const;
