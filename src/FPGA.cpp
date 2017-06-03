@@ -123,7 +123,7 @@ void FPGA::setRegister(uint8_t reg, uint16_t value) {
 	m_stream->write(value);
 }
 
-void FPGA::printScore(GameControllers::PlayerController* player, uint8_t playerNumber, bool inNumbers) {
+void FPGA::printScore(GameControllers::PlayerController* player, uint8_t playerNumber, bool playALone) {
 	uint16_t i;
 	if (Menu::MenuBox::getInstance()->isShowing()){
 		return;
@@ -136,17 +136,29 @@ void FPGA::printScore(GameControllers::PlayerController* player, uint8_t playerN
 	else
 		Menu::TextManager::setColumn(69);
 
-	Menu::TextManager::print("Player :");
-	Menu::TextManager::printLine(Menu::TextManager::to_string(playerNumber));
+	if (playALone){
+		if (playerNumber == 1)
+			Menu::TextManager::printLine("Player 1: ");
+		else
+			Menu::TextManager::printLine("Top Score:");
 
-	if (playerNumber == 1)
-		Menu::TextManager::setColumn(1);
-	else
-		Menu::TextManager::setColumn(69);
+		if (playerNumber == 1)
+			Menu::TextManager::setColumn(1);
+		else
+			Menu::TextManager::setColumn(69);
 
-	if (inNumbers)
 		Menu::TextManager::print(Menu::TextManager::to_string(player->getScore()) + "       ");
+	}
 	else {
+		Menu::TextManager::print("Player ");
+		Menu::TextManager::print(Menu::TextManager::to_string(playerNumber));
+		Menu::TextManager::printLine(": ");
+
+		if (playerNumber == 1)
+			Menu::TextManager::setColumn(1);
+		else
+			Menu::TextManager::setColumn(69);
+
 		for (i = 0; i < player->getScore(); ++i) {
 			Menu::TextManager::print(std::string({(char)0x03}));
 		}

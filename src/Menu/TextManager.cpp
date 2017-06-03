@@ -12,6 +12,7 @@ namespace Menu {
 
 uint8_t TextManager::m_row = 0, TextManager::m_column = 0;
 uint16_t TextManager::m_color = 0xFFF;
+bool TextManager::m_colorChanged = true;
 TextManager::TextManager()
 {
 }
@@ -29,7 +30,10 @@ void Menu::TextManager::print(std::string text) {
 		} else {
 			FPGA::getInstance()->setRegister(FPGA_REGISTER_TEXT_ADDRESS, m_column + m_row * 128);
 			FPGA::getInstance()->setRegister(FPGA_REGISTER_TEXT_VALUE, text.c_str()[i]);
-			FPGA::getInstance()->setRegister(FPGA_REGISTER_TEXT_COLOR, m_color);
+			if (m_colorChanged){
+				FPGA::getInstance()->setRegister(FPGA_REGISTER_TEXT_COLOR, m_color);
+				m_colorChanged = false;
+			}
 			m_column++;
 		}
 	}
@@ -54,6 +58,7 @@ void Menu::TextManager::clearAll() {
 
 void TextManager::setColor(uint16_t color) {
 	m_color = color;
+	m_colorChanged = true;
 }
 
 void Menu::TextManager::clearLine() {

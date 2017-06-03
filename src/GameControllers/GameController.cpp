@@ -30,11 +30,11 @@ GameController::~GameController() {
 
 }
 
-void GameController::play() {
+void GameController::play(bool scoreAsNumber) {
 	if (m_paused)
 		getBall()->setSpeed(m_saveCoordinate);
-	m_fpga->printScore(m_player1, 1);
-	m_fpga->printScore(m_player2, 2);
+	m_fpga->printScore(m_player1, 1, scoreAsNumber);
+	m_fpga->printScore(m_player2, 2, scoreAsNumber);
 	m_paused = false;
 }
 

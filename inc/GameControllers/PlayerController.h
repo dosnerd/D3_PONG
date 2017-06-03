@@ -29,7 +29,6 @@ public:
 	GameEngine::Coordinate		getPosition() const;
 	void 						setScore(uint16_t score);
 	void						setColor(uint16_t color);
-	void						temp();
 
 private:
 	uint16_t					m_score, m_color;

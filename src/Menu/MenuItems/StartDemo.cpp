@@ -27,7 +27,6 @@ namespace Menu {
 	void StartDemo::select() {
 		Game *game = Game::getInstance();
 
-
 		game->setEngine(new GameEngine::Engine());
 
 		GameControllers::Demo *controller = new GameControllers::Demo(game->getEngine()->getBall(), game->getPlayer(1), game->getPlayer(2));

@@ -85,10 +85,4 @@ GameEngine::Coordinate PlayerController::getPosition() const {
 	return m_position;
 }
 
-void PlayerController::temp() {
-//	if (m_position.getX() > 120){
-		m_position = GameEngine::Coordinate(0,0, m_position.getZ());
-//	}
-}
-
 } /* namespace GameControllers */

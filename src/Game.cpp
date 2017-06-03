@@ -19,6 +19,7 @@
 #include <Menu/MenuItem.h>
 #include <Menu/MenuItems/StartDemo.h>
 #include <Menu/MenuItems/StartTennis.h>
+#include <Menu/MenuItems/StartHandball.h>
 #include <Menu/MenuItems/PlayerColorSelect.h>
 #include <Menu/MenuItems/OpenMainMenu.h>
 #include <Menu/MenuItems/ResumeGame.h>
@@ -132,7 +133,7 @@ void Game::createMainMenu() {
 	startGame->addChild(new Menu::MenuItems::StartDemo(startGame));
 	startGame->addChild(new Menu::MenuItems::StartTennis(startGame));
 	startGame->addChild(new Menu::MenuItem("Hockey", startGame));
-	startGame->addChild(new Menu::MenuItem("Handball", startGame));
+	startGame->addChild(new Menu::MenuItems::StartHandball(startGame));
 
 	m_mainMenu.addChild(startGame);
 	addSettings(&m_mainMenu);
@@ -155,8 +156,6 @@ void Game::createMenu() {
 void Game::tick() {
 	m_engine->moveBall();
 	MVC::Observer::handleNotifications();
-//	FPGA::getInstance()->update(FPGA_UPDATE_ALL);
-	m_player1.temp();
 }
 
 void Game::wait(uint32_t time) {

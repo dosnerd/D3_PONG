@@ -14,8 +14,8 @@
 #define FPGA_OPTION_TEST_MODE 		0x01
 #define FPGA_OPTION_INFRARED_MODE 	0x02
 #define FPGA_OPTION_MENU 			0x08
-#define FPGA_OPTION_HANDBAL_MODE 	0x32
-#define FPGA_OPTION_HOCKEY_MODE 	0x64
+#define FPGA_OPTION_HANDBAL_MODE 	0x20
+#define FPGA_OPTION_HOCKEY_MODE 	0x40
 
 #define FPGA_REGISTER_X_BALL		0x1
 #define FPGA_REGISTER_Y_BALL		0x2
@@ -64,7 +64,7 @@ public:
 	virtual void				setBat(uint8_t player, GameEngine::GameObject *bat);
 	virtual void				setOption(uint16_t options);
 	virtual void				setRegister(uint8_t reg, uint16_t value);
-	virtual void				printScore(GameControllers::PlayerController *player, uint8_t playerNumber, bool inNumbers = false);
+	virtual void				printScore(GameControllers::PlayerController *player, uint8_t playerNumber, bool playALone = false);
 	
 	
 

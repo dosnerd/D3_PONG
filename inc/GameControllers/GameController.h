@@ -33,7 +33,7 @@ public:
 	virtual 						~GameController();
 
 public:
-	virtual void					play();
+	virtual void					play(bool scoreAsNumber = false);
 	virtual void					pause();
 	virtual void					bind(FPGA *fpga);
 	virtual void					setupField(GameEngine::Engine *engine);
@@ -42,10 +42,10 @@ public:
 protected:
 	virtual void					winMatch(uint8_t player);
 	virtual void					finishedGame();
-	FPGA							*getFpga();
 
 
 protected:
+	FPGA							*getFpga();
 	virtual GameEngine::Ball		*getBall();
 	virtual GameEngine::GameObject	**getBats();
 	virtual PlayerController		*getPlayer(uint8_t player);

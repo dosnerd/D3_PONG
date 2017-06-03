@@ -32,6 +32,7 @@ public:
 private:
 	static uint8_t				m_row, m_column;
 	static uint16_t				m_color;
+	static bool					m_colorChanged;
 };
 
 } /* namespace Menu */

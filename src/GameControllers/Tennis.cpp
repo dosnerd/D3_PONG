@@ -36,14 +36,9 @@ void Tennis::onNotify() {
 
 		positionPlayer.setX(positionPlayer.getX() - bat->getWidth() / 2);
 		positionPlayer.setY(positionPlayer.getY() - bat->getHeight() / 2);
+		positionPlayer.setZ(bat->getPosition().getZ());
 
 		bat->setPosition(positionPlayer);
-		Menu::TextManager::setLine(0);
-		Menu::TextManager::setColumn(0);
-		Menu::TextManager::print("(" +
-				Menu::TextManager::to_string(bat->getPosition().getX()) + ", " +
-				Menu::TextManager::to_string(bat->getPosition().getY()) + ")"
-		);
 	}
 
 	if (getFpga() != nullptr){

@@ -1,7 +1,7 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-#define PROGRAM_VERSION	"Version 0.5.103"
+#define PROGRAM_VERSION	"Version 0.5.117"
 
 #define SPACE_BOUNCING_EFFECT	10
 #define EFFECT_BOUNCING_FACTOR	7

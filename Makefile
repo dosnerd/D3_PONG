@@ -15,6 +15,7 @@ SRCS = 										\
 		gameEngine/SideWall.cpp				\
 		gameEngine/FloorWall.cpp			\
 		GameControllers/GameController.cpp	\
+		GameControllers/Handball.cpp		\
 		GameControllers/Tennis.cpp			\
 		GameControllers/Demo.cpp			\
 		GameControllers/PlayerController.cpp\
@@ -28,6 +29,7 @@ SRCS = 										\
 		Menu/MenuViewer.cpp					\
 		Menu/MenuItems/StartDemo.cpp		\
 		Menu/MenuItems/StartTennis.cpp		\
+		Menu/MenuItems/StartHandball.cpp	\
 		Menu/MenuItems/PlayerColorSelect.cpp\
 		Menu/MenuItems/OpenMainMenu.cpp		\
 		Menu/MenuItems/ResumeGame.cpp		\
