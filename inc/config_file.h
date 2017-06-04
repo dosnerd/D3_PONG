@@ -8,6 +8,9 @@
 #define MAX_SPEED_BALL_X_Y		300
 #define MAX_BAT_SPEED 			20
 
+#define BAT_WITDH				240
+#define BAT_HEIGHT				160
+
 #define UART_INTERRUPT_ENABLE 	1
 #define UART_WRITE_MODE_ENABLE 	1
 #define UART_BUFFER_LENGTH		20

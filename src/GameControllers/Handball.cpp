@@ -13,6 +13,7 @@
 #include <gameEngine/FloorWall.h>
 #include <gameEngine/Coordinate.h>
 #include <GameControllers/PlayerController.h>
+#include <config_file.h>
 
 namespace GameControllers {
 
@@ -36,7 +37,7 @@ void Handball::setupField(GameEngine::Engine* engine) {
 	GameEngine::GameObject* wallTop = new GameEngine::FloorWall(640, 100);
 	GameEngine::GameObject* wallBottom = new GameEngine::FloorWall(640, 100);
 	GameEngine::GameObject* playWall = new GameEngine::GameObject(GameEngine::Coordinate::Z, 640, 480);
-	getBats()[GAMECONTROLLER_BAT1_PLAYER1] = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	getBats()[GAMECONTROLLER_BAT1_PLAYER1] = new GameEngine::GameObject(GameEngine::Coordinate::Z, BAT_WITDH, BAT_HEIGHT);
 
 	wallBack->setPosition(GameEngine::Coordinate(-320, -240, 80));
 	wallFront->setPosition(GameEngine::Coordinate(-320, -240, 0));
@@ -45,7 +46,7 @@ void Handball::setupField(GameEngine::Engine* engine) {
 	wallTop->setPosition(GameEngine::Coordinate(-320, 240, 0));
 	wallBottom->setPosition(GameEngine::Coordinate(-320, -240, 0));
 	playWall->setPosition(GameEngine::Coordinate(-320, -240, 72));
-	getBats()[GAMECONTROLLER_BAT1_PLAYER1]->setPosition(GameEngine::Coordinate(-120, -90, 8));
+	getBats()[GAMECONTROLLER_BAT1_PLAYER1]->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 8));
 
 	engine->addObject(wallFront);
 	engine->addObject(wallBack);

@@ -19,6 +19,7 @@
 #include <Menu/MenuItem.h>
 #include <Menu/MenuItems/StartDemo.h>
 #include <Menu/MenuItems/StartTennis.h>
+#include <Menu/MenuItems/StartHockey.h>
 #include <Menu/MenuItems/StartHandball.h>
 #include <Menu/MenuItems/PlayerColorSelect.h>
 #include <Menu/MenuItems/OpenMainMenu.h>
@@ -134,7 +135,7 @@ void Game::createMainMenu() {
 	Menu::MenuItem* startGame = new Menu::MenuItem("Start Game", &m_mainMenu);
 	startGame->addChild(new Menu::MenuItems::StartDemo(startGame));
 	startGame->addChild(new Menu::MenuItems::StartTennis(startGame));
-	startGame->addChild(new Menu::MenuItem("Hockey", startGame));
+	startGame->addChild(new Menu::MenuItems::StartHockey(startGame));
 	startGame->addChild(new Menu::MenuItems::StartHandball(startGame));
 
 	m_mainMenu.addChild(startGame);

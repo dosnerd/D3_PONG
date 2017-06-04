@@ -18,6 +18,7 @@ SRCS = 										\
 		GameControllers/Handball.cpp		\
 		GameControllers/Tennis.cpp			\
 		GameControllers/Demo.cpp			\
+		GameControllers/Hockey.cpp			\
 		GameControllers/PlayerController.cpp\
 		MVC/Model.cpp						\
 		MVC/View.cpp						\
@@ -30,6 +31,7 @@ SRCS = 										\
 		Menu/MenuItems/StartDemo.cpp		\
 		Menu/MenuItems/StartTennis.cpp		\
 		Menu/MenuItems/StartHandball.cpp	\
+		Menu/MenuItems/StartHockey.cpp		\
 		Menu/MenuItems/PlayerColorSelect.cpp\
 		Menu/MenuItems/OpenMainMenu.cpp		\
 		Menu/MenuItems/ResumeGame.cpp		\

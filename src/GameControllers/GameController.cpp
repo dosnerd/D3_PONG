@@ -13,6 +13,7 @@
 #include <GameControllers/PlayerController.h>
 
 #include <FPGA.h>
+#include <config_file.h>
 
 namespace GameControllers {
 
@@ -51,8 +52,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	GameEngine::GameObject* wallRight = new GameEngine::SideWall(100, 480);
 	GameEngine::GameObject* wallTop = new GameEngine::FloorWall(640, 100);
 	GameEngine::GameObject* wallBottom = new GameEngine::FloorWall(640, 100);
-	m_bats[GAMECONTROLLER_BAT1_PLAYER1] = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
-	m_bats[GAMECONTROLLER_BAT1_PLAYER2] = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
+	m_bats[GAMECONTROLLER_BAT1_PLAYER1] = new GameEngine::GameObject(GameEngine::Coordinate::Z, BAT_WITDH, BAT_HEIGHT);
+	m_bats[GAMECONTROLLER_BAT1_PLAYER2] = new GameEngine::GameObject(GameEngine::Coordinate::Z, BAT_WITDH, BAT_HEIGHT);
 
 	wallBack->setPosition(GameEngine::Coordinate(-320, -240, 80));
 	wallFront->setPosition(GameEngine::Coordinate(-320, -240, 0));
@@ -60,8 +61,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	wallRight->setPosition(GameEngine::Coordinate(320, -240, 0));
 	wallTop->setPosition(GameEngine::Coordinate(-320, 240, 0));
 	wallBottom->setPosition(GameEngine::Coordinate(-320, -240, 0));
-	m_bats[GAMECONTROLLER_BAT1_PLAYER1]->setPosition(GameEngine::Coordinate(-120, -90, 8));
-	m_bats[GAMECONTROLLER_BAT1_PLAYER2]->setPosition(GameEngine::Coordinate(-120, -90, 72));
+	m_bats[GAMECONTROLLER_BAT1_PLAYER1]->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 8));
+	m_bats[GAMECONTROLLER_BAT1_PLAYER2]->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 72));
 
 	engine->addObject(wallFront);
 	engine->addObject(wallBack);
@@ -72,8 +73,11 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
 	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER2]);
 
-	getBall()->setPosition(GameEngine::Coordinate(0, 0, 40));
-	getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
+	getBall()->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 40));
+	getBall()->setSpeed(GameEngine::Coordinate(0, 0, 1));
+
+//	getBall()->setPosition(GameEngine::Coordinate(0, 0, 40));
+//	getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
 
 	m_player1->setScore(5);
 	m_player2->setScore(5);
@@ -131,6 +135,9 @@ void GameControllers::GameController::onNotify() {
 		winMatch((ballCoordinate->getZ() > 72) + 1);
 
 		//TODO: Randomize speed? + position
+//		getBall()->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 40));
+//		getBall()->setSpeed(GameEngine::Coordinate(0, 0, -1));
+
 		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX() % 100, ballCoordinate->getY() % 100, 40));
 		if (getBall()->getSpeed().getZ() < 0)
 			getBall()->setSpeed(GameEngine::Coordinate(-5, 3, 1));
