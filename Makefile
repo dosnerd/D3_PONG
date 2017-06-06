@@ -6,6 +6,7 @@ SRCS = 										\
 		Buttons.cpp							\
 		SPI.cpp								\
 		UART.cpp							\
+		TimingControl.cpp							\
 		LEDS.cpp							\
 		FPGA.cpp							\
 		gameEngine/Coordinate.cpp			\

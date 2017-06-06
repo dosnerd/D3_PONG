@@ -118,9 +118,9 @@ void MenuViewer::animateColor(uint8_t shifter) {
 		difference 	= ((int8_t)SELECTED_COLOR >> shifter) - ((int8_t)m_animationColor >> shifter),
 		color		= m_animationColor >> shifter;
 	int16_t filter = 0x0F << shifter;
-	if (difference < 0) {
+	if (difference > 0) {
 		color += 1;
-	} else if (difference > 0) {
+	} else if (difference < 0) {
 		color -= 1;
 	}
 

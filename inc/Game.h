@@ -33,6 +33,7 @@ public:
 
 	void								pause();
 	void								resume();
+	void								animateMenu();
 
 public:
 	static Game							*getInstance();

@@ -5,14 +5,17 @@
  *      Author: Acer
  */
 
-#include <GameControllers/Handball.h>
 #include <FPGA.h>
+#include <Game.h>
+
+#include <GameControllers/Handball.h>
+#include <GameControllers/PlayerController.h>
+
 #include <gameEngine/Engine.h>
 #include <gameEngine/GameObject.h>
 #include <gameEngine/SideWall.h>
 #include <gameEngine/FloorWall.h>
 #include <gameEngine/Coordinate.h>
-#include <GameControllers/PlayerController.h>
 #include <config_file.h>
 
 namespace GameControllers {
@@ -120,12 +123,10 @@ void Handball::play(bool scoreAsNumber) {
 }
 
 void Handball::winMatch(uint8_t player) {
-	uint32_t clock = 0xFFFFFF; //TODO: write good timer
 	getPlayer(1)->setScore(0);
 	m_counter = 0;
 
-	while(clock--)
-		asm("nop");
+	Game::getInstance()->wait(0x8000000);
 	(void)player;
 }
 

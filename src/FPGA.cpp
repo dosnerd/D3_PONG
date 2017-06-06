@@ -5,9 +5,10 @@
  *      Author: Acer
  */
 
-#include <FPGA.h>
 #include <stm32f4xx_conf.h>
 #include <Stream.h>
+#include <FPGA.h>
+#include <Game.h>
 #include <SPI.h>
 
 #include <gameEngine/GameObject.h>
@@ -48,12 +49,13 @@ void FPGA::update(uint8_t items) {
 	if (items & FPGA_UPDATE_P1){
 		setRegister(FPGA_REGISTER_X_BAT_P1, -batP1Coordinates.getX() - (m_objects[BAT_P1]->getWidth() / 2));
 		setRegister(FPGA_REGISTER_Y_BAT_P1, -batP1Coordinates.getY() - (m_objects[BAT_P1]->getHeight() / 2));
-
+		setRegister(FPGA_REGISTER_COLOR_PLAYER1, Game::getInstance()->getPlayer(1)->getColor());
 	}
 
 	if (items & FPGA_UPDATE_P2){
 		setRegister(FPGA_REGISTER_X_BAT_P2, -batP2Coordinates.getX() - (m_objects[BAT_P2]->getWidth() / 2));
 		setRegister(FPGA_REGISTER_Y_BAT_P2, -batP2Coordinates.getY() - (m_objects[BAT_P2]->getHeight() / 2));
+		setRegister(FPGA_REGISTER_COLOR_PLAYER2, Game::getInstance()->getPlayer(2)->getColor());
 	}
 
 	if (items & FPGA_UPDATE_OPTIONS){

@@ -20,7 +20,6 @@ public:
 
 public:
 	static void					handleNotifications();
-	static void					setObserverContainer(Vector<Observer*>*& observerContainer);
 	static void 				checkContainerExists();
 	static void					emptyContainer();
 

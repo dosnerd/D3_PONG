@@ -26,12 +26,10 @@ public:
 public:
 	virtual const bool			isCollided(const GameObject* with, const Coordinate &at) const;
 	virtual Coordinate			distanceTo(const GameObject *object) const;
+
+public:
 	virtual const uint8_t		getEffectSides(const GameObject* with, const Coordinate &at) const;
-
-public:
 	const Coordinate::AXIS 		getCompareAxis() const;
-
-public:
 	const Coordinate& 			getPosition() const;
 	int32_t 					getHeight() const;
 	int32_t 					getWidth() const;

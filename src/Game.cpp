@@ -9,6 +9,7 @@
 #include <config_file.h>
 #include <FPGA.h>
 #include <UART.h>
+#include <TimingControl.h>
 
 #include <gameEngine/Engine.h>
 
@@ -102,6 +103,10 @@ void Game::resume() {
 	FPGA::getInstance()->update(FPGA_UPDATE_ALL);
 }
 
+void Game::animateMenu() {
+	m_MenuViewer.animate(); //for animations
+}
+
 void Game::addSettings(Menu::MenuItem* menu) {
 	Menu::MenuItem* settings = new Menu::MenuItem("Settings", menu);
 
@@ -158,14 +163,10 @@ void Game::createMenu() {
 
 void Game::tick() {
 	m_engine->moveBall();
-	MVC::Observer::handleNotifications();
-	m_MenuViewer.animate();//for animations
 }
 
 void Game::wait(uint32_t time) {
-	while(time--) {
-		asm volatile ("nop");
-	}
+	TimingControl::getInstance()->setDelay(GAME_TIMER, time);
 }
 
 GameControllers::GameController* Game::getCurrentController() {

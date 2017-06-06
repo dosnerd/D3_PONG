@@ -4,6 +4,7 @@
 #include <Buttons.h>
 
 #include <UART.h>
+#include <TimingControl.h>
 
 #include <Menu/MenuBox.h>
 #include <Menu/TextManager.h>
@@ -15,10 +16,11 @@
 
 int main(void)
 {
-	volatile int16_t i = 0x55;
-	bool pressed = false;
+	volatile int8_t i = 0x55;
+	bool pressed = false, blueOn=false;
 	LEDS *leds = LEDS::getInstance();
 	Game *game = Game::getInstance();
+	TimingControl *timer = TimingControl::getInstance();
 
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);
@@ -33,37 +35,47 @@ int main(void)
 	game->openMainMenu();
 
 	while(i){
-		game->tick();
-//		game->wait(0xFFFF);
-		game->wait(0x85FFF);
-
-		if (i & 0x4){
-			leds->turnOn(LEDS::BLUE);
+		if (timer->isDone(GAME_TIMER)){
+			timer->setDelay(GAME_TIMER, 0x2D0000);
+			game->tick();
 		}
-		else{
-			leds->turnOff(LEDS::BLUE);
+		if (timer->isDone(ANIMATION_TIMER)){
+			timer->setDelay(ANIMATION_TIMER, 0x2B0000);
+			game->animateMenu();
+			leds->turnOff(LEDS::ORANGE);
 		}
-		LEDS::getInstance()->turnOff(LEDS::GREEN);
+		if (timer->isDone(SYNC_TIMER)){
+			timer->setDelay(SYNC_TIMER, 0xFFFFFFF);
+			FPGA::getInstance()->update(FPGA_UPDATE_ALL);
+			leds->turnOn(LEDS::ORANGE);
+		}
+		if (timer->isDone(MENU_TEST_TIMER)){
+			timer->setDelay(MENU_TEST_TIMER, 0x4000000);
+			Menu::MenuBox::getInstance()->down();
 
-		i++;
-		if (i & 0b1){
+			if (blueOn){
+				leds->turnOff(LEDS::BLUE);
+				blueOn = false;
+			}
+			else{
+				leds->turnOn(LEDS::BLUE);
+				blueOn = true;
+			}
+		}
+		MVC::Observer::handleNotifications();
+
+		if (++i > 0x55) i = 1;
+		if (i & 0b10000){
 			if (Buttons::getInstace()->getButton()){
 				if (!pressed){
-					leds->turnOn(LEDS::GREEN);
 					if (Menu::MenuBox::getInstance()->isShowing())
 						Menu::MenuBox::getInstance()->select();
 					else
 						game->pause();
 					pressed = true;
 				}
-			} else {
+			} else
 				pressed = false;
-				leds->turnOff(LEDS::GREEN);
-			}
-		}
-		if (i == 30){
-			i = 1;
-			Menu::MenuBox::getInstance()->down();
 		}
 	}
 }

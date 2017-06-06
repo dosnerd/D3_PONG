@@ -74,8 +74,5 @@ const Model *Observer::getModel() const {
 	return m_model;
 }
 
-void Observer::setObserverContainer(Vector<Observer*>*& observerContainer) {
-	sObserverContainer = observerContainer;
-}
 
 } /* namespace MVC */

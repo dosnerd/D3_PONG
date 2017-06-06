@@ -12,6 +12,7 @@
 #include <gameEngine/Engine.h>
 #include <GameControllers/PlayerController.h>
 
+#include <Game.h>
 #include <FPGA.h>
 #include <config_file.h>
 
@@ -73,11 +74,8 @@ void GameController::setupField(GameEngine::Engine* engine) {
 	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER1]);
 	engine->addObject(m_bats[GAMECONTROLLER_BAT1_PLAYER2]);
 
-	getBall()->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 40));
-	getBall()->setSpeed(GameEngine::Coordinate(0, 0, 1));
-
-//	getBall()->setPosition(GameEngine::Coordinate(0, 0, 40));
-//	getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
+	getBall()->setPosition(GameEngine::Coordinate(0, 0, 40));
+	getBall()->setSpeed(GameEngine::Coordinate(5, -3, 1));
 
 	m_player1->setScore(5);
 	m_player2->setScore(5);
@@ -92,8 +90,6 @@ void GameController::setupField(GameEngine::Engine* engine) {
 }
 
 void GameController::winMatch(uint8_t player) {
-	uint32_t clock = 0xFFFFFF; //TODO: write good timer
-//	uint32_t clock = 0;
 	if (player == 1){
 		m_player1->setScore(m_player1->getScore() - 1);
 		if (m_player1->getScore() == 0){
@@ -112,8 +108,7 @@ void GameController::winMatch(uint8_t player) {
 		m_fpga->printScore(m_player2, 2);
 	}
 
-	while(clock--)
-		asm("nop");
+	Game::getInstance()->wait(0x8000000);
 }
 
 void GameController::finishedGame() {
@@ -135,9 +130,6 @@ void GameControllers::GameController::onNotify() {
 		winMatch((ballCoordinate->getZ() > 72) + 1);
 
 		//TODO: Randomize speed? + position
-//		getBall()->setPosition(GameEngine::Coordinate(-BAT_WITDH/2, -BAT_HEIGHT/2, 40));
-//		getBall()->setSpeed(GameEngine::Coordinate(0, 0, -1));
-
 		getBall()->setPosition(GameEngine::Coordinate(ballCoordinate->getX() % 100, ballCoordinate->getY() % 100, 40));
 		if (getBall()->getSpeed().getZ() < 0)
 			getBall()->setSpeed(GameEngine::Coordinate(-5, 3, 1));

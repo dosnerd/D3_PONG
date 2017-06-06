@@ -113,7 +113,7 @@ Coordinate Engine::calcBounce(int16_t i, Coordinate& ballSpeed, Vector<int32_t>&
 		ballSpeed.flip(nearestObject->getCompareAxis());
 		m_ball.getSpeed().flip(nearestObject->getCompareAxis());
 
-		if (existsSaveTransform(i, &transformList, &ballSpeed)) {
+		if (existsSafeTransform(i, &transformList, &ballSpeed)) {
 			transformList[i] = NO_TRANSFORM;
 			calcEffect(intersection, nearestObject);
 		} else {
@@ -127,7 +127,7 @@ Coordinate Engine::calcBounce(int16_t i, Coordinate& ballSpeed, Vector<int32_t>&
 		ballSpeed.flip(nearestObject->getCompareAxis());
 		m_ball.getSpeed().flip(nearestObject->getCompareAxis());
 
-		if (existsSaveTransform(i, &transformList, &ballSpeed)) {
+		if (existsSafeTransform(i, &transformList, &ballSpeed)) {
 			transformList[i] = NO_TRANSFORM;
 			calcEffect(intersection2, nearestObject);
 		} else {
@@ -196,7 +196,7 @@ GameEngine::Coordinate Engine::calcIntersection(const Coordinate& ballPos, Coord
 			/ FIXED_POINT_MULTILIER;
 }
 
-bool Engine::existsSaveTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed) {
+bool Engine::existsSafeTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed) {
 	int i;
 	Coordinate intersection, intersection2, temp, temp2, ballPos;
 	Coordinate::AXIS orientation = m_objectContainer[selected]->getCompareAxis();
