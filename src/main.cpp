@@ -21,7 +21,8 @@ int main(void)
 {
 	volatile int16_t i = 0x55;
 	uint8_t addres = 0x01;
-	UART *uartInstance = UART::getInstance();
+	SPI	*spiInstance = SPI::getInstance();
+	UART *uartInstance = UART::getInstance(4);
 	LEDS *leds = LEDS::getInstance();
 	FPGA *fpga = FPGA::getInstance();
 	GameEngine::Engine *engine = getEngine();
@@ -46,8 +47,6 @@ int main(void)
 
 
 	while(i){
-		uartInstance->write(i);
-		UARTCHECK(leds, uartInstance, i);
 
 		engine->moveBall();
 
@@ -55,13 +54,14 @@ int main(void)
 		SPI_write(0x2, -ball->getPosition().getY() - (ball->getWidth() / 2));
 		SPI_write(0x3, -ball->getPosition().getZ());
 
+		uartInstance->write(UARTCHECK(leds, uartInstance, 0x55));
+
 		SPI_write(0x4, -bat1->getPosition().getX() - (bat1->getWidth() / 2));
 		SPI_write(0x5, -bat1->getPosition().getY() - (bat1->getHeight() / 2));
 
 		SPI_write(0x6, -bat2->getPosition().getX() - (bat2->getWidth() / 2));
 		SPI_write(0x7, -bat2->getPosition().getY() - (bat2->getHeight() / 2));
 		SPI_write(0xF, 0);
-
 
 		delay(0x85FFF);
 		if (i & 0x4){

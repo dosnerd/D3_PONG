@@ -11,13 +11,14 @@
 #include <Stream.h>
 #include <Vector.h>
 #include <config_file.h>
+#include <stm32f4xx_conf.h>
 
 class UART: public Stream {
 public:
 	virtual 					~UART();
 
 private:
-								UART();
+								UART(USART_TypeDef* USARTx);
 								UART(UART &item);
 								UART(UART &&item);
 
@@ -27,7 +28,7 @@ public:
 
 public:
 	virtual const uint16_t		getBufferLenght() const;
-	static UART					*getInstance();
+	static UART					*getInstance(uint8_t port);
 
 #if UART_INTERRUPT_ENABLE
 public:
@@ -38,8 +39,9 @@ private:
 #endif
 
 private:
+	USART_TypeDef* 				m_USARTx;
 	Vector<uint16_t>			m_buffer;
-	static UART					sInstance;
+	static UART					sInstance2, sInstance4;
 
 private:
 	void 						GPIOinit();
