@@ -45,4 +45,3 @@ $(OUT)libstm32f4.a: $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(OUT)libstm32f4.a
-	rm -f -d $(OUT)

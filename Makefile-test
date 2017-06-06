@@ -1,17 +1,25 @@
 # put your *.o targets here, make should handle the rest!
-
-SRCS = 								\
-		MVC/Model.cpp				\
-		MVC/View.cpp				\
-		MVC/Controller.cpp			\
-		MVC/Observer.cpp			\
-		MVC/MVCtest.cpp				\
-		MVC/ImplemModel.cpp			\
-		MVC/ImplemView.cpp			\
-		MVC/ImplemController.cpp	\
-		Vectortest.cpp				\
-		Memoryleak.cpp				\
-		Test.cpp					\
+SRCS = 									\
+		Vectortest.cpp					\
+		Memoryleak.cpp					\
+		Test.cpp						\
+		gameEngine/Coordinate.cpp		\
+		gameEngine/CoordinateTest.cpp	\
+		gameEngine/GameObject.cpp		\
+		gameEngine/GameObjectTest.cpp	\
+		gameEngine/Ball.cpp				\
+		gameEngine/Engine.cpp			\
+		gameEngine/EngineTest.cpp		\
+		gameEngine/SideWall.cpp			\
+		gameEngine/FloorWall.cpp		\
+		MVC/Model.cpp					\
+		MVC/View.cpp					\
+		MVC/Controller.cpp				\
+		MVC/Observer.cpp				\
+		MVC/MVCtest.cpp					\
+		MVC/ImplemModel.cpp				\
+		MVC/ImplemView.cpp				\
+		MVC/ImplemController.cpp		\
 		main_test.cpp
 
 OUT=./out_test/
@@ -49,7 +57,6 @@ CFLAGS += -Wall -Werror -Wtype-limits -Wuninitialized -Wunused-parameter -Wunuse
 
 LIST = $(SRCS:.cpp=.o)
 OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
-#OBJS_FULL = $(OBJS) lib/startup_stm32f4xx.s # add startup file to build
 
 
 ###################################################
@@ -59,10 +66,7 @@ OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
 all: proj
 	@echo finished
 
-proj: 	$(OUT) $(BIN)$(PROJ_NAME).exe
-
-$(OUT):
-	mkdir $(OUT)
+proj: $(BIN)$(PROJ_NAME).exe
 
 $(BIN)$(PROJ_NAME).exe: $(OBJS)
 	$(CXX) -o $(BIN)$(PROJ_NAME).exe $(OBJS)
@@ -79,15 +83,12 @@ $(OUT)%.o : %.c
 	$(CXX) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d;
 	@echo "Compiled "$<"!"
 
-rebuild: clean lib proj
+rebuild: clean proj
 	
 clean:
 	rm -f $(OBJS)
 	rm -f $(BIN)$(PROJ_NAME).elf
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
-	rm -f -d -r $(OUT)
-	rm -f -d -r $(BIN)
-	rm -f -d -r $(DEP)
 	
 include $(wildcard $(DEP)/*.d)

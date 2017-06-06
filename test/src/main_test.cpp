@@ -7,6 +7,9 @@
 #include <iostream>
 #include <Memoryleak.h>
 #include <Vectortest.h>
+#include <gameEngine/CoordinateTest.h>
+#include <gameEngine/GameObjectTest.h>
+#include <gameEngine/EngineTest.h>
 #include <MVCtest.h>
 #include <thread>
 
@@ -24,11 +27,18 @@ int main(){
 	std::cout << "Start test..." << std::endl;
 
 	unsigned int i;
-	Test *a[] = { new Vector_test(), new MVCtest() };
+	Test *a[] = {
+			new Vector_test(),
+			new MVCtest(),
+			new GameEngine::EngineTest(),
+			new GameEngine::CoordinateTest(),
+			new GameEngine::GameObjectTest(),
+	};
 	std::thread tests[sizeof(a) / sizeof(Test *)];
 
 	for (i = 0; i < sizeof(a) / sizeof(Test *); ++i) {
 		tests[i] = std::thread(&Test::run, a[i]);
+//		a[i]->run();
 	}
 
 	//delete tests

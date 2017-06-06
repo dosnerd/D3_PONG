@@ -1,0 +1,37 @@
+#!/bin/sh
+
+function save_struct () {
+	find . -type d>$1.tmp
+}
+function load_struct( ) {
+	xargs mkdir -p <$1.tmp
+}
+
+#clearing repo
+rm -f -d -r bin
+rm -f -d -r out
+rm -f  -d -r out_test
+rm -f .tmp
+
+#setup repo
+mkdir bin
+mkdir out
+mkdir out_test
+
+#copy src directory structure to out* directories
+cd ./src
+save_struct "../"
+cd ../out
+load_struct "../"
+cd ../out_test
+load_struct "../"
+
+#copy test src directory structure to test out directory
+cd ../test/src
+save_struct "../../"
+cd ../../out_test
+load_struct "../"
+
+#clearup temp file(s)
+cd ../
+rm -f .tmp

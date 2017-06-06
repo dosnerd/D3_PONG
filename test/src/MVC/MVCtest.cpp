@@ -86,7 +86,7 @@ bool MVCtest::test() {
 	
 	notifyView();
 	allProcessed();
-	return false;
+	return true;
 }
 
 void MVCtest::processObservers(){
