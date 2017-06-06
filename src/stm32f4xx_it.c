@@ -23,6 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include <LEDS.h>
 
 /** @addtogroup STM32F4_Discovery_Peripheral_Examples
   * @{
@@ -62,6 +63,7 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+	  blinkLight(2);
   }
 }
 

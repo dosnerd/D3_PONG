@@ -51,6 +51,8 @@ void SPI::GPIOinit() {
 	GPIO_InitStructure2.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure2.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStructure2);
+
+	GPIO_SetBits(GPIOD, GPIO_Pin_8);
 #endif
 }
 
@@ -78,14 +80,17 @@ void SPI::SPIinit() {
 }
 
 void SPI::write(uint16_t data){
-#if SPI_SLAVE_MODE_ENABLE
-	GPIO_ResetBits(GPIOD, GPIO_Pin_8);
-#endif
-
 	while (!(SPI2->SR & SPI_I2S_FLAG_TXE))
-				; // wait until transmit buffer empty
+		; // wait until transmit buffer empty
 	while ( SPI2->SR & SPI_I2S_FLAG_BSY)
 		; // wait until SPI is not busy
+
+#if SPI_SLAVE_MODE_ENABLE
+	while (!GPIO_ReadOutputDataBit(GPIOD, GPIO_Pin_8))
+		;
+
+	GPIO_ResetBits(GPIOD, GPIO_Pin_8);
+#endif
 
 	SPI_I2S_SendData(SPI2, data);
 }

@@ -8,6 +8,7 @@
 #include <Test.h>
 #include <Memoryleak.h>
 #include <iostream>
+#include <Windows.h>
 
 Test::Test(std::string name)
 	: m_failed(false)
@@ -19,18 +20,32 @@ Test::~Test() {
 }
 
 void Test::run(){
+	FILETIME ftStart, ftEnd;
+	double dElapsed;
+
 	try{
-		test();
+		::GetSystemTimeAsFileTime(&ftStart);
+		m_failed = !test();
+		::GetSystemTimeAsFileTime(&ftEnd);
 	}
 	catch (std::exception &e) {
+		::GetSystemTimeAsFileTime(&ftEnd);
+
 		std::cout << "Error has occurd" << std::endl;
 		m_failed = true;
 	}
 
 	if (m_failed){
-		std::cout << m_name << ": failed" << std::endl;
+		std::cout << m_name << ": failed (";
 	} else {
-		std::cout << m_name << ": succeed" << std::endl;
+		std::cout << m_name << ": succeed (";
+	}
+
+	dElapsed = (ftEnd.dwLowDateTime - ftStart.dwLowDateTime) / 10000.0;
+	if (dElapsed < 1500){
+		std::cout << dElapsed << " ms)" << std::endl;
+	} else {
+		std::cout << dElapsed/1000 << " s)" << std::endl;
 	}
 }
 

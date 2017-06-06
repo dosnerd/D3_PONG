@@ -5,7 +5,6 @@
  *      Author: Acer
  */
 
-#include <MVC/Observer.h>
 
 template<class T>
 Vector<T>::Vector() :
@@ -86,4 +85,23 @@ void Vector<T>::clear(){
 template<class T>
 const uint16_t Vector<T>::length() const {
 	return m_nObjects;
+}
+
+template<class T>
+uint16_t Vector<T>::min(uint16_t startIndex) {
+	if (length() > 0) {
+		uint16_t &i = startIndex, iMin = i;
+		T min = m_objects[iMin];
+
+		for (i = 0; i < m_nObjects; ++i) {
+			if (m_objects[i] < min) {
+				min = m_objects[i];
+				iMin = i;
+			}
+		}
+
+		return iMin;
+	}
+
+	return -1;
 }

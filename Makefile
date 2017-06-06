@@ -1,22 +1,28 @@
 # put your *.o targets here, make should handle the rest!
 
-SRCS = 						\
-		stm32f4xx_it.c		\
-		system_stm32f4xx.c	\
-		SPI.cpp				\
-		UART.cpp			\
-		LEDS.cpp			\
-		FPGA.cpp			\
-		MVC/Model.cpp		\
-		MVC/View.cpp		\
-		MVC/Controller.cpp	\
-		MVC/Observer.cpp	\
+SRCS = 									\
+		stm32f4xx_it.c					\
+		system_stm32f4xx.c				\
+		SPI.cpp							\
+		UART.cpp						\
+		LEDS.cpp						\
+		FPGA.cpp						\
+		gameEngine/Coordinate.cpp		\
+		gameEngine/GameObject.cpp		\
+		gameEngine/Ball.cpp				\
+		gameEngine/Engine.cpp			\
+		gameEngine/SideWall.cpp			\
+		gameEngine/FloorWall.cpp		\
+		MVC/Model.cpp					\
+		MVC/View.cpp					\
+		MVC/Controller.cpp				\
+		MVC/Observer.cpp				\
 		main.cpp
 OUT=./out/
 BIN=./bin/
 DEP=./out/
 
-OPT=2
+OPT=0
 
 
 #$(shell rm ./out/LEDS.o)
@@ -40,7 +46,7 @@ OBJCOPY=arm-none-eabi-objcopy
 CFLAGS  = -g -O$(OPT) -Tstm32_flash.ld
 CFLAGS += -Wall -Werror -Wtype-limits -Wuninitialized -Wunused-parameter -Wunused-but-set-parameter -Wempty-body   
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 LDFLAGS = -Os -Wl,-gc-sections --specs=nano.specs -specs=nosys.specs 
 
 ###################################################
@@ -96,8 +102,5 @@ clean:
 	rm -f $(BIN)$(PROJ_NAME).elf
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
-	rm -f -d -r $(OUT)
-	rm -f -d -r $(BIN)
-	rm -f -d -r $(DEP)
 	
 include $(wildcard $(DEP)/*.d)

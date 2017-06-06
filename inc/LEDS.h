@@ -11,6 +11,8 @@
 #include <stm32f4xx_conf.h>
 #define AMOUNTS_OF_LEDS 4
 
+#ifdef __cplusplus
+
 class LEDS {
 public:
 	virtual 				~LEDS();
@@ -45,5 +47,12 @@ private:
 
 	void GPIOinit();
 };
+extern "C" {
+#endif
 
+void blinkLight(uint8_t led);
+
+#ifdef __cplusplus
+}
+#endif
 #endif /* INC_LEDS_H_ */

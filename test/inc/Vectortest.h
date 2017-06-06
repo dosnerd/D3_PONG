@@ -27,7 +27,7 @@ private:
 	void					remove();
 	void					clear();
 	void					inOtherFunction();
-
+	void MinTest();
 	template <class T>
 	void					inOtherFunction_add(Vector<T> *obj);
 };
