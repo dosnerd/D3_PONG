@@ -72,7 +72,7 @@ void FPGA::GPIOinit() {
 
 	/* Configure PA7 in output pushpull mode */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
@@ -85,14 +85,14 @@ void FPGA::GPIOinit() {
  * before the FPGA is ready
  */
 void FPGA::turnOn(){
-	GPIO_SetBits(GPIOA, GPIO_Pin_7);
+	GPIO_SetBits(GPIOA, GPIO_Pin_5);
 }
 
 /**
  * Turn off the FPGA power supple.
  */
 void FPGA::turnOff(){
-	GPIO_ResetBits(GPIOA, GPIO_Pin_7);
+	GPIO_ResetBits(GPIOA, GPIO_Pin_5);
 }
 
 /**
