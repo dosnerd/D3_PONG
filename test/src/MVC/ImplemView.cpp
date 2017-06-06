@@ -20,6 +20,8 @@ ImplemView::~ImplemView() {
 
 void ImplemView::onNotify(){
 	int i;
+
+	resetNotifyFlag();
 	for (i = 0; i < __MAX_ARRAY_DATA__; ++i) {
 		m_data[i] = ((ImplemModel *)getModel())->getData(i);
 	}

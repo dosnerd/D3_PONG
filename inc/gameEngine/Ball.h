@@ -10,10 +10,11 @@
 
 #include <gameEngine/GameObject.h>
 #include <GameEngine/Coordinate.h>
+#include <MVC/Model.h>
 
 namespace GameEngine {
 
-class Ball: public GameObject {
+class Ball: public GameObject, public MVC::Model {
 public:
 								Ball();
 	virtual 					~Ball();
@@ -24,7 +25,7 @@ public:
 public:
 	Coordinate& 				getSpeed();
 	void 						setSpeed(const Coordinate& speed);
-
+	void 						setPosition(const Coordinate& position);
 
 private:
 	Coordinate					m_speed;

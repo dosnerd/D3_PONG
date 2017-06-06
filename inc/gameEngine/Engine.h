@@ -11,9 +11,9 @@
 #include <Vector.h>
 #include <gameEngine/Ball.h>
 
-class GameObject;
 namespace GameEngine {
 
+class GameObject;
 class Engine {
 public:
 								Engine();
@@ -37,12 +37,11 @@ private:
 										Coordinate& ballSpeed);
 
 	void						deleteAllObjects();
-	bool						existsSaveTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed);
+	bool						existsSafeTransform(int selected, Vector<int32_t> *transformList, Coordinate *ballSpeed);
 	Coordinate 					getRelativeBall(GameObject* nearestObject, Coordinate ballPos);
-	Coordinate calcBounce(int16_t i, Coordinate& ballSpeed,
-			Vector<int32_t>& transformList);
-	GameEngine::Coordinate calcIntersection(const Coordinate& ballPos,
-			Coordinate& ballSpeed, int32_t& transform);
+	Coordinate 					calcBounce(int16_t i, Coordinate& ballSpeed, Vector<int32_t>& transformList);
+	GameEngine::Coordinate 		calcIntersection(const Coordinate& ballPos, Coordinate& ballSpeed, int32_t& transform);
+	void 						calcEffect(const Coordinate& intersection, GameObject* nearestObject);
 };
 
 } /* namespace GameEngine */

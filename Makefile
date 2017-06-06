@@ -1,22 +1,43 @@
 # put your *.o targets here, make should handle the rest!
 
-SRCS = 									\
-		stm32f4xx_it.c					\
-		system_stm32f4xx.c				\
-		SPI.cpp							\
-		UART.cpp						\
-		LEDS.cpp						\
-		FPGA.cpp						\
-		gameEngine/Coordinate.cpp		\
-		gameEngine/GameObject.cpp		\
-		gameEngine/Ball.cpp				\
-		gameEngine/Engine.cpp			\
-		gameEngine/SideWall.cpp			\
-		gameEngine/FloorWall.cpp		\
-		MVC/Model.cpp					\
-		MVC/View.cpp					\
-		MVC/Controller.cpp				\
-		MVC/Observer.cpp				\
+SRCS = 										\
+		stm32f4xx_it.c						\
+		system_stm32f4xx.c					\
+		Buttons.cpp							\
+		SPI.cpp								\
+		UART.cpp							\
+		TimingControl.cpp							\
+		LEDS.cpp							\
+		FPGA.cpp							\
+		gameEngine/Coordinate.cpp			\
+		gameEngine/GameObject.cpp			\
+		gameEngine/Ball.cpp					\
+		gameEngine/Engine.cpp				\
+		gameEngine/SideWall.cpp				\
+		gameEngine/FloorWall.cpp			\
+		GameControllers/GameController.cpp	\
+		GameControllers/Handball.cpp		\
+		GameControllers/Tennis.cpp			\
+		GameControllers/Demo.cpp			\
+		GameControllers/Hockey.cpp			\
+		GameControllers/PlayerController.cpp\
+		MVC/Model.cpp						\
+		MVC/View.cpp						\
+		MVC/Controller.cpp					\
+		MVC/Observer.cpp					\
+		Menu/TextManager.cpp				\
+		Menu/MenuBox.cpp					\
+		Menu/MenuItem.cpp					\
+		Menu/MenuViewer.cpp					\
+		Menu/MenuItems/StartDemo.cpp		\
+		Menu/MenuItems/StartTennis.cpp		\
+		Menu/MenuItems/StartHandball.cpp	\
+		Menu/MenuItems/StartHockey.cpp		\
+		Menu/MenuItems/PlayerColorSelect.cpp\
+		Menu/MenuItems/OpenMainMenu.cpp		\
+		Menu/MenuItems/ResumeGame.cpp		\
+		Menu/MenuItems/SetInfrared.cpp		\
+		Game.cpp							\
 		main.cpp
 OUT=./out/
 BIN=./bin/
@@ -103,4 +124,4 @@ clean:
 	rm -f $(BIN)$(PROJ_NAME).hex
 	rm -f $(BIN)$(PROJ_NAME).bin
 	
-include $(wildcard $(DEP)/*.d)
+include $(wildcard $(DEP)*/*.d)

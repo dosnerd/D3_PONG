@@ -31,5 +31,10 @@ void Ball::setSpeed(const Coordinate& speed) {
 	m_speed = speed;
 }
 
+void Ball::setPosition(const Coordinate& position) {
+	GameObject::setPosition(position);
+	notifyObservers();
+}
+
 } /* namespace GameEngine */
 

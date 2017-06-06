@@ -19,6 +19,7 @@ GameObjectTest::~GameObjectTest() {
 
 bool GameObjectTest::test() {
 	//TODO: create test
+	fail("Not finished yet");
 	return false;
 }
 

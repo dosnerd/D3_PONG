@@ -20,6 +20,7 @@ CoordinateTest::~CoordinateTest() {
 
 bool CoordinateTest::test() {
 	//TODO: create test
+	fail("Not finished yet");
 	return false;
 }
 

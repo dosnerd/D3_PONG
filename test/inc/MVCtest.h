@@ -23,14 +23,14 @@ public:
 	virtual bool 				test();
 
 private:
-	void						processObservers();
-	void notifyController_changeToBig();
-	void notifyController_changeToSmall();
-	void notifyController_changeValid();
-	void observersReset();
-	void observerNotification();
-	void notifyView();
-	void allProcessed();
+	void						processObservers(bool rerunOnNotify = true);
+	void						notifyController_changeToBig();
+	void 						notifyController_changeToSmall();
+	void 						notifyController_changeValid();
+	void 						observersReset();
+	void 						observerNotification();
+	void 						notifyView();
+	void 						allProcessed();
 
 	Vector<MVC::Observer *>		m_observers;
 	ImplemModel 				m_model;

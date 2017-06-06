@@ -1,26 +1,34 @@
 # put your *.o targets here, make should handle the rest!
-SRCS = 									\
-		Vectortest.cpp					\
-		Memoryleak.cpp					\
-		Test.cpp						\
-		gameEngine/Coordinate.cpp		\
-		gameEngine/CoordinateTest.cpp	\
-		gameEngine/GameObject.cpp		\
-		gameEngine/GameObjectTest.cpp	\
-		gameEngine/Ball.cpp				\
-		gameEngine/Engine.cpp			\
-		gameEngine/EngineTest.cpp		\
-		gameEngine/SideWall.cpp			\
-		gameEngine/FloorWall.cpp		\
-		MVC/Model.cpp					\
-		MVC/View.cpp					\
-		MVC/Controller.cpp				\
-		MVC/Observer.cpp				\
-		MVC/MVCtest.cpp					\
-		MVC/ImplemModel.cpp				\
-		MVC/ImplemView.cpp				\
-		MVC/ImplemController.cpp		\
+SRCS = 										\
+		Vectortest.cpp						\
+		Memoryleak.cpp						\
+		Test.cpp							\
+		ConsoleASCIIcode.cpp				\
+		gameEngine/Coordinate.cpp			\
+		gameEngine/CoordinateTest.cpp		\
+		gameEngine/GameObject.cpp			\
+		gameEngine/GameObjectTest.cpp		\
+		gameEngine/Ball.cpp					\
+		gameEngine/Engine.cpp				\
+		gameEngine/EngineTest.cpp			\
+		gameEngine/SideWall.cpp				\
+		gameEngine/FloorWall.cpp			\
+		MVC/Model.cpp						\
+		MVC/View.cpp						\
+		MVC/Controller.cpp					\
+		MVC/Observer.cpp					\
+		MVC/MVCtest.cpp						\
+		MVC/ImplemModel.cpp					\
+		MVC/ImplemView.cpp					\
+		MVC/ImplemController.cpp			\
+		TestFailsException.cpp				\
 		main_test.cpp
+
+
+#		GameControllers/GameController.cpp	\
+#		GameControllers/Demo.cpp			\
+#		GameControllers/DemoImpl.cpp		\
+#		GameControllers/DemoTest.cpp		\
 
 OUT=./out_test/
 BIN=./out_test/

@@ -1,149 +1,83 @@
-#include <SPI.h>
-#include <UART.h>
 #include <LEDS.h>
 #include <FPGA.h>
+#include <Game.h>
+#include <Buttons.h>
 
-#include <gameEngine/Engine.h>
-#include <gameEngine/SideWall.h>
-#include <gameEngine/FloorWall.h>
+#include <UART.h>
+#include <TimingControl.h>
+
+#include <Menu/MenuBox.h>
+#include <Menu/TextManager.h>
 
 #include <config_file.h>
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_conf.h"
-
-void delay(uint32_t time);
-void SPI_write(uint16_t address, uint16_t value);
-uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i);
-
-GameEngine::Engine *getEngine();
+#include <string>
 
 int main(void)
 {
-	volatile int16_t i = 0x55;
-	uint8_t addres = 0x01;
-	SPI	*spiInstance = SPI::getInstance();
-	UART *uartInstance = UART::getInstance(4);
+	volatile int8_t i = 0x55;
+	bool pressed = false, blueOn=false;
 	LEDS *leds = LEDS::getInstance();
-	FPGA *fpga = FPGA::getInstance();
-	GameEngine::Engine *engine = getEngine();
-	GameEngine::Ball *ball = engine->getBall();
-
-	GameEngine::GameObject* bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
-	GameEngine::GameObject* bat2= new GameEngine::GameObject(GameEngine::Coordinate::Z, 240, 160);
-	bat1->setPosition(GameEngine::Coordinate(-120, -90, 8));
-	bat2->setPosition(GameEngine::Coordinate(-120, -90, 72));
-
-	engine->addObject(bat1);
-	engine->addObject(bat2);
-
-	engine->getBall()->setPosition(GameEngine::Coordinate(-30, -30, 9));
-	engine->getBall()->setSpeed(GameEngine::Coordinate(7, -3, 	1));
+	Game *game = Game::getInstance();
+	TimingControl *timer = TimingControl::getInstance();
 
 	for (i = 0; i < AMOUNTS_OF_LEDS; ++i) {
 		leds->turnOff(i);
 	}
-	i = 100;
+	i = 1;
 
+	FPGA::getInstance()->setOption(FPGA_OPTION_NONE);
+	FPGA::getInstance()->setRegister(FPGA_REGISTER_STATE, 0x0);
 
+	Menu::TextManager::clearAll();
+
+	game->openMainMenu();
 
 	while(i){
+		if (timer->isDone(GAME_TIMER)){
+			timer->setDelay(GAME_TIMER, 0x2D0000);
+			game->tick();
 
-		engine->moveBall();
-
-		SPI_write(0x1, -ball->getPosition().getX() - (ball->getWidth() / 2));
-		SPI_write(0x2, -ball->getPosition().getY() - (ball->getWidth() / 2));
-		SPI_write(0x3, -ball->getPosition().getZ());
-
-		uartInstance->write(UARTCHECK(leds, uartInstance, 0x55));
-
-		SPI_write(0x4, -bat1->getPosition().getX() - (bat1->getWidth() / 2));
-		SPI_write(0x5, -bat1->getPosition().getY() - (bat1->getHeight() / 2));
-
-		SPI_write(0x6, -bat2->getPosition().getX() - (bat2->getWidth() / 2));
-		SPI_write(0x7, -bat2->getPosition().getY() - (bat2->getHeight() / 2));
-		SPI_write(0xF, 0);
-
-		delay(0x85FFF);
-		if (i & 0x4){
-			leds->turnOn(LEDS::BLUE);
-			fpga->turnOn();
 		}
-		else{
-			leds->turnOff(LEDS::BLUE);
-			fpga->turnOff();
+		if (timer->isDone(ANIMATION_TIMER)){
+			timer->setDelay(ANIMATION_TIMER, 0x2B0000);
+			game->animateMenu();
+			leds->turnOff(LEDS::ORANGE);
 		}
+		if (timer->isDone(SYNC_TIMER)){
+			timer->setDelay(SYNC_TIMER, 0xFFFFFFF);
+			FPGA::getInstance()->update(FPGA_UPDATE_ALL);
+			leds->turnOn(LEDS::ORANGE);
+		}
+		if (timer->isDone(MENU_TEST_TIMER)){
+			timer->setDelay(MENU_TEST_TIMER, 0x4000000);
+			Menu::MenuBox::getInstance()->down();
 
-		i--;
-		if (i <= 8){
-			i = 100;
-			addres++;
-
-			if (addres > 0b0111){
-				addres = 1;
+			if (blueOn){
+				leds->turnOff(LEDS::BLUE);
+				blueOn = false;
+			}
+			else{
+				leds->turnOn(LEDS::BLUE);
+				blueOn = true;
 			}
 		}
-	}
-}
+		MVC::Observer::handleNotifications();
 
-GameEngine::Engine *getEngine(){
-	GameEngine::Engine* engine = new GameEngine::Engine();
-		GameEngine::GameObject* wallFront = new GameEngine::GameObject(GameEngine::Coordinate::Z, 640, 480);
-		GameEngine::GameObject* wallBack = new GameEngine::GameObject(GameEngine::Coordinate::Z, 640, 480);
-		GameEngine::GameObject* wallLeft = new GameEngine::SideWall(100, 480);
-		GameEngine::GameObject* wallRight = new GameEngine::SideWall(100, 480);
-		GameEngine::GameObject* wallTop = new GameEngine::FloorWall(640, 100);
-		GameEngine::GameObject* wallBottom = new GameEngine::FloorWall(640, 100);
-//		GameEngine::GameObject* bat1 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 120, 80);
-//		GameEngine::GameObject* bat2 = new GameEngine::GameObject(GameEngine::Coordinate::Z, 120, 80);
-
-
-		wallBack->setPosition(GameEngine::Coordinate(-320, -240, 80));
-		wallFront->setPosition(GameEngine::Coordinate(-320, -240, 0));
-		wallLeft->setPosition(GameEngine::Coordinate(-320, -240, 0));
-		wallRight->setPosition(GameEngine::Coordinate(320, -240, 0));
-		wallTop->setPosition(GameEngine::Coordinate(-320, 240, 0));
-		wallBottom->setPosition(GameEngine::Coordinate(-320, -240, 0));
-//		bat1->setPosition(GameEngine::Coordinate(200, 50, 8));
-//		bat2->setPosition(GameEngine::Coordinate(-100, -50, 72));
-
-		engine->addObject(wallFront);
-		engine->addObject(wallBack);
-		engine->addObject(wallLeft);
-		engine->addObject(wallRight);
-		engine->addObject(wallTop);
-		engine->addObject(wallBottom);
-//		engine->addObject(bat1);
-//		engine->addObject(bat2);
-
-	return engine;
-}
-
-void SPI_write(uint16_t address, uint16_t value){
-	uint16_t buff = address << 3*4;
-	buff |= value & 0xFFF;
-	SPI::getInstance()->write(buff);
-}
-
-uint16_t UARTCHECK(LEDS *leds, UART *uartInstance, uint16_t i){
-	uint16_t buffer = 0;
-
-	while (uartInstance->getBufferLenght()) {
-		buffer = uartInstance->read();
-		if (buffer == i) {
-			leds->turnOn(LEDS::GREEN);
-			leds->turnOff(LEDS::RED);
-		} else {
-			leds->turnOn(LEDS::RED);
-			leds->turnOff(LEDS::GREEN);
+		if (++i > 0x55) i = 1;
+		if (i & 0b10000){
+			if (Buttons::getInstace()->getButton()){
+				if (!pressed){
+					if (Menu::MenuBox::getInstance()->isShowing())
+						Menu::MenuBox::getInstance()->select();
+					else
+						game->pause();
+					pressed = true;
+				}
+			} else
+				pressed = false;
 		}
 	}
-
-	return buffer;
 }
 
-void delay(uint32_t time){
-	//block for time
-	while(time--) {
-		asm volatile ("nop");
-	}
-}

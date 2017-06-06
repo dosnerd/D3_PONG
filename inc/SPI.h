@@ -12,7 +12,7 @@
 #include <Vector.h>
 #include <config_file.h>
 
-class SPI : Stream {
+class SPI : public Stream {
 public:
 	virtual 				~SPI();
 

@@ -23,7 +23,7 @@ private:
 public:
 	virtual void			turnOn(const uint8_t led);
 	virtual void			turnOff(const uint8_t led);
-	virtual void			infiniteBlink(const uint8_t led);
+	virtual void			infiniteBlink(const uint8_t led, uint32_t speed);
 
 public:
 	static LEDS				*getInstance();
@@ -50,7 +50,7 @@ private:
 extern "C" {
 #endif
 
-void blinkLight(uint8_t led);
+void blinkLight(uint8_t led, uint32_t speed);
 
 #ifdef __cplusplus
 }

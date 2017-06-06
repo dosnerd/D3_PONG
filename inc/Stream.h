@@ -9,8 +9,9 @@
 #define INC_STREAM_H_
 
 #include <stdint.h>
+#include <MVC/Model.h>
 
-class Stream {
+class Stream : public MVC::Model {
 public:
 							Stream() { }
 	virtual 				~Stream() { }

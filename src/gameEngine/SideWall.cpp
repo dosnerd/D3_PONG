@@ -31,4 +31,10 @@ const bool SideWall::isCollided(const GameObject* with, const Coordinate& at) co
 	return false;
 }
 
+const uint8_t GameEngine::SideWall::getEffectSides(const GameObject* with, const Coordinate& at) const {
+	(void)with;
+	(void)at;
+	return 0;
+}
+
 } /* namespace GameEngine */

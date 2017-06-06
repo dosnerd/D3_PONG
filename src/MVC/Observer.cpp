@@ -10,14 +10,34 @@
 
 namespace MVC {
 
+Vector<Observer *> *Observer::sObserverContainer = nullptr;
+
+void Observer::checkContainerExists() {
+	static Vector<Observer*> container;
+	if (sObserverContainer == nullptr)
+		sObserverContainer = &container;
+}
+
 Observer::Observer(Model *model)
 	: m_model(model)
 	, m_notifyFlag(false)
 {
+	checkContainerExists();
+
+	Observer *t = this;
+	sObserverContainer->add(t);
 	m_model->attach(this);
 }
 
 Observer::~Observer() {
+	int i;
+	for (i = 0; i < sObserverContainer->length(); ++i) {
+
+		if ((*sObserverContainer)[i] == this){
+			sObserverContainer->remove(i);
+			return;
+		}
+	}
 }
 
 /**
@@ -36,8 +56,23 @@ const void Observer::resetNotifyFlag() {
 	m_notifyFlag = false;
 }
 
+void Observer::handleNotifications() {
+	int i;
+	for (i = 0; i < sObserverContainer->length(); ++i) {
+		if ((*sObserverContainer)[i]->isNotified()){
+			(*sObserverContainer)[i]->onNotify();
+			i = -1;
+		}
+	}
+}
+
+void Observer::emptyContainer() {
+	sObserverContainer->clear();
+}
+
 const Model *Observer::getModel() const {
 	return m_model;
 }
+
 
 } /* namespace MVC */

@@ -92,8 +92,8 @@ void UART::UARTinit() {
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No;
-	USART_InitStructure.USART_HardwareFlowControl =
-			USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+
 #if UART_TRANSMIT_ENABLE
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 #else
@@ -110,9 +110,12 @@ UART *UART::getInstance(uint8_t port){
 }
 
 void UART::write(uint16_t data){
-	//wait until available
+#if UART_TRANSMIT_ENABLE
 	while(!(m_USARTx->SR & USART_FLAG_TC));
 	USART_SendData(m_USARTx, data);
+#else
+	(void)data;
+#endif
 }
 
 const uint16_t UART::read(){
@@ -158,9 +161,12 @@ void UART::UARTinterruptConfig() {
 void UART::interruptRead(){
 	uint16_t buffer;
 
-	//read from uart buffer
 	buffer = USART_ReceiveData(m_USARTx);
-	m_buffer.add(buffer);
+	if (m_buffer.length() < UART_BUFFER_LENGTH){
+		//read from uart buffer
+		m_buffer.add(buffer);
+	}
+	notifyObservers();
 }
 
 void USART2_IRQHandler(void) {
