@@ -30,8 +30,8 @@
 Game Game::sInstance;
 Game::Game()
 	: m_engine(new GameEngine::Engine())
-	, m_player1(UART::getInstance())
-	, m_player2(UART::getInstance())
+	, m_player1(UART::getInstance(2))
+	, m_player2(UART::getInstance(4))
 	, m_currentController(new GameControllers::Demo(m_engine->getBall(), &m_player1, &m_player2))
 	, m_mainMenu("Main Menu")
 	, m_pauseMenu("Pause")

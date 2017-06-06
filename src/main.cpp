@@ -38,6 +38,7 @@ int main(void)
 		if (timer->isDone(GAME_TIMER)){
 			timer->setDelay(GAME_TIMER, 0x2D0000);
 			game->tick();
+
 		}
 		if (timer->isDone(ANIMATION_TIMER)){
 			timer->setDelay(ANIMATION_TIMER, 0x2B0000);
