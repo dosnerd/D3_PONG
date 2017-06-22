@@ -2,12 +2,13 @@ CC=arm-none-eabi-gcc
 AR=arm-none-eabi-ar
 
 OUT=../out/lib/
+OPT=3
 
 ###########################################
 
 vpath %.c src src/peripherals
 
-CFLAGS  = -g -O2 -Wall
+CFLAGS  = -g -O$(OPT) -Wall
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CFLAGS += -ffreestanding -nostdlib
@@ -28,9 +29,12 @@ SRCS = misc.c stm32f4xx_dma.c stm32f4xx_rcc.c stm32f4xx_adc.c \
 LIST = $(SRCS:.c=.o)
 OBJS = $(addprefix $(OUT),$(LIST))
 
-.PHONY: $(OUT)libstm32f4.a
+.PHONY: $(OUT)libstm32f4.a 
 
-all: $(OUT)libstm32f4.a
+all: $(OUT) $(OUT)libstm32f4.a
+
+$(OUT):
+	mkdir $(OUT)
 
 $(OUT)%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $^

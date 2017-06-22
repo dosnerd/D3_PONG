@@ -1,0 +1,102 @@
+# put your *.o targets here, make should handle the rest!
+SRCS = 										\
+		Vectortest.cpp						\
+		Memoryleak.cpp						\
+		Test.cpp							\
+		ConsoleASCIIcode.cpp				\
+		gameEngine/Coordinate.cpp			\
+		gameEngine/CoordinateTest.cpp		\
+		gameEngine/GameObject.cpp			\
+		gameEngine/GameObjectTest.cpp		\
+		gameEngine/Ball.cpp					\
+		gameEngine/Engine.cpp				\
+		gameEngine/EngineTest.cpp			\
+		gameEngine/SideWall.cpp				\
+		gameEngine/FloorWall.cpp			\
+		MVC/Model.cpp						\
+		MVC/View.cpp						\
+		MVC/Controller.cpp					\
+		MVC/Observer.cpp					\
+		MVC/MVCtest.cpp						\
+		MVC/ImplemModel.cpp					\
+		MVC/ImplemView.cpp					\
+		MVC/ImplemController.cpp			\
+		TestFailsException.cpp				\
+		main_test.cpp
+
+
+#		GameControllers/GameController.cpp	\
+#		GameControllers/Demo.cpp			\
+#		GameControllers/DemoImpl.cpp		\
+#		GameControllers/DemoTest.cpp		\
+
+OUT=./out_test/
+BIN=./out_test/
+DEP=./out_test/
+
+
+$(shell mkdir -p $(OUT) >/dev/null)
+$(shell mkdir -p $(OUT)/MVC >/dev/null)
+$(shell mkdir -p $(BIN) >/dev/null)
+$(shell mkdir -p $(DEP) >/dev/null)
+
+PROJ_NAME=TEST_PROGRAM
+
+# that's it, no need to change anything below this line!
+
+###################################################
+
+CC=gcc
+CXX=g++ 
+
+###################################################
+
+vpath %.c src
+vpath %.cpp src
+vpath %.h inc
+
+vpath %.cpp test/src
+vpath %.h test/inc
+
+ROOT=$(shell pwd)
+
+CFLAGS = -Iinc -Itest/inc  
+CFLAGS += -Wall -Werror -Wtype-limits -Wuninitialized -Wunused-parameter -Wunused-but-set-parameter -Wempty-body   
+
+LIST = $(SRCS:.cpp=.o)
+OBJS = $(addprefix $(OUT),$(LIST:.c=.o))
+
+
+###################################################
+
+.PHONY: proj
+
+all: proj
+	@echo finished
+
+proj: $(BIN)$(PROJ_NAME).exe
+
+$(BIN)$(PROJ_NAME).exe: $(OBJS)
+	$(CXX) -o $(BIN)$(PROJ_NAME).exe $(OBJS)
+	
+$(OUT)%.o : %.cpp
+	$(CXX) $(CFLAGS) -c -o $@ $< -std=c++11;
+	rm -f $(DEP)/$*.d
+	$(CXX) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d -std=c++11;
+	@echo "Compiled "$<"!"
+	
+$(OUT)%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+	rm -f $(DEP)/$*.d
+	$(CXX) $(CFLAGS) -MM -MT $@ -MD $< -MF $(DEP)/$*.d;
+	@echo "Compiled "$<"!"
+
+rebuild: clean proj
+	
+clean:
+	rm -f $(OBJS)
+	rm -f $(BIN)$(PROJ_NAME).elf
+	rm -f $(BIN)$(PROJ_NAME).hex
+	rm -f $(BIN)$(PROJ_NAME).bin
+	
+include $(wildcard $(DEP)/*.d)

@@ -23,6 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include <LEDS.h>
 
 /** @addtogroup STM32F4_Discovery_Peripheral_Examples
   * @{
@@ -62,6 +63,7 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+	  blinkLight(2, 10000000);
   }
 }
 
@@ -75,6 +77,7 @@ void MemManage_Handler(void)
   /* Go to infinite loop when Memory Manage exception occurs */
   while (1)
   {
+	  blinkLight(2, 100000);
   }
 }
 
@@ -88,6 +91,7 @@ void BusFault_Handler(void)
   /* Go to infinite loop when Bus Fault exception occurs */
   while (1)
   {
+	  blinkLight(2, 1000000000);
   }
 }
 
@@ -101,6 +105,7 @@ void UsageFault_Handler(void)
   /* Go to infinite loop when Usage Fault exception occurs */
   while (1)
   {
+	  blinkLight(2, 1);
   }
 }
 
